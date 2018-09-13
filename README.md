@@ -1,2 +1,2 @@
 # perilib-arduino-hal
-Arduino core hardware abstraction layer for protocol communications
+Arduino hardware abstraction layer for protocol communications
