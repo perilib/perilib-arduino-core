@@ -1,5 +1,1 @@
-#include "Serial.h"
-
-PerilibSerialStream::PerilibSerialStream(Stream &stream)
-{
-}
+#include "Perilib.h"

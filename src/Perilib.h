@@ -5,5 +5,7 @@
 
 #include "hal/Core.h"
 #include "hal/Serial.h"
+#include "protocol/Core.h"
+#include "protocol/Stream.h"
 
 #endif /* __PERILIB_H__ */
