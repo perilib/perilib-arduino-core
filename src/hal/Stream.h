@@ -1,22 +1,12 @@
-#ifndef __PERILIB_HAL_CORE_H__
-#define __PERILIB_HAL_CORE_H__
+#ifndef __PERILIB_HAL_STREAM_H__
+#define __PERILIB_HAL_STREAM_H__
 
-#include "Perilib.h"
+#include "common.h"
+#include "hal/Device.h"
+#include "protocol/StreamParserGenerator.h"
 
 namespace Perilib
 {
-
-class Device;
-class Stream;
-
-class Device
-{
-public:
-    Device(Stream *stream=0) : stream(stream) { };
-    virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
-
-    Stream *stream;
-};
 
 class Stream
 {
@@ -35,4 +25,4 @@ public:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_HAL_CORE_H__ */
+#endif /* __PERILIB_HAL_STREAM_H__ */

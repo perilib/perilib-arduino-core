@@ -4,9 +4,16 @@
 #include <Arduino.h>
 
 #include "common.h"
-#include "protocol/Core.h"
-#include "protocol/Stream.h"
-#include "hal/Core.h"
-#include "hal/Serial.h"
+
+#include "protocol/Packet.h"
+#include "protocol/Protocol.h"
+#include "protocol/StreamPacket.h"
+#include "protocol/StreamProtocol.h"
+#include "protocol/StreamParserGenerator.h"
+
+#include "hal/Device.h"
+#include "hal/Stream.h"
+#include "hal/SerialDevice.h"
+#include "hal/SerialStream.h"
 
 #endif /* __PERILIB_H__ */

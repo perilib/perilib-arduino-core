@@ -1,21 +1,14 @@
-#ifndef __PERILIB_HAL_SERIAL_H__
-#define __PERILIB_HAL_SERIAL_H__
+#ifndef __PERILIB_HAL_SERIALSTREAM_H__
+#define __PERILIB_HAL_SERIALSTREAM_H__
 
-#include "Perilib.h"
+#include "common.h"
+#include "hal/Stream.h"
+#include "hal/Device.h"
+#include "hal/SerialDevice.h"
+#include "protocol/StreamParserGenerator.h"
 
 namespace Perilib
 {
-
-class SerialDevice;
-class SerialStream;
-
-class SerialDevice : public Device
-{
-public:
-    SerialDevice(
-        SerialStream *stream=0)
-            : Device((Stream *)stream) { };
-};
 
 class SerialStream : public Stream
 {
@@ -25,13 +18,13 @@ public:
         StreamParserGenerator *parserGenerator=0,
         SerialDevice *device=0)
             : arduinoStream(arduinoStream),
-              Stream(parserGenerator, device) { };
+              Stream(parserGenerator, (Device *)device) { };
        
     virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
               
     ::Stream *arduinoStream;
 };
 
-} // namespace Hal
+} // namespace Perilib
 
-#endif /* __PERILIB_HAL_SERIAL_H__ */
+#endif /* __PERILIB_HAL_SERIALSTREAM_H__ */

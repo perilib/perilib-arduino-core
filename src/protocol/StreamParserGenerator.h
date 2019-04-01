@@ -1,23 +1,12 @@
-#ifndef __PERILIB_PROTOCOL_STREAM_H__
-#define __PERILIB_PROTOCOL_STREAM_H__
+#ifndef __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__
+#define __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__
+
+#include "common.h"
+#include "protocol/StreamProtocol.h"
 
 namespace Perilib
 {
     
-class StreamProtocol;
-class StreamPacket;
-class StreamParserGenerator;
-
-class StreamProtocol : public Protocol
-{
-};
-
-class StreamPacket : public Packet
-{
-public:
-    StreamParserGenerator *pargen;
-};
-
 class StreamParserGenerator
 {
 public:
@@ -31,4 +20,4 @@ public:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_PROTOCOL_STREAM_H__ */
+#endif /* __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__ */

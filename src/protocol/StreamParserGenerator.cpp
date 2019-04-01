@@ -1,4 +1,4 @@
-#include "Perilib.h"
+#include "protocol/StreamParserGenerator.h"
 
 namespace Perilib
 {
@@ -11,6 +11,8 @@ void StreamParserGenerator::process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool
 void StreamParserGenerator::parse(uint8_t b)
 {
     if (!protocol) return;
+    
+    Serial.write(b);
 }
 
 void StreamParserGenerator::parse(const uint8_t *data, uint16_t length)

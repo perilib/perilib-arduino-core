@@ -1,4 +1,4 @@
-#include "Perilib.h"
+#include "hal/SerialStream.h"
 
 namespace Perilib
 {
