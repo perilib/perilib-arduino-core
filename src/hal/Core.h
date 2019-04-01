@@ -3,7 +3,7 @@
 
 #include "Perilib.h"
 
-namespace Hal
+namespace Perilib
 {
 
 class Device;
@@ -22,17 +22,17 @@ class Stream
 {
 public:
     Stream(
-        Perilib::Protocol::StreamParserGenerator *parserGenerator=0,
+        StreamParserGenerator *pargen=0,
         Device *device=0)
-            : parserGenerator(parserGenerator),
+            : pargen(pargen),
               device(device) { };
 
-    virtual void process(uint8_t mode=Perilib::ProcessMode::PROCESS_BOTH, bool force=false);
+    virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
 
     Device *device;
-    Perilib::Protocol::StreamParserGenerator *parserGenerator;
+    StreamParserGenerator *pargen;
 };
 
-} // namespace Hal
+} // namespace Perilib
 
 #endif /* __PERILIB_HAL_CORE_H__ */

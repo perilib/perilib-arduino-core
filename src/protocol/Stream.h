@@ -1,7 +1,7 @@
 #ifndef __PERILIB_PROTOCOL_STREAM_H__
 #define __PERILIB_PROTOCOL_STREAM_H__
 
-namespace Protocol
+namespace Perilib
 {
     
 class StreamProtocol;
@@ -27,6 +27,6 @@ public:
     StreamProtocol *protocol;
 };
 
-} // namespace Protocol
+} // namespace Perilib
 
 #endif /* __PERILIB_PROTOCOL_STREAM_H__ */

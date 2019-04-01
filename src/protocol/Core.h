@@ -1,7 +1,7 @@
 #ifndef __PERILIB_PROTOCOL_CORE_H__
 #define __PERILIB_PROTOCOL_CORE_H__
 
-namespace Protocol
+namespace Perilib
 {
 
 class Protocol
@@ -12,6 +12,6 @@ class Packet
 {
 };
 
-} // namespace Protocol
+} // namespace Perilib
 
 #endif /* __PERILIB_PROTOCOL_CORE_H__ */

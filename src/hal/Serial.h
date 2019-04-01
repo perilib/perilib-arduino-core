@@ -3,7 +3,7 @@
 
 #include "Perilib.h"
 
-namespace Hal
+namespace Perilib
 {
 
 class SerialDevice;
@@ -22,7 +22,7 @@ class SerialStream : public Stream
 public:
     SerialStream(
         ::Stream *arduinoStream=0,
-        Perilib::Protocol::StreamParserGenerator *parserGenerator=0,
+        StreamParserGenerator *parserGenerator=0,
         SerialDevice *device=0)
             : arduinoStream(arduinoStream),
               Stream(parserGenerator, device) { };
