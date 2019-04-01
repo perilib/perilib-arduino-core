@@ -13,6 +13,17 @@ enum ProcessMode
     PROCESS_BOTH = 3
 };
 
+class Device;
+class Stream;
+class SerialDevice;
+class SerialStream;
+
+class Packet;
+class Protocol;
+class StreamPacket;
+class StreamProtocol;
+class StreamParserGenerator;
+
 } // namespace Perilib
 
 #endif /* __PERILIB_COMMON_H__ */
