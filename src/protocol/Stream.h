@@ -14,6 +14,8 @@ class StreamProtocol : public Protocol
 
 class StreamPacket : public Packet
 {
+public:
+    StreamParserGenerator *pargen;
 };
 
 class StreamParserGenerator
