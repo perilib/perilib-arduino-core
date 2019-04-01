@@ -1,24 +1,32 @@
 #ifndef __PERILIB_PROTOCOL_STREAM_H__
 #define __PERILIB_PROTOCOL_STREAM_H__
 
-class PerilibStreamProtocol;
-class PerilibStreamPacket;
-class PerilibStreamParserGenerator;
+namespace Protocol
+{
+    
+class StreamProtocol;
+class StreamPacket;
+class StreamParserGenerator;
 
-class PerilibStreamProtocol : PerilibProtocol
+class StreamProtocol : public Protocol
 {
 };
 
-class PerilibStreamPacket : PerilibPacket
+class StreamPacket : public Packet
 {
 };
 
-class PerilibStreamParserGenerator
+class StreamParserGenerator
 {
 public:
-    PerilibStreamParserGenerator(PerilibStreamProtocol *protocol=0) : protocol(protocol) { }
+    StreamParserGenerator(StreamProtocol *protocol=0) : protocol(protocol) { }
+    virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
+    virtual void parse(uint8_t b);
+    virtual void parse(const uint8_t *data, uint16_t length);
     
-    PerilibStreamProtocol *protocol;
+    StreamProtocol *protocol;
 };
+
+} // namespace Protocol
 
 #endif /* __PERILIB_PROTOCOL_STREAM_H__ */
