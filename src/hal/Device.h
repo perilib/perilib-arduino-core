@@ -11,7 +11,7 @@ class Device
 {
 public:
     Device(Stream *stream=0) : stream(stream) { };
-    virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
+    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
     Stream *stream;
 };

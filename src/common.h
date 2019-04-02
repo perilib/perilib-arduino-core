@@ -8,9 +8,17 @@ namespace Perilib
 
 enum ProcessMode
 {
-    PROCESS_SELF = 1,
-    PROCESS_SUBS = 2,
-    PROCESS_BOTH = 3
+    SELF = 1,
+    SUBS = 2,
+    BOTH = 3
+};
+
+enum ParseStatus
+{
+    IDLE = 0,
+    STARTING = 1,
+    IN_PROGRESS = 2,
+    COMPLETE = 3
 };
 
 class Device;

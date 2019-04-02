@@ -17,7 +17,7 @@ public:
             : pargen(pargen),
               device(device) { };
 
-    virtual void process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false);
+    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
     Device *device;
     StreamParserGenerator *pargen;

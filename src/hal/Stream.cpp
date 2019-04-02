@@ -3,11 +3,11 @@
 namespace Perilib
 {
 
-void Stream::process(uint8_t mode=ProcessMode::PROCESS_BOTH, bool force=false)
+void Stream::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
 {
-    if (pargen && (mode == ProcessMode::PROCESS_SUBS || mode == ProcessMode::PROCESS_BOTH))
+    if (pargen && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {
-        pargen->process(ProcessMode::PROCESS_BOTH, force);
+        pargen->process(ProcessMode::BOTH, force);
     }
 }
 
