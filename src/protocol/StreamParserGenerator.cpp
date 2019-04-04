@@ -5,7 +5,28 @@ namespace Perilib
 
 void StreamParserGenerator::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
 {
-    // TODO: check for timeouts
+    if (!protocol) return;
+    
+    // get "now" for reference
+    uint32_t now = getTimestamp();
+    
+    // check for incoming packet timeout
+    if (parserStatus != ParseStatus::IDLE &&
+            protocol->incomingPacketTimeout != 0 &&
+            (now - incomingPacketT0) > protocol->incomingPacketTimeout)
+    {
+        // trigger incoming packet timeout handler
+        incomingPacketTimedOut();
+    }
+    
+    // check for response packet timeout
+    if (responsePending != 0 &&
+            protocol->responsePacketTimeout != 0 &&
+            (now - responsePacketT0) > protocol->responsePacketTimeout)
+    {
+        // trigger response packet timeout handler
+        responsePacketTimedOut();
+    }
 }
 
 void StreamParserGenerator::parse(uint8_t b)
@@ -27,10 +48,43 @@ void StreamParserGenerator::parse(uint8_t b)
     // if we are (or may be) in a packet now, process
     if (parserStatus != ParseStatus::IDLE)
     {
-        // add byte to buffer
-        if (rxBufferPos < PERILIB_STREAM_PARSER_RX_BUFFER_SIZE)
+        // check for protocol-defined backspace bytes
+        uint8_t i;
+        bool backspace = false;
+        if (protocol->backspaceByteCount)
         {
-            rxBuffer[rxBufferPos++] = b;
+            // check for a byte match
+            for (i = 0; i < protocol->backspaceByteCount; i++)
+            {
+                if (b == protocol->backspaceBytes[i])
+                {
+                    // matching backspace byte, this is a deletion
+                    backspace = true;
+                }
+            }
+        }
+        
+        if (backspace)
+        {
+            // remove a byte from the buffer, if possible
+            if (rxBufferPos > 0)
+            {
+                rxBufferPos--;
+            }
+                
+            // check for empty buffer
+            if (rxBufferPos == 0)
+            {
+                parserStatus = ParseStatus::IDLE;
+            }
+        }
+        else
+        {
+            // add byte to buffer
+            if (rxBufferPos < PERILIB_STREAM_PARSER_RX_BUFFER_SIZE)
+            {
+                rxBuffer[rxBufferPos++] = b;
+            }
         }
         
         // continue testing start conditions if we haven't fully started yet
@@ -48,8 +102,24 @@ void StreamParserGenerator::parse(uint8_t b)
         // process the complete packet if we finished
         if (parserStatus == ParseStatus::COMPLETE)
         {
+            // check for protocol-defined trim bytes
+            if (protocol->trimByteCount != 0)
+            {
+                // check for a byte match
+                for (i = 0; i < protocol->trimByteCount && rxBufferPos > 0; i++)
+                {
+                    if (rxBuffer[rxBufferPos - 1] == protocol->trimBytes[i])
+                    {
+                        // matching trim byte, so remove it
+                        rxBufferPos--;
+                    }
+                }
+            }
+
             // convert the buffer to a packet
             protocol->getPacketFromBuffer(NULL, rxBuffer, rxBufferPos, this);
+            
+            // TODO: send packet to application layer
 
             // reset the parser
             reset();
@@ -76,6 +146,16 @@ void StreamParserGenerator::reset()
     rxBufferPos = 0;
     parserStatus = ParseStatus::IDLE;
     incomingPacketT0 = 0;
+}
+
+void StreamParserGenerator::incomingPacketTimedOut()
+{
+    // TODO: this
+}
+
+void StreamParserGenerator::responsePacketTimedOut()
+{
+    // TODO: this
 }
 
 } // namespace Perilib

@@ -22,11 +22,15 @@ public:
     StreamProtocol *protocol;
     
 protected:
+    virtual void incomingPacketTimedOut();
+    virtual void responsePacketTimedOut();
+    
     int8_t parserStatus;
     uint8_t rxBuffer[PERILIB_STREAM_PARSER_RX_BUFFER_SIZE];
     uint32_t rxBufferPos;
     uint32_t incomingPacketT0;
     uint32_t responsePacketT0;
+    uint32_t responsePending;
 };
 
 } // namespace Perilib
