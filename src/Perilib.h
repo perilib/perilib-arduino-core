@@ -7,9 +7,12 @@
 
 #include "protocol/Packet.h"
 #include "protocol/Protocol.h"
+
 #include "protocol/StreamPacket.h"
 #include "protocol/StreamProtocol.h"
 #include "protocol/StreamParserGenerator.h"
+
+#include "protocol/TextStreamProtocol.h"
 
 #include "hal/Device.h"
 #include "hal/Stream.h"
