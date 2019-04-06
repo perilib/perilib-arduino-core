@@ -20,8 +20,8 @@ public:
             incomingPacketTimeout(0),
             responsePacketTimeout(0) { }
     
-    virtual int8_t testPacketStart(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
-    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
+    virtual int8_t testPacketStart(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator=0, bool isTx=false);
+    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator=0, bool isTx=false);
     virtual int8_t getPacketFromBuffer(StreamPacket *packet, const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
     virtual int8_t getPacketFromNameAndArgs(StreamPacket *packet, const char *packetName, StreamParserGenerator *parserGenerator=0, ...);
 

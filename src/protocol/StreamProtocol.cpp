@@ -3,12 +3,12 @@
 namespace Perilib
 {
 
-int8_t StreamProtocol::testPacketStart(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
+int8_t StreamProtocol::testPacketStart(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator, bool isTx)
 {
     return ParseStatus::IN_PROGRESS;
 }
 
-int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
+int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator, bool isTx)
 {
     // check for simple byte-based terminal condition
     if (terminalByteCount)
@@ -17,7 +17,7 @@ int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length
         uint8_t i;
         for (i = 0; i < terminalByteCount; i++)
         {
-            if (buffer[length - 1] == terminalBytes[i])
+            if (newByte == terminalBytes[i])
             {
                 // matching terminal byte, packet is complete
                 return ParseStatus::COMPLETE;
