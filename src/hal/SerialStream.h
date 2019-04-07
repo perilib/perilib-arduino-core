@@ -17,8 +17,8 @@ public:
         ::Stream *arduinoStream=0,
         StreamParserGenerator *parserGenerator=0,
         SerialDevice *device=0)
-            : arduinoStream(arduinoStream),
-              Stream(parserGenerator, (Device *)device) { };
+            : Stream(parserGenerator, (Device *)device),
+              arduinoStream(arduinoStream) { };
        
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
               

@@ -19,8 +19,8 @@ public:
 
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
-    Device *device;
     StreamParserGenerator *pargen;
+    Device *device;
 };
 
 } // namespace Perilib
