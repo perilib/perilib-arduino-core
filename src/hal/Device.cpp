@@ -3,7 +3,7 @@
 namespace Perilib
 {
 
-void Device::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
+void Device::process(uint8_t mode, bool force)
 {
     if (stream && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {

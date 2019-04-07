@@ -3,7 +3,7 @@
 namespace Perilib
 {
 
-void StreamParserGenerator::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
+void StreamParserGenerator::process(uint8_t mode, bool force)
 {
     if (!protocol) return;
     

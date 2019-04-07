@@ -3,7 +3,7 @@
 namespace Perilib
 {
 
-void SerialStream::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
+void SerialStream::process(uint8_t mode, bool force)
 {
     // check for defined stream
     if (arduinoStream)

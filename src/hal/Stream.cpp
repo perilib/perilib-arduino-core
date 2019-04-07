@@ -3,7 +3,7 @@
 namespace Perilib
 {
 
-void Stream::process(uint8_t mode=ProcessMode::BOTH, bool force=false)
+void Stream::process(uint8_t mode, bool force)
 {
     if (pargen && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {
