@@ -26,13 +26,13 @@ public:
     virtual int8_t getPacketFromNameAndArgs(StreamPacket *packet, const char *packetName, StreamParserGenerator *parserGenerator=0, ...);
 
     uint8_t backspaceByteCount;
-    uint8_t *backspaceBytes;
+    const uint8_t *backspaceBytes;
     
     uint8_t terminalByteCount;
-    uint8_t *terminalBytes;
+    const uint8_t *terminalBytes;
     
     uint8_t trimByteCount;
-    uint8_t *trimBytes;
+    const uint8_t *trimBytes;
     
     uint32_t incomingPacketTimeout;
     uint32_t responsePacketTimeout;
