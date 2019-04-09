@@ -17,7 +17,7 @@ public:
     virtual void parse(uint8_t b);
     virtual void parse(const uint8_t *data, uint16_t length);
     virtual void reset();
-    virtual uint32_t getTimestamp() { return millis(); }
+    virtual uint32_t getTimestampMs() { return millis(); }
     
     StreamProtocol *protocol;
     

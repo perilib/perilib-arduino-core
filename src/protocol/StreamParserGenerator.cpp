@@ -8,12 +8,12 @@ void StreamParserGenerator::process(uint8_t mode, bool force)
     if (!protocol) return;
     
     // get "now" for reference
-    uint32_t now = getTimestamp();
+    uint32_t now = getTimestampMs();
     
     // check for incoming packet timeout
     if (parserStatus != ParseStatus::IDLE &&
-            protocol->incomingPacketTimeout != 0 &&
-            (now - incomingPacketT0) > protocol->incomingPacketTimeout)
+            protocol->incomingPacketTimeoutMs != 0 &&
+            (now - incomingPacketT0) > protocol->incomingPacketTimeoutMs)
     {
         // trigger incoming packet timeout handler
         incomingPacketTimedOut();
@@ -21,8 +21,8 @@ void StreamParserGenerator::process(uint8_t mode, bool force)
     
     // check for response packet timeout
     if (responsePending != 0 &&
-            protocol->responsePacketTimeout != 0 &&
-            (now - responsePacketT0) > protocol->responsePacketTimeout)
+            protocol->responsePacketTimeoutMs != 0 &&
+            (now - responsePacketT0) > protocol->responsePacketTimeoutMs)
     {
         // trigger response packet timeout handler
         responsePacketTimedOut();
@@ -39,9 +39,9 @@ void StreamParserGenerator::parse(uint8_t b)
         parserStatus = protocol->testPacketStart(NULL, 0, b, this);
         
         // if we just started and there's a defined timeout, start the timer
-        if (parserStatus != ParseStatus::IDLE && protocol->incomingPacketTimeout != 0)
+        if (parserStatus != ParseStatus::IDLE && protocol->incomingPacketTimeoutMs != 0)
         {
-            incomingPacketT0 = getTimestamp();
+            incomingPacketT0 = getTimestampMs();
         }
     }
 

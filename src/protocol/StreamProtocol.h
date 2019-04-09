@@ -17,8 +17,8 @@ public:
             terminalBytes(0),
             trimByteCount(0),
             trimBytes(0),
-            incomingPacketTimeout(0),
-            responsePacketTimeout(0) { }
+            incomingPacketTimeoutMs(0),
+            responsePacketTimeoutMs(0) { }
     
     virtual int8_t testPacketStart(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator=0, bool isTx=false);
     virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator=0, bool isTx=false);
@@ -34,8 +34,8 @@ public:
     uint8_t trimByteCount;
     const uint8_t *trimBytes;
     
-    uint32_t incomingPacketTimeout;
-    uint32_t responsePacketTimeout;
+    uint32_t incomingPacketTimeoutMs;
+    uint32_t responsePacketTimeoutMs;
 };
 
 } // namespace Perilib
