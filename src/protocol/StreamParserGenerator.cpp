@@ -150,12 +150,27 @@ void StreamParserGenerator::reset()
 
 void StreamParserGenerator::incomingPacketTimedOut()
 {
-    // TODO: this
+    // trigger application-level callback, if defined
+    if (onIncomingPacketTimeout)
+    {
+        onIncomingPacketTimeout(rxBuffer, rxBufferPos, this);
+    }
+    
+    // reset the parser
+    reset();
 }
 
 void StreamParserGenerator::responsePacketTimedOut()
 {
-    // TODO: this
+    // trigger application-level callback, if defined
+    if (onResponsePacketTimeout)
+    {
+        onResponsePacketTimeout(responsePending, this);
+    }
+
+    // clear pending response info
+    responsePending = 0;
+    responsePacketT0 = 0;
 }
 
 } // namespace Perilib
