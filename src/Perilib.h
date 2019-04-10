@@ -5,18 +5,18 @@
 
 #include "common.h"
 
-#include "protocol/Packet.h"
+#include "protocol/Device.h"
+#include "protocol/Stream.h"
 #include "protocol/Protocol.h"
+#include "protocol/Packet.h"
 
-#include "protocol/StreamPacket.h"
-#include "protocol/StreamProtocol.h"
+#include "protocol/StreamDevice.h"
 #include "protocol/StreamParserGenerator.h"
+#include "protocol/StreamProtocol.h"
+#include "protocol/StreamPacket.h"
 
 #include "protocol/TextStreamProtocol.h"
 
-#include "hal/Device.h"
-#include "hal/Stream.h"
-#include "hal/SerialDevice.h"
-#include "hal/SerialStream.h"
+#include "hal/UartStream.h"
 
 #endif /* __PERILIB_H__ */

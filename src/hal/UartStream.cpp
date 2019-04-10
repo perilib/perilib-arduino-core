@@ -1,24 +1,24 @@
-#include "hal/SerialStream.h"
+#include "hal/UartStream.h"
 
 namespace Perilib
 {
 
-void SerialStream::process(uint8_t mode, bool force)
+void UartStream::process(uint8_t mode, bool force)
 {
-    // check for defined stream
-    if (arduinoStream)
+    // check for defined UART interface
+    if (arduinoUart)
     {
         // check for serial data
-        int16_t bytesAvailable = arduinoStream->available();
+        int16_t bytesAvailable = arduinoUart->available();
         
         // check for defined parser/generator
-        if (pargen)
+        if (parserGenerator)
         {
             // send all available data (may be none)
             while (bytesAvailable > 0)
             {
                 // process next byte from stream
-                pargen->parse(arduinoStream->read());
+                parserGenerator->parse(arduinoUart->read());
                 
                 // decrement remaining count
                 bytesAvailable--;
@@ -27,7 +27,7 @@ void SerialStream::process(uint8_t mode, bool force)
             // run processing if needed
             if (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH)
             {
-                pargen->process(ProcessMode::BOTH, force);
+                parserGenerator->process(ProcessMode::BOTH, force);
             }
         }
     }

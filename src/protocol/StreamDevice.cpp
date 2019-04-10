@@ -1,9 +1,9 @@
-#include "hal/Device.h"
+#include "protocol/StreamDevice.h"
 
 namespace Perilib
 {
 
-void Device::process(uint8_t mode, bool force)
+void StreamDevice::process(uint8_t mode, bool force)
 {
     if (stream && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {

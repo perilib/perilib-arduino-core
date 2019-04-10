@@ -11,7 +11,7 @@ namespace Perilib
 class StreamPacket : public Packet
 {
 public:
-    StreamParserGenerator *pargen;
+    StreamParserGenerator *parserGenerator;
 };
 
 } // namespace Perilib

@@ -1,4 +1,4 @@
-#include "hal/SerialDevice.h"
+#include "protocol/Device.h"
 
 namespace Perilib
 {

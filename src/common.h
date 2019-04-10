@@ -21,13 +21,14 @@ enum ParseStatus
     COMPLETE = 3
 };
 
-class Device;
-class Stream;
-class SerialDevice;
-class SerialStream;
+class UartStream;
 
+class Device;
 class Packet;
 class Protocol;
+
+class Stream;
+class StreamDevice;
 class StreamPacket;
 class StreamProtocol;
 class StreamParserGenerator;
