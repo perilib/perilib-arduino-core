@@ -1,4 +1,4 @@
-#include "protocol/StreamDevice.h"
+#include "StreamDevice.h"
 
 namespace Perilib
 {

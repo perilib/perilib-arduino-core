@@ -2,9 +2,9 @@
 #define __PERILIB_HAL_UARTSTREAM_H__
 
 #include "common.h"
-#include "protocol/Stream.h"
-#include "protocol/StreamDevice.h"
-#include "protocol/StreamParserGenerator.h"
+#include "Stream.h"
+#include "StreamDevice.h"
+#include "StreamParserGenerator.h"
 
 namespace Perilib
 {

@@ -1,8 +1,8 @@
-#ifndef __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__
-#define __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__
+#ifndef __PERILIB_STREAMPARSERGENERATOR_H__
+#define __PERILIB_STREAMPARSERGENERATOR_H__
 
 #include "common.h"
-#include "protocol/StreamProtocol.h"
+#include "StreamProtocol.h"
 
 #define PERILIB_STREAM_PARSER_RX_BUFFER_SIZE 32
 
@@ -38,4 +38,4 @@ protected:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_PROTOCOL_STREAMPARSERGENERATOR_H__ */
+#endif /* __PERILIB_STREAMPARSERGENERATOR_H__ */

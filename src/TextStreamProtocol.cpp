@@ -1,4 +1,4 @@
-#include "protocol/TextStreamProtocol.h"
+#include "TextStreamProtocol.h"
 
 namespace Perilib
 {

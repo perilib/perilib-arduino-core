@@ -1,4 +1,4 @@
-#include "protocol/Packet.h"
+#include "StreamPacket.h"
 
 namespace Perilib
 {

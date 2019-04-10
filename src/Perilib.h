@@ -5,17 +5,15 @@
 
 #include "common.h"
 
-#include "protocol/Device.h"
-#include "protocol/Stream.h"
-#include "protocol/Protocol.h"
-#include "protocol/Packet.h"
+#include "Device.h"
 
-#include "protocol/StreamDevice.h"
-#include "protocol/StreamParserGenerator.h"
-#include "protocol/StreamProtocol.h"
-#include "protocol/StreamPacket.h"
+#include "Stream.h"
+#include "StreamDevice.h"
+#include "StreamParserGenerator.h"
+#include "StreamProtocol.h"
+#include "StreamPacket.h"
 
-#include "protocol/TextStreamProtocol.h"
+#include "TextStreamProtocol.h"
 
 #include "hal/UartStream.h"
 

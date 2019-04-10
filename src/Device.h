@@ -1,5 +1,5 @@
-#ifndef __PERILIB_PROTOCOL_DEVICE_H__
-#define __PERILIB_PROTOCOL_DEVICE_H__
+#ifndef __PERILIB_DEVICE_H__
+#define __PERILIB_DEVICE_H__
 
 #include "common.h"
 
@@ -14,4 +14,4 @@ public:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_PROTOCOL_DEVICE_H__ */
+#endif /* __PERILIB_DEVICE_H__ */

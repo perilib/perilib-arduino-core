@@ -1,4 +1,4 @@
-#include "protocol/Protocol.h"
+#include "Device.h"
 
 namespace Perilib
 {

@@ -24,8 +24,6 @@ enum ParseStatus
 class UartStream;
 
 class Device;
-class Packet;
-class Protocol;
 
 class Stream;
 class StreamDevice;

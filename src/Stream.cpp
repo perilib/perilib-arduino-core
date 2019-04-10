@@ -1,4 +1,4 @@
-#include "protocol/Stream.h"
+#include "Stream.h"
 
 namespace Perilib
 {

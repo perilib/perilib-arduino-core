@@ -1,9 +1,9 @@
-#ifndef __PERILIB_PROTOCOL_STREAMDEVICE_H__
-#define __PERILIB_PROTOCOL_STREAMDEVICE_H__
+#ifndef __PERILIB_STREAMDEVICE_H__
+#define __PERILIB_STREAMDEVICE_H__
 
 #include "common.h"
-#include "protocol/Device.h"
-#include "protocol/Stream.h"
+#include "Device.h"
+#include "Stream.h"
 
 namespace Perilib
 {
@@ -21,4 +21,4 @@ public:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_PROTOCOL_STREAMDEVICE_H__ */
+#endif /* __PERILIB_STREAMDEVICE_H__ */

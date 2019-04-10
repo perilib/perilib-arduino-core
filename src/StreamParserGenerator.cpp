@@ -1,4 +1,4 @@
-#include "protocol/StreamParserGenerator.h"
+#include "StreamParserGenerator.h"
 
 namespace Perilib
 {

@@ -1,8 +1,8 @@
-#ifndef __PERILIB_PROTOCOL_TEXTSTREAMPROTOCOL_H__
-#define __PERILIB_PROTOCOL_TEXTSTREAMPROTOCOL_H__
+#ifndef __PERILIB_TEXTSTREAMPROTOCOL_H__
+#define __PERILIB_TEXTSTREAMPROTOCOL_H__
 
 #include "common.h"
-#include "protocol/StreamProtocol.h"
+#include "StreamProtocol.h"
 
 namespace Perilib
 {
@@ -27,4 +27,4 @@ protected:
 
 } // namespace Perilib
 
-#endif /* __PERILIB_PROTOCOL_TEXTSTREAMPROTOCOL_H__ */
+#endif /* __PERILIB_TEXTSTREAMPROTOCOL_H__ */
