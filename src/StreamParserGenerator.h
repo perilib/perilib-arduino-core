@@ -19,6 +19,9 @@ public:
     virtual void reset();
     virtual uint32_t getTimestampMs() { return millis(); }
     
+    int8_t (*onTxPacket)(StreamPacket *packet);
+    int8_t (*onRxPacket)(StreamPacket *packet);
+    int8_t (*onRxError)(int8_t error, const uint8_t *data, uint16_t length, StreamParserGenerator *parserGenerator);
     int8_t (*onIncomingPacketTimeout)(const uint8_t *data, uint16_t length, StreamParserGenerator *parserGenerator);
     int8_t (*onResponsePacketTimeout)(uint32_t responsePending, StreamParserGenerator *parserGenerator);
     
