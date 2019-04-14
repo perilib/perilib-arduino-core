@@ -16,13 +16,14 @@ public:
         backspaceBytes = textBackspaceBytes;
         terminalByteCount = sizeof(textTerminalBytes);
         terminalBytes = textTerminalBytes;
-        trimByteCount = sizeof(textTerminalBytes);
-        trimBytes = textTerminalBytes;
+        trimByteCount = sizeof(textTrimBytes);
+        trimBytes = textTrimBytes;
     }
 
 protected:
     static const uint8_t textBackspaceBytes[2];
-    static const uint8_t textTerminalBytes[2];
+    static const uint8_t textTerminalBytes[1];
+    static const uint8_t textTrimBytes[2];
 };
 
 } // namespace Perilib
