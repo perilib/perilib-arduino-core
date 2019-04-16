@@ -13,6 +13,8 @@
 #include "StreamProtocol.h"
 #include "StreamPacket.h"
 
+#include "TLVStreamProtocol.h"
+#include "LTVStreamProtocol.h"
 #include "TextStreamProtocol.h"
 
 #include "hal/UartStream.h"
