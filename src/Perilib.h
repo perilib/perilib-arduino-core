@@ -6,16 +6,16 @@
 #include "common.h"
 
 #include "Device.h"
-
 #include "Stream.h"
+
 #include "StreamDevice.h"
 #include "StreamParserGenerator.h"
 #include "StreamProtocol.h"
 #include "StreamPacket.h"
 
+#include "TextStreamProtocol.h"
 #include "TLVStreamProtocol.h"
 #include "LTVStreamProtocol.h"
-#include "TextStreamProtocol.h"
 
 #include "hal/UartStream.h"
 

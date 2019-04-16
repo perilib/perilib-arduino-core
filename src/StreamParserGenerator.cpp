@@ -33,10 +33,13 @@ void StreamParserGenerator::parse(uint8_t b)
 {
     if (!protocol) return;
     
+    // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
+    rxBuffer[rxBufferPos] = b;
+    
     if (parserStatus == ParseStatus::IDLE)
     {
         // not already in a packet, so run through start boundary test function
-        parserStatus = protocol->testPacketStart(NULL, 0, b, this);
+        parserStatus = protocol->testPacketStart(rxBuffer, rxBufferPos + 1, this);
         
         // if we just started and there's a defined timeout, start the timer
         if (parserStatus != ParseStatus::IDLE && protocol->incomingPacketTimeoutMs != 0)
@@ -83,19 +86,20 @@ void StreamParserGenerator::parse(uint8_t b)
             // continue testing start conditions if we haven't fully started yet
             if (parserStatus == ParseStatus::STARTING)
             {
-                parserStatus = protocol->testPacketStart(rxBuffer, rxBufferPos, b, this);
+                parserStatus = protocol->testPacketStart(rxBuffer, rxBufferPos + 1, this);
             }
     
             // test for completion conditions if we've fully started
             if (parserStatus == ParseStatus::IN_PROGRESS)
             {
-                parserStatus = protocol->testPacketComplete(rxBuffer, rxBufferPos, b, this);
+                parserStatus = protocol->testPacketComplete(rxBuffer, rxBufferPos + 1, this);
             }
     
-            // add byte to buffer
-            if (rxBufferPos < PERILIB_STREAM_PARSER_RX_BUFFER_SIZE)
+            // increment buffer position to store byte permanently
+            // (if the buffer has more space OR this is the end of the packet, since buffer has 1 spare byte)
+            if (parserStatus == ParseStatus::COMPLETE || rxBufferPos < PERILIB_STREAM_PARSER_RX_BUFFER_SIZE)
             {
-                rxBuffer[rxBufferPos++] = b;
+                rxBufferPos++;
             }
         }
         

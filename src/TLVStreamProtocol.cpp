@@ -3,13 +3,13 @@
 namespace Perilib
 {
 
-int8_t TLVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, uint8_t newByte, StreamParserGenerator *parserGenerator, bool isTx)
+int8_t TLVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
     // simple terminal condition for TLV data, where T/L are single bytes
     // [type] [length] [v0, v1, ..., v<length>]
-    if ((length == 1 && newByte == 0) || (length > 1 && length == (buffer[1] + 1)))
+    if (length > 1 && length == (buffer[1] + 2))
     {
-        // existing buffer plus new byte is expected length
+        // existing buffer is expected length
         return ParseStatus::COMPLETE;
     }
 
