@@ -121,9 +121,13 @@ void StreamParserGenerator::parse(uint8_t b)
             }
 
             // convert the buffer to a packet
-            protocol->getPacketFromBuffer(NULL, rxBuffer, rxBufferPos, this);
+            protocol->getPacketFromBuffer(lastRxPacket, rxBuffer, rxBufferPos, this);
             
-            // TODO: send packet to application layer
+            // trigger application-level callback, if defined
+            if (onRxPacket)
+            {
+                onRxPacket(lastRxPacket);
+            }
 
             // reset the parser
             reset();

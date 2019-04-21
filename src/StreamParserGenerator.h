@@ -26,6 +26,7 @@ public:
     int8_t (*onResponsePacketTimeout)(uint32_t responsePending, StreamParserGenerator *parserGenerator);
     
     StreamProtocol *protocol;
+    StreamPacket *lastRxPacket;
     
 protected:
     virtual void incomingPacketTimedOut();
