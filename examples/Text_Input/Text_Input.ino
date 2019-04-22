@@ -1,7 +1,8 @@
 #include <Perilib.h>
 
+uint8_t rxBuffer[32];
 Perilib::TextStreamProtocol protocol;
-Perilib::StreamParserGenerator parser(&protocol);
+Perilib::StreamParserGenerator parser(&protocol, rxBuffer, sizeof(rxBuffer));
 Perilib::UartStream stream(&Serial, &parser);
 
 void setup() {

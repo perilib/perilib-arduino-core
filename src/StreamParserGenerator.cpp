@@ -97,7 +97,7 @@ void StreamParserGenerator::parse(uint8_t b)
     
             // increment buffer position to store byte permanently
             // (if the buffer has more space OR this is the end of the packet, since buffer has 1 spare byte)
-            if (parserStatus == ParseStatus::COMPLETE || rxBufferPos < PERILIB_STREAM_PARSER_RX_BUFFER_SIZE)
+            if (parserStatus == ParseStatus::COMPLETE || rxBufferPos < rxBufferSize)
             {
                 rxBufferPos++;
             }
