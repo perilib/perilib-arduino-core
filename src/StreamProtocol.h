@@ -2,6 +2,7 @@
 #define __PERILIB_STREAMPROTOCOL_H__
 
 #include "common.h"
+#include "StreamPacket.h"
 
 namespace Perilib
 {

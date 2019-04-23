@@ -5,7 +5,16 @@ Perilib::TextStreamProtocol protocol;
 Perilib::StreamParserGenerator parser(&protocol, rxBuffer, sizeof(rxBuffer));
 Perilib::UartStream stream(&Serial, &parser);
 
+int8_t onRxPacket(Perilib::StreamPacket *packet)
+{
+    Serial.print("RXP: [");
+    Serial.println("]");
+}
+
 void setup() {
+  // assign callbacks
+  parser.onRxPacket = onRxPacket;
+  
   // wait until host opens serial port
   while (!Serial);
   
