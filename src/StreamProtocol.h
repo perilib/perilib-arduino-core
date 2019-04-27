@@ -10,6 +10,21 @@ namespace Perilib
 class StreamProtocol
 {
 public:
+    typedef enum
+    {
+        UINT8,          /**< 1 byte, unsigned 8-bit integer */
+        INT8,           /**< 1 byte, signed 8-bit integer */
+        UINT16,         /**< 2 bytes, unsigned 16-bit integer */
+        INT16,          /**< 2 bytes, signed 16-bit integer */
+        UINT32,         /**< 4 bytes, unsigned 32-bit integer */
+        INT32,          /**< 4 bytes, signed 32-bit integer */
+        UINT8A,         /**< 1+ bytes, binary byte array with 1-byte length prefix */
+        STRING,         /**< 1+ bytes, character string with 1-byte length prefix */
+        LONGUINT8A,     /**< 2+ bytes, binary byte array with 2-byte length prefix */
+        LONGSTRING,     /**< 2+ bytes, character string with 2-byte length prefix */
+        MACADDR         /**< 6 bytes */
+    } argtype_t;
+
     StreamProtocol() :
             backspaceByteCount(0),
             backspaceBytes(0),
