@@ -29,9 +29,16 @@ void StreamParserGenerator::process(uint8_t mode, bool force)
     }
 }
 
-void StreamParserGenerator::parse(uint8_t b)
+void StreamParserGenerator::reset()
 {
-    if (!protocol) return;
+    rxBufferPos = 0;
+    parserStatus = ParseStatus::IDLE;
+    incomingPacketT0 = 0;
+}
+
+int8_t StreamParserGenerator::parse(uint8_t b)
+{
+    if (!protocol) return -1;
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
     rxBuffer[rxBufferPos] = b;
@@ -138,22 +145,20 @@ void StreamParserGenerator::parse(uint8_t b)
         // still idle after parsing a byte, probably malformed/junk data
         incomingPacketT0 = 0;
     }
+    
+    return parserStatus;
 }
 
-void StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
+int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
 {
     // parse entire buffer
+    int8_t result = 0;
     for (; length; length--)
     {
-        parse(*data++);
+        result = parse(*data++);
     }
-}
-
-void StreamParserGenerator::reset()
-{
-    rxBufferPos = 0;
-    parserStatus = ParseStatus::IDLE;
-    incomingPacketT0 = 0;
+    
+    return result;
 }
 
 void StreamParserGenerator::incomingPacketTimedOut()

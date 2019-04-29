@@ -15,9 +15,9 @@ public:
         rxBuffer(rxBuffer),
         rxBufferSize(rxBufferSize) { }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
-    virtual void parse(uint8_t b);
-    virtual void parse(const uint8_t *data, uint16_t length);
     virtual void reset();
+    virtual int8_t parse(uint8_t b);
+    virtual int8_t parse(const uint8_t *data, uint16_t length);
     virtual uint32_t getTimestampMs() { return millis(); }
     
     int8_t (*onTxPacket)(StreamPacket *packet);
