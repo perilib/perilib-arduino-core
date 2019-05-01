@@ -18,6 +18,7 @@ public:
     virtual void reset();
     virtual int8_t parse(uint8_t b);
     virtual int8_t parse(const uint8_t *data, uint16_t length);
+    virtual int8_t sendPacket(uint16_t index, ...);
     virtual uint32_t getTimestampMs() { return millis(); }
     
     int8_t (*onTxPacket)(StreamPacket *packet);

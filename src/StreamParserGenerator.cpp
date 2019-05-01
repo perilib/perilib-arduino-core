@@ -1,4 +1,8 @@
+#include <stdarg.h> // va_args implementation
 #include "StreamParserGenerator.h"
+
+#define PERILIB_ARG_PROMOTION_16BIT 0
+#define PERILIB_ARG_PROMOTION_32BIT 1
 
 namespace Perilib
 {
@@ -159,6 +163,123 @@ int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
     }
     
     return result;
+}
+
+int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
+{
+    uint8_t i;
+    uint16_t size;
+    uint16_t dynamicLength = 0;
+    uint32_t value;
+    uint8_t *pointer;
+    uint8_t *payload = 0; // TODO: fix this with device-assigned TX buffer
+    va_list argv;
+
+    // ensure protocol is assigned
+    if (!protocol) return -1;
+
+    // get first argument in packet definition based on index
+    uint8_t *argDef;
+    int16_t argCount = protocol->getFirstArgument(index, &argDef);
+    if (!argDef) return -2;
+    
+    // iterate over varargs based on number of packet arguments
+    va_start(argv, index);
+    for (i = 0; i < argCount; i++, argDef = protocol->getNextArgument(argDef))
+    {
+        size = 0;
+        pointer = 0;
+        switch (argDef[0])
+        {
+#if PERILIB_ARG_PROMOTION_32BIT
+        case StreamProtocol::UINT32:
+        case StreamProtocol::INT32:
+            /* 4 bytes, start with 2 and fall through two ++ */
+            size = 2;
+        case StreamProtocol::UINT16:
+        case StreamProtocol::INT16:
+            /* 2 bytes, start with 1 and fall through one ++ */
+            size = 1;
+        case StreamProtocol::UINT8:
+        case StreamProtocol::INT8:
+            /* 1 byte */
+            size++;
+            /* va_arg type is at least 4 bytes wide due to C default argument promotion on 32-bit systems */
+            value = va_arg(argv, uint32_t);
+            break;
+#elif PERILIB_ARG_PROMOTION_16BIT
+        case StreamProtocol::UINT32:
+        case StreamProtocol::INT32:
+            /* 4 bytes */
+            size = 4;
+            value = va_arg(argv, uint32_t);
+            break;
+        case StreamProtocol::UINT16:
+        case StreamProtocol::INT16:
+            /* 2 bytes, start with 1 and fall through one ++ */
+            size = 1;
+        case StreamProtocol::UINT8:
+        case StreamProtocol::INT8:
+            /* 1 byte */
+            size++;
+            /* va_arg type is NEVER 1 byte wide due to C default argument promotion on 8-bit/16-bit systems */
+            value = va_arg(argv, uint16_t);
+            break;
+#endif
+            case StreamProtocol::MACADDR:
+                /* 6 bytes exactly, start with 4 and fall through two ++ */
+                size = 4;
+            case StreamProtocol::LONGUINT8A:
+                /* 2 bytes minimum, start with 1 and fall through one ++ */
+                size++;
+            case StreamProtocol::UINT8A:
+                /* 1 byte minimum */
+                size++;
+                pointer = (uint8_t *)va_arg(argv, uint8_t *);
+                break;
+                
+            default:
+                /* should never occur, all cases covered */
+                break;
+        }
+        
+        /* check for correct type */
+        if (pointer != 0)
+        {
+            /* pointer to uint8a_t, longuint8a_t, or macaddr_t */
+            if (size == 1)
+            {
+                /* uint8a_t, first byte is buffer length */
+                size += pointer[0];
+                
+                /* adjust payload length in header */
+                dynamicLength += pointer[0];
+            }
+            else if (size == 2)
+            {
+                /* longuint8a_t, first two bytes are buffer length */
+                size += pointer[0] + (pointer[1] << 8);
+                
+                /* adjust payload length in header */
+                dynamicLength += pointer[0] + (pointer[1] << 8);
+            }
+            else if (size == 6)
+            {
+                /* macaddr_t */
+                /* copy 6 bytes directly */
+            }
+        }
+        else
+        {
+            /* numeric value passed, use it directly */
+            pointer = (uint8_t *)&value;
+        }
+        memcpy(payload, pointer, size);
+        payload += size;
+    }
+    va_end(argv);
+    
+    return 0;
 }
 
 void StreamParserGenerator::incomingPacketTimedOut()
