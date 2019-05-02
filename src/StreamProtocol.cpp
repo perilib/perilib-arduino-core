@@ -42,12 +42,6 @@ int8_t StreamProtocol::getPacketFromNameAndArgs(StreamPacket *packet, const char
     return 0;
 }
 
-int8_t StreamProtocol::getFirstArgument(uint16_t index, uint8_t **argDef)
-{
-    // impossible to assume definition structure, so return error
-    return -1;
-}
-
 uint8_t *StreamProtocol::getNextArgument(uint8_t *argDef)
 {
     // assume each argument is a single byte
