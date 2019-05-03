@@ -179,10 +179,10 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     if (!protocol) return -1;
 
     // get first argument in packet definition based on index
-    uint8_t *packetDef;
-    if (!protocol->getPacketDefinition(index, &packetDef)) return -2;
+    const uint8_t *packetDef;
+    if (protocol->getPacketDefinition(index, &packetDef) != 0) return -2;
     uint8_t argCount = protocol->getArgumentCount(packetDef);
-    uint8_t *argDef = protocol->getFirstArgument(packetDef);
+    const uint8_t *argDef = protocol->getFirstArgument(packetDef);
     if (!argDef) return -3;
     
     // iterate over varargs based on number of packet arguments
