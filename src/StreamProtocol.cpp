@@ -32,16 +32,6 @@ int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length
     return ParseStatus::COMPLETE;
 }
 
-int8_t StreamProtocol::getPacketFromBuffer(StreamPacket *packet, const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
-{
-    return 0;
-}
-
-int8_t StreamProtocol::getPacketFromNameAndArgs(StreamPacket *packet, const char *packetName, StreamParserGenerator *parserGenerator, ...)
-{
-    return 0;
-}
-
 uint8_t *StreamProtocol::getNextArgument(uint8_t *argDef)
 {
     // assume each argument is a single byte
