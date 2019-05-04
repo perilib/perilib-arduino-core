@@ -10,10 +10,12 @@ namespace Perilib
 class StreamParserGenerator
 {
 public:
-    StreamParserGenerator(StreamProtocol *protocol, uint8_t *rxBuffer, uint16_t rxBufferSize) :
+    StreamParserGenerator(StreamProtocol *protocol, uint8_t *rxBuffer, uint16_t rxBufferSize, uint8_t *txBuffer, uint16_t txBufferSize) :
         protocol(protocol),
         rxBuffer(rxBuffer),
-        rxBufferSize(rxBufferSize) { }
+        rxBufferSize(rxBufferSize),
+        txBuffer(txBuffer),
+        txBufferSize(txBufferSize) { }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
     virtual int8_t parse(uint8_t b);
@@ -35,9 +37,14 @@ protected:
     virtual void responsePacketTimedOut();
     
     int8_t parserStatus;
+    
     uint8_t *rxBuffer;
     uint16_t rxBufferSize;
     uint32_t rxBufferPos;
+    
+    uint8_t *txBuffer;
+    uint16_t txBufferSize;
+    
     uint32_t incomingPacketT0;
     uint32_t responsePacketT0;
     uint32_t responsePending;
