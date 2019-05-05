@@ -38,9 +38,9 @@ public:
     /* pure */ virtual int8_t getPacketFromBuffer(StreamPacket *packet, const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false) = 0;
     /* pure */ virtual int8_t getPacketFromNameAndArgs(StreamPacket *packet, const char *packetName, StreamParserGenerator *parserGenerator=0, ...) = 0;
     /* pure */ virtual int8_t getPacketDefinition(uint16_t index, const uint8_t **packetDef) = 0;
-    /* pure */ virtual uint8_t getArgumentCount(const uint8_t *packetDef) = 0;
-    /* pure */ virtual const uint8_t *getFirstArgument(const uint8_t *packetDef) = 0;
-    virtual const uint8_t *getNextArgument(const uint8_t *argDef);
+    /* pure */ virtual uint8_t getArgumentCount(uint16_t index, const uint8_t *packetDef) = 0;
+    /* pure */ virtual const uint8_t *getFirstArgument(uint16_t index, const uint8_t *packetDef) = 0;
+    virtual const uint8_t *getNextArgument(uint16_t index, const uint8_t *argDef);
 
     uint8_t backspaceByteCount;
     const uint8_t *backspaceBytes;

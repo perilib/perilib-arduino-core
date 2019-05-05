@@ -172,7 +172,7 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     uint16_t dynamicLength = 0;
     uint32_t value;
     uint8_t *pointer;
-    uint8_t *payload = 0; // TODO: fix this with device-assigned TX buffer
+    uint8_t *payload = txBuffer;
     va_list argv;
 
     // ensure protocol is assigned
@@ -181,52 +181,52 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     // get first argument in packet definition based on index
     const uint8_t *packetDef;
     if (protocol->getPacketDefinition(index, &packetDef) != 0) return -2;
-    uint8_t argCount = protocol->getArgumentCount(packetDef);
-    const uint8_t *argDef = protocol->getFirstArgument(packetDef);
+    uint8_t argCount = protocol->getArgumentCount(index, packetDef);
+    const uint8_t *argDef = protocol->getFirstArgument(index, packetDef);
     if (!argDef) return -3;
     
     // iterate over varargs based on number of packet arguments
     va_start(argv, index);
-    for (i = 0; i < argCount; i++, argDef = protocol->getNextArgument(argDef))
+    for (i = 0; i < argCount; i++, argDef = protocol->getNextArgument(index, argDef))
     {
         size = 0;
         pointer = 0;
         switch (argDef[0])
         {
 #if PERILIB_ARG_PROMOTION_32BIT
-        case StreamProtocol::UINT32:
-        case StreamProtocol::INT32:
-            /* 4 bytes, start with 2 and fall through two ++ */
-            size = 2;
-        case StreamProtocol::UINT16:
-        case StreamProtocol::INT16:
-            /* 2 bytes, start with 1 and fall through one ++ */
-            size = 1;
-        case StreamProtocol::UINT8:
-        case StreamProtocol::INT8:
-            /* 1 byte */
-            size++;
-            /* va_arg type is at least 4 bytes wide due to C default argument promotion on 32-bit systems */
-            value = va_arg(argv, uint32_t);
-            break;
+            case StreamProtocol::UINT32:
+            case StreamProtocol::INT32:
+                /* 4 bytes, start with 2 and fall through two ++ */
+                size = 2;
+            case StreamProtocol::UINT16:
+            case StreamProtocol::INT16:
+                /* 2 bytes, start with 1 and fall through one ++ */
+                size = 1;
+            case StreamProtocol::UINT8:
+            case StreamProtocol::INT8:
+                /* 1 byte */
+                size++;
+                /* va_arg type is at least 4 bytes wide due to C default argument promotion on 32-bit systems */
+                value = va_arg(argv, uint32_t);
+                break;
 #elif PERILIB_ARG_PROMOTION_16BIT
-        case StreamProtocol::UINT32:
-        case StreamProtocol::INT32:
-            /* 4 bytes */
-            size = 4;
-            value = va_arg(argv, uint32_t);
-            break;
-        case StreamProtocol::UINT16:
-        case StreamProtocol::INT16:
-            /* 2 bytes, start with 1 and fall through one ++ */
-            size = 1;
-        case StreamProtocol::UINT8:
-        case StreamProtocol::INT8:
-            /* 1 byte */
-            size++;
-            /* va_arg type is NEVER 1 byte wide due to C default argument promotion on 8-bit/16-bit systems */
-            value = va_arg(argv, uint16_t);
-            break;
+            case StreamProtocol::UINT32:
+            case StreamProtocol::INT32:
+                /* 4 bytes */
+                size = 4;
+                value = va_arg(argv, uint32_t);
+                break;
+            case StreamProtocol::UINT16:
+            case StreamProtocol::INT16:
+                /* 2 bytes, start with 1 and fall through one ++ */
+                size = 1;
+            case StreamProtocol::UINT8:
+            case StreamProtocol::INT8:
+                /* 1 byte */
+                size++;
+                /* va_arg type is NEVER 1 byte wide due to C default argument promotion on 8-bit/16-bit systems */
+                value = va_arg(argv, uint16_t);
+                break;
 #endif
             case StreamProtocol::MACADDR:
                 /* 6 bytes exactly, start with 4 and fall through two ++ */

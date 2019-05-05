@@ -32,7 +32,7 @@ int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length
     return ParseStatus::COMPLETE;
 }
 
-const uint8_t *StreamProtocol::getNextArgument(const uint8_t *argDef)
+const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
 {
     // assume each argument is a single byte
     return argDef + 1;
