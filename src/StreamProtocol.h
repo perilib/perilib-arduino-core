@@ -41,6 +41,7 @@ public:
     /* pure */ virtual uint8_t getArgumentCount(uint16_t index, const uint8_t *packetDef) = 0;
     /* pure */ virtual const uint8_t *getFirstArgument(uint16_t index, const uint8_t *packetDef) = 0;
     virtual const uint8_t *getNextArgument(uint16_t index, const uint8_t *argDef);
+    virtual uint16_t getPayloadOffset(uint16_t index, const uint8_t *packetDef);
 
     uint8_t backspaceByteCount;
     const uint8_t *backspaceBytes;

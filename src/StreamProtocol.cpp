@@ -38,4 +38,10 @@ const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *ar
     return argDef + 1;
 }
 
+uint16_t StreamProtocol::getPayloadOffset(uint16_t index, const uint8_t *packetDef)
+{
+    // assume no payload offset
+    return 0;
+}
+
 } // namespace Perilib
