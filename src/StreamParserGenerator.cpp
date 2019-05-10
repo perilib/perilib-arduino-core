@@ -165,7 +165,7 @@ int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
     return result;
 }
 
-int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
+int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
 {
     uint8_t i;
     uint16_t size;
@@ -173,11 +173,10 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     uint32_t value;
     uint8_t *pointer;
     uint8_t *payload = txBuffer;
-    va_list argv;
 
     // ensure protocol is assigned
     if (!protocol) return -1;
-
+    
     // get first argument in packet definition based on index
     const uint8_t *packetDef;
     if (protocol->getPacketDefinition(index, &packetDef) != 0) return -2;
@@ -185,8 +184,10 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     const uint8_t *argDef = protocol->getFirstArgument(index, packetDef);
     if (!argDef) return -3;
     
+    // move payload pointer ahead (if necessary) to payload location
+    payload += protocol->getPayloadOffset(index, packetDef);
+
     // iterate over varargs based on number of packet arguments
-    va_start(argv, index);
     for (i = 0; i < argCount; i++, argDef = protocol->getNextArgument(index, argDef))
     {
         size = 0;
@@ -279,8 +280,19 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
         memcpy(payload, pointer, size);
         payload += size;
     }
-    va_end(argv);
     
+    // success
+    return 0;
+}
+
+int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
+{
+    va_list argv;
+    va_start(argv, index);
+    generate(index, argv);
+    va_end(argv);
+
+    // TODO: ACTUALLY SEND PACKET
     return 0;
 }
 
