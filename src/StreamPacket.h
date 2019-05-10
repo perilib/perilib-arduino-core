@@ -9,6 +9,8 @@ namespace Perilib
 class StreamPacket
 {
 public:
+    virtual int8_t prepareBufferAfterBuilding() { return 0; }
+
     StreamParserGenerator *parserGenerator;
     const uint8_t *buffer;
 };
