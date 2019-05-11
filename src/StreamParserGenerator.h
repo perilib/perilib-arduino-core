@@ -32,6 +32,7 @@ public:
     
     StreamProtocol *protocol;
     StreamPacket lastRxPacket;
+    StreamPacket lastTxPacket;
     
 protected:
     virtual void incomingPacketTimedOut();
