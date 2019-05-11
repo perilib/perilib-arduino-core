@@ -17,7 +17,7 @@ int8_t TLVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t len
     return ParseStatus::IN_PROGRESS;
 }
 
-int8_t TLVStreamProtocol::getPacketFromBuffer(StreamPacket *packet, const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
+int8_t TLVStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
     // ensure packet is not null
     if (!packet) return -1;

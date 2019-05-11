@@ -12,7 +12,7 @@ public:
     virtual int8_t prepareBufferAfterBuilding() { return 0; }
 
     StreamParserGenerator *parserGenerator;
-    const uint8_t *buffer;
+    uint8_t *buffer;
 };
 
 } // namespace Perilib
