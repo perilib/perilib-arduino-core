@@ -156,13 +156,8 @@ int8_t StreamParserGenerator::parse(uint8_t b)
 int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
 {
     // parse entire buffer
-    int8_t result = 0;
-    for (; length; length--)
-    {
-        result = parse(*data++);
-    }
-    
-    return result;
+    for (; length; length--) parse(*data++);
+    return parserStatus;
 }
 
 int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
