@@ -39,6 +39,10 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     uint16_t dynamicLength = 0;
     uint32_t value;
     uint8_t *pointer;
+    
+    // make sure packet exists
+    if (!packet) return Result::NULL_POINTER;
+    
     uint8_t *payload = packet->buffer;
     
     // get first argument in packet definition based on index
@@ -145,8 +149,8 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
         payload += size;
     }
     
-    // success
-    return Result::OK;
+    // success so far, finalize the packet and return
+    return packet->prepareBufferAfterBuilding();
 }
 
 const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
