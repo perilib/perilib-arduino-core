@@ -43,10 +43,10 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     
     // get first argument in packet definition based on index
     const uint8_t *packetDef;
-    if (getPacketDefinition(index, &packetDef) != 0) return -2;
+    if (getPacketDefinition(index, &packetDef) != 0) return Result::INVALID_INDEX;
     uint8_t argCount = getArgumentCount(index, packetDef);
     const uint8_t *argDef = getFirstArgument(index, packetDef);
-    if (!argDef) return -3;
+    if (!argDef) return Result::NULL_POINTER;
     
     // move payload pointer ahead (if necessary) to payload location
     payload += getPayloadOffset(index, packetDef);
@@ -146,7 +146,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     }
     
     // success
-    return 0;
+    return Result::OK;
 }
 
 const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
@@ -157,7 +157,7 @@ const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *ar
 
 uint16_t StreamProtocol::getPayloadOffset(uint16_t index, const uint8_t *packetDef)
 {
-    // assume no payload offset
+    // no payload offset unless subclass overrides
     return 0;
 }
 

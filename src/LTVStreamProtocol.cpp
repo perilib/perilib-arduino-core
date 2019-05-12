@@ -20,7 +20,7 @@ int8_t LTVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t len
 int8_t LTVStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
     // ensure packet is not null
-    if (!packet) return -1;
+    if (!packet) return Result::NULL_POINTER;
     
     // pointer packet buffer at RX buffer
     packet->buffer = buffer;
@@ -34,7 +34,7 @@ int8_t LTVStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buf
         Serial.write(' ');
     }
     Serial.println("]");
-    return 0;
+    return Result::OK;
 }
 
 } // namespace Perilib

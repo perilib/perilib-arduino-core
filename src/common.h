@@ -6,6 +6,14 @@
 namespace Perilib
 {
 
+enum Result
+{
+    OK              =  0,
+    NULL_POINTER    = -1,
+    INVALID_INDEX   = -2,
+    UNKNOWN_PACKET  = -3,
+};
+
 enum ProcessMode
 {
     SELF = 1,

@@ -42,7 +42,7 @@ void StreamParserGenerator::reset()
 
 int8_t StreamParserGenerator::parse(uint8_t b)
 {
-    if (!protocol) return -1;
+    if (!protocol) return Result::NULL_POINTER;
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
     rxBuffer[rxBufferPos] = b;
@@ -168,7 +168,7 @@ int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
 int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
 {
     // ensure protocol is assigned
-    if (!protocol) return -1;
+    if (!protocol) return Result::NULL_POINTER;
     
     // create packet
     return protocol->getPacketFromIndexAndArgs(&lastTxPacket, index, argv, this);
@@ -182,7 +182,7 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
     va_end(argv);
 
     // TODO: ACTUALLY SEND PACKET
-    return 0;
+    return Result::OK;
 }
 
 void StreamParserGenerator::incomingPacketTimedOut()

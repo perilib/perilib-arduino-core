@@ -10,7 +10,7 @@ const uint8_t TextStreamProtocol::textTrimBytes[2] = {0x0A, 0x0D};
 int8_t TextStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
     // ensure packet is not null
-    if (!packet) return -1;
+    if (!packet) return Result::NULL_POINTER;
     
     // pointer packet buffer at RX buffer
     packet->buffer = buffer;
@@ -18,7 +18,7 @@ int8_t TextStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *bu
     Serial.print("PACKET: [ ");
     Serial.write(buffer, length);
     Serial.println(" ]");
-    return 0;
+    return Result::OK;
 }
 
 } // namespace Perilib
