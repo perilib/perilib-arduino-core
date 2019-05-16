@@ -42,6 +42,10 @@ void StreamParserGenerator::reset()
 
 int8_t StreamParserGenerator::parse(uint8_t b)
 {
+    PERILIB_DEBUG_PRINT("StreamParserGenerator::parse(");
+    PERILIB_DEBUG_PRINTFMT(b, HEX);
+    PERILIB_DEBUG_PRINTLN(")");
+
     if (!protocol) return Result::NULL_POINTER;
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
@@ -150,6 +154,9 @@ int8_t StreamParserGenerator::parse(uint8_t b)
         incomingPacketT0 = 0;
     }
     
+    PERILIB_DEBUG_PRINT("parserStatus=");
+    PERILIB_DEBUG_PRINTLN(parserStatus);
+
     return parserStatus;
 }
 
@@ -162,15 +169,24 @@ int8_t StreamParserGenerator::parse(const uint8_t *data, uint16_t length)
 
 int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
 {
+    PERILIB_DEBUG_PRINT("StreamParserGenerator::generate(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", ...)");
+
     // ensure protocol is assigned
     if (!protocol) return Result::NULL_POINTER;
     
     // create packet
+    memset(txBuffer, 0, txBufferSize);
     return protocol->getPacketFromIndexAndArgs(&lastTxPacket, index, argv, this);
 }
 
 int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
 {
+    PERILIB_DEBUG_PRINT("StreamParserGenerator::sendPacket(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", ...)");
+
     va_list argv;
     va_start(argv, index);
     generate(index, argv);
@@ -182,6 +198,8 @@ int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
 
 void StreamParserGenerator::incomingPacketTimedOut()
 {
+    PERILIB_DEBUG_PRINTLN("StreamParserGenerator::incomingPacketTimedOut()");
+
     // trigger application-level callback, if defined
     if (onIncomingPacketTimeout)
     {
@@ -194,6 +212,8 @@ void StreamParserGenerator::incomingPacketTimedOut()
 
 void StreamParserGenerator::responsePacketTimedOut()
 {
+    PERILIB_DEBUG_PRINTLN("StreamParserGenerator::responsePacketTimedOut()");
+
     // trigger application-level callback, if defined
     if (onResponsePacketTimeout)
     {

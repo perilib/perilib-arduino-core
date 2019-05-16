@@ -3,6 +3,16 @@
 
 #include <Arduino.h>
 
+// uncomment for detailed debug output
+#define PERILIB_DEBUG
+
+#ifdef PERILIB_DEBUG
+#define PERILIB_DEBUG_PRINT(x)          Serial.print(x)
+#define PERILIB_DEBUG_PRINTFMT(x, y)    Serial.print(x, y)
+#define PERILIB_DEBUG_PRINTLN(x)        Serial.println(x)
+#define PERILIB_DEBUG_PRINTLNFMT(x, y)  Serial.println(x, y)
+#endif
+
 namespace Perilib
 {
 
