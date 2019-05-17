@@ -5,11 +5,23 @@ namespace Perilib
 
 int8_t StreamProtocol::testPacketStart(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    PERILIB_DEBUG_PRINT("StreamProtocol::testPacketStart(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINT(", *, ");
+    PERILIB_DEBUG_PRINT(isTx);
+    PERILIB_DEBUG_PRINTLN(")");
+
     return ParseStatus::IN_PROGRESS;
 }
 
 int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    PERILIB_DEBUG_PRINT("StreamProtocol::testPacketComplete(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINT(", *, ");
+    PERILIB_DEBUG_PRINT(isTx);
+    PERILIB_DEBUG_PRINTLN(")");
+
     // check for simple byte-based terminal condition
     if (terminalByteCount)
     {
@@ -34,6 +46,10 @@ int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length
 
 int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t index, va_list argv, StreamParserGenerator *parserGenerator)
 {
+    PERILIB_DEBUG_PRINT("StreamProtocol::getPacketFromIndexAndArgs(*, ");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN("..., *)");
+
     uint8_t i;
     uint16_t size;
     uint16_t dynamicLength = 0;
@@ -155,12 +171,20 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
 
 const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
 {
+    PERILIB_DEBUG_PRINT("StreamProtocol::getNextArgument(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
     // assume each argument is a single byte
     return argDef + 1;
 }
 
 uint16_t StreamProtocol::getPayloadOffset(uint16_t index, const uint8_t *packetDef)
 {
+    PERILIB_DEBUG_PRINT("StreamProtocol::getPayloadOffset(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
     // no payload offset unless subclass overrides
     return 0;
 }
