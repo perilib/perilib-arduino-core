@@ -42,7 +42,7 @@ void StreamParserGenerator::reset()
 
 int8_t StreamParserGenerator::parse(uint8_t b)
 {
-    PERILIB_DEBUG_PRINT("StreamParserGenerator::parse(");
+    PERILIB_DEBUG_PRINT("StreamParserGenerator::parse(0x");
     PERILIB_DEBUG_PRINTFMT(b, HEX);
     PERILIB_DEBUG_PRINTLN(")");
 
@@ -136,12 +136,12 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             }
 
             // convert the buffer to a packet
-            protocol->getPacketFromBuffer(&lastRxPacket, rxBuffer, rxBufferPos, this);
+            protocol->getPacketFromBuffer(lastRxPacket, rxBuffer, rxBufferPos, this);
             
             // trigger application-level callback, if defined
             if (onRxPacket)
             {
-                onRxPacket(&lastRxPacket);
+                onRxPacket(lastRxPacket);
             }
 
             // reset the parser
@@ -178,7 +178,7 @@ int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
     
     // create packet
     memset(txBuffer, 0, txBufferSize);
-    return protocol->getPacketFromIndexAndArgs(&lastTxPacket, index, argv, this);
+    return protocol->getPacketFromIndexAndArgs(lastTxPacket, index, argv, this);
 }
 
 int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
