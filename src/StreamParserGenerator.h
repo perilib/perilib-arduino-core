@@ -23,7 +23,11 @@ public:
         rxBufferSize(rxBufferSize),
         txBuffer(txBuffer),
         txBufferSize(txBufferSize)
-        { }
+        {
+            // preset packet buffer pointers to internal par/gen buffers
+            lastRxPacket->buffer = rxBuffer;
+            lastTxPacket->buffer = txBuffer;
+        }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
     virtual int8_t parse(uint8_t b);
