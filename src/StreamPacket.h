@@ -22,6 +22,7 @@ public:
 
     StreamParserGenerator *parserGenerator;
     uint8_t *buffer;
+    uint16_t bufferLength;
 };
 
 } // namespace Perilib

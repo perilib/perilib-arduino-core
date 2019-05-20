@@ -86,7 +86,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             case StreamProtocol::UINT16:
             case StreamProtocol::INT16:
                 /* 2 bytes, start with 1 and fall through one ++ */
-                size = 1;
+                size++;
             case StreamProtocol::UINT8:
             case StreamProtocol::INT8:
                 /* 1 byte */
@@ -165,6 +165,9 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
         payload += size;
     }
     
+    // update packet length to reflect everything added so far
+    packet->bufferLength = payload - packet->buffer;
+
     // success so far, finalize the packet and return
     return packet->prepareBufferAfterBuilding();
 }
