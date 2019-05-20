@@ -1,5 +1,8 @@
 #include "StreamProtocol.h"
 
+#define PERILIB_ARG_PROMOTION_16BIT 0
+#define PERILIB_ARG_PROMOTION_32BIT 1
+
 namespace Perilib
 {
 
@@ -74,6 +77,8 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     // iterate over varargs based on number of packet arguments
     for (i = 0; i < argCount; i++, argDef = getNextArgument(index, argDef))
     {
+        PERILIB_DEBUG_PRINT("Arg type is ");
+        PERILIB_DEBUG_PRINTLN(argDef[0]);
         size = 0;
         pointer = 0;
         switch (argDef[0])
@@ -161,6 +166,12 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             /* numeric value passed, use it directly */
             pointer = (uint8_t *)&value;
         }
+
+        PERILIB_DEBUG_PRINT("Copying ");
+        PERILIB_DEBUG_PRINT(size);
+        PERILIB_DEBUG_PRINT(" bytes to buffer offset ");
+        PERILIB_DEBUG_PRINTLN(payload - packet->buffer);
+        
         memcpy(payload, pointer, size);
         payload += size;
     }

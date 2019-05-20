@@ -1,9 +1,6 @@
 #include <stdarg.h> // va_args implementation
 #include "StreamParserGenerator.h"
 
-#define PERILIB_ARG_PROMOTION_16BIT 0
-#define PERILIB_ARG_PROMOTION_32BIT 1
-
 namespace Perilib
 {
 
@@ -177,7 +174,6 @@ int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
     if (!protocol) return Result::NULL_POINTER;
     
     // create packet
-    memset(txBuffer, 0, txBufferSize);
     return protocol->getPacketFromIndexAndArgs(lastTxPacket, index, argv, this);
 }
 
