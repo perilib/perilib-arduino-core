@@ -1,7 +1,14 @@
+#include <limits.h>
+
 #include "StreamProtocol.h"
 
-#define PERILIB_ARG_PROMOTION_16BIT 0
-#define PERILIB_ARG_PROMOTION_32BIT 1
+#if UINT_MAX == 0xFFFF
+    #define PERILIB_ARG_PROMOTION_BYTES 2
+#elif UINT_MAX == 0xFFFFFFFF
+    #define PERILIB_ARG_PROMOTION_BYTES 4
+#else
+    #error Unable to detect int width on this platform, please investigate
+#endif
 
 namespace Perilib
 {
@@ -83,7 +90,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
         pointer = 0;
         switch (argDef[0])
         {
-#if PERILIB_ARG_PROMOTION_32BIT
+#if PERILIB_ARG_PROMOTION_BYTES == 4
             case StreamProtocol::UINT32:
             case StreamProtocol::INT32:
                 /* 4 bytes, start with 2 and fall through two ++ */
@@ -99,7 +106,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
                 /* va_arg type is at least 4 bytes wide due to C default argument promotion on 32-bit systems */
                 value = va_arg(argv, uint32_t);
                 break;
-#elif PERILIB_ARG_PROMOTION_16BIT
+#elif PERILIB_ARG_PROMOTION_BYTES == 2
             case StreamProtocol::UINT32:
             case StreamProtocol::INT32:
                 /* 4 bytes */
@@ -114,7 +121,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             case StreamProtocol::INT8:
                 /* 1 byte */
                 size++;
-                /* va_arg type is NEVER 1 byte wide due to C default argument promotion on 8-bit/16-bit systems */
+                /* va_arg type is at least 2 bytes wide due to C default argument promotion on 8-bit/16-bit systems */
                 value = va_arg(argv, uint16_t);
                 break;
 #endif
