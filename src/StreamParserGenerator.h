@@ -25,6 +25,8 @@ public:
         txBufferSize(txBufferSize)
         {
             // preset packet buffer pointers to internal par/gen buffers
+            lastRxPacket->parserGenerator = this;
+            lastTxPacket->parserGenerator = this;
             lastRxPacket->buffer = rxBuffer;
             lastTxPacket->buffer = txBuffer;
         }
