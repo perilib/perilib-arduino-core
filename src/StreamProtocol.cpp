@@ -70,19 +70,21 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     if (!packet) return Result::NULL_POINTER;
     
     uint8_t *payload = packet->buffer;
+
+    // get packet definition
+    packet->index = index;
+    if (getPacketDefinition(packet->index, &packet->definition) != 0) return Result::INVALID_INDEX;
     
     // get first argument in packet definition based on index
-    const uint8_t *packetDef;
-    if (getPacketDefinition(index, &packetDef) != 0) return Result::INVALID_INDEX;
-    uint8_t argCount = getArgumentCount(index, packetDef);
-    const uint8_t *argDef = getFirstArgument(index, packetDef);
+    uint8_t argCount = getArgumentCount(packet->index, packet->definition);
+    const uint8_t *argDef = getFirstArgument(packet->index, packet->definition);
     if (!argDef) return Result::NULL_POINTER;
     
     // move payload pointer ahead (if necessary) to payload location
-    payload += getPayloadOffset(index, packetDef);
+    payload += getPayloadOffset(packet->index, packet->definition);
 
     // iterate over varargs based on number of packet arguments
-    for (i = 0; i < argCount; i++, argDef = getNextArgument(index, argDef))
+    for (i = 0; i < argCount; i++, argDef = getNextArgument(packet->index, argDef))
     {
         PERILIB_DEBUG_PRINT("Arg type is ");
         PERILIB_DEBUG_PRINTLN(argDef[0]);
