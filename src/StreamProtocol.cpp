@@ -96,7 +96,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
 
     // get packet definition
     packet->index = index;
-    if (getPacketDefinition(packet->index, &packet->definition) != 0) return Result::INVALID_INDEX;
+    if (getPacketDefinitionFromIndex(packet->index, &packet->definition) != 0) return Result::INVALID_INDEX;
     
     // get first argument in packet definition based on index
     uint8_t argCount = getArgumentCount(packet->index, packet->definition);

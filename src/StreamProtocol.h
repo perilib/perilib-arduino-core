@@ -60,7 +60,8 @@ public:
     virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
     virtual int8_t getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t index, va_list argv, StreamParserGenerator *parserGenerator=0);
     /* pure */ virtual int8_t getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false) = 0;
-    /* pure */ virtual int8_t getPacketDefinition(uint16_t index, const uint8_t **packetDef) = 0;
+    /* pure */ virtual int8_t getPacketDefinitionFromIndex(uint16_t index, const uint8_t **packetDef) = 0;
+    /* pure */ virtual int8_t getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, uint16_t *index, const uint8_t **packetDef) = 0;
     /* pure */ virtual uint8_t getArgumentCount(uint16_t index, const uint8_t *packetDef) = 0;
     /* pure */ virtual const uint8_t *getFirstArgument(uint16_t index, const uint8_t *packetDef) = 0;
     virtual const uint8_t *getNextArgument(uint16_t index, const uint8_t *argDef);
