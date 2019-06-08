@@ -1,0 +1,18 @@
+{
+  "name": "Perilib-Arduino",
+  "description": "A collection of tools for stream-based and register-based peripheral communications",
+  "keywords": "serial, i2c, spi, peripheral",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/perilib/perilib-arduino-core.git"
+  },
+  "version": "0.1.0",
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms":
+  [
+    "atmelavr",
+    "atmelsam"
+  ]
+}
