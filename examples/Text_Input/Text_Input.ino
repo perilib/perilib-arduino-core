@@ -2,7 +2,8 @@
 
 uint8_t rxBuffer[32];
 Perilib::TextStreamProtocol protocol;
-Perilib::StreamParserGenerator parser(&protocol, rxBuffer, sizeof(rxBuffer));
+Perilib::StreamPacket rxPacket;
+Perilib::StreamParserGenerator parser(&protocol, &rxPacket, NULL, rxBuffer, sizeof(rxBuffer), NULL, 0);
 Perilib::UartStream stream(&Serial, &parser);
 
 int8_t onRxPacket(Perilib::StreamPacket *packet)
