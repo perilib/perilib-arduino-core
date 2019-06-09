@@ -1,6 +1,6 @@
 /**
  * Perilib Peripheral Device Library
- * Copyright (c) Jeff Rowberg
+ * Copyright (c) 2019 Jeff Rowberg
  *
  * MIT License
  *
