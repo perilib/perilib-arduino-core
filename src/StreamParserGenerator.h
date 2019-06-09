@@ -48,10 +48,16 @@ public:
         txBufferSize(txBufferSize)
         {
             // preset packet buffer pointers to internal par/gen buffers
-            lastRxPacket->parserGenerator = this;
-            lastTxPacket->parserGenerator = this;
-            lastRxPacket->buffer = rxBuffer;
-            lastTxPacket->buffer = txBuffer;
+            if (lastRxPacket)
+            {
+                lastRxPacket->parserGenerator = this;
+                lastRxPacket->buffer = rxBuffer;
+            }
+            if (lastTxPacket)
+            {
+                lastTxPacket->parserGenerator = this;
+                lastTxPacket->buffer = txBuffer;
+            }
         }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
