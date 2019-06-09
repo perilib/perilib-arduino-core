@@ -215,6 +215,58 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     return packet->prepareBufferAfterBuilding();
 }
 
+int8_t StreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
+{
+    PERILIB_DEBUG_PRINT("StreamProtocol::getPacketFromBuffer(*, *, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINT(", *, ");
+    PERILIB_DEBUG_PRINT(isTx);
+    PERILIB_DEBUG_PRINTLN(")");
+
+    // STUB: most protocols should override this implementation
+    return 0;
+}
+
+int8_t StreamProtocol::getPacketDefinitionFromIndex(uint16_t index, const uint8_t **packetDef)
+{
+    PERILIB_DEBUG_PRINT("StreamProtocol::getPacketDefinitionFromIndex(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
+    // STUB: most protocols should override this implementation
+    return Result::NOT_IMPLEMENTED;
+}
+
+int8_t StreamProtocol::getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, uint16_t *index, const uint8_t **packetDef)
+{
+    PERILIB_DEBUG_PRINT("StreamProtocol::getPacketDefinitionFromBuffer(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
+    // STUB: most protocols should override this implementation
+    return Result::NOT_IMPLEMENTED;
+}
+
+uint8_t StreamProtocol::getArgumentCount(uint16_t index, const uint8_t *packetDef)
+{
+    PERILIB_DEBUG_PRINT("StreamProtocol::getArgumentCount(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
+    // STUB: most protocols should override this implementation
+    return 0;
+}
+
+const uint8_t *StreamProtocol::getFirstArgument(uint16_t index, const uint8_t *packetDef)
+{
+    PERILIB_DEBUG_PRINT("StreamProtocol::getFirstArgument(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", *)");
+
+    // STUB: most protocols should override this implementation
+    return 0;
+}
+
 const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
 {
     PERILIB_DEBUG_PRINT("StreamProtocol::getNextArgument(");

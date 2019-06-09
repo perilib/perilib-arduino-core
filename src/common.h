@@ -42,9 +42,10 @@ namespace Perilib
 enum Result
 {
     OK              =  0,
-    NULL_POINTER    = -1,
-    INVALID_INDEX   = -2,
-    UNKNOWN_PACKET  = -3,
+    NOT_IMPLEMENTED = -1,
+    NULL_POINTER    = -2,
+    INVALID_INDEX   = -3,
+    UNKNOWN_PACKET  = -4,
 };
 
 enum ProcessMode
