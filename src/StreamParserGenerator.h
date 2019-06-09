@@ -35,15 +35,13 @@ class StreamParserGenerator
 public:
     StreamParserGenerator(
             StreamProtocol *protocol,
-            StreamPacket *lastRxPacket,
-            StreamPacket *lastTxPacket,
-            uint8_t *rxBuffer, uint16_t rxBufferSize,
-            uint8_t *txBuffer, uint16_t txBufferSize) :
+            StreamPacket *lastRxPacket, uint8_t *rxBuffer, uint16_t rxBufferSize,
+            StreamPacket *lastTxPacket, uint8_t *txBuffer, uint16_t txBufferSize) :
         protocol(protocol),
         lastRxPacket(lastRxPacket),
-        lastTxPacket(lastTxPacket),
         rxBuffer(rxBuffer),
         rxBufferSize(rxBufferSize),
+        lastTxPacket(lastTxPacket),
         txBuffer(txBuffer),
         txBufferSize(txBufferSize)
         {

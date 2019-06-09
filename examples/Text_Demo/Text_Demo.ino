@@ -3,7 +3,7 @@
 uint8_t rxBuffer[32];
 Perilib::TextStreamProtocol protocol;
 Perilib::StreamPacket rxPacket;
-Perilib::StreamParserGenerator parser(&protocol, &rxPacket, NULL, rxBuffer, sizeof(rxBuffer), NULL, 0);
+Perilib::StreamParserGenerator parser(&protocol, &rxPacket, rxBuffer, sizeof(rxBuffer), NULL, NULL, 0);
 
 const uint8_t textPacket1[] = "TEST COMMAND 1\r\n";
 const uint8_t textPacket2[] = "TEST ERR" "\x08\x08\x08" "COMMAND 2\r\n";
