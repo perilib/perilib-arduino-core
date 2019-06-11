@@ -30,7 +30,7 @@ int8_t LTVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t len
 {
     // simple terminal condition for LTV data, where L/T are single bytes
     // [length] [type] [v0, v1, ..., v<length-1>]
-    if (length == (buffer[0] + 1))
+    if (length == (uint16_t)(buffer[0] + 1))
     {
         // existing buffer is expected length
         return ParseStatus::COMPLETE;

@@ -30,7 +30,7 @@ int8_t TLVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t len
 {
     // simple terminal condition for TLV data, where T/L are single bytes
     // [type] [length] [v0, v1, ..., v<length>]
-    if (length > 1 && length == (buffer[1] + 2))
+    if (length > 1 && length == (uint16_t)(buffer[1] + 2))
     {
         // existing buffer is expected length
         return ParseStatus::COMPLETE;
