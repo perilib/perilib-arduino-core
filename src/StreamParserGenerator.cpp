@@ -29,6 +29,10 @@ namespace Perilib
 
 void StreamParserGenerator::process(uint8_t mode, bool force)
 {
+    // suppress unused parameter warnings
+    (void)mode;
+    (void)force;
+
     if (!protocol) return;
     
     // get "now" for reference

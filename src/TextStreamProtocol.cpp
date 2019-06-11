@@ -32,6 +32,10 @@ const uint8_t TextStreamProtocol::textTrimBytes[2] = {0x0A, 0x0D};
 
 int8_t TextStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)parserGenerator;
+    (void)isTx;
+
     // ensure packet is not null
     if (!packet) return Result::NULL_POINTER;
     

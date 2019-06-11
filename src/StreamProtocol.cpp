@@ -38,6 +38,12 @@ namespace Perilib
 
 int8_t StreamProtocol::testPacketStart(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)buffer;
+    (void)length;
+    (void)parserGenerator;
+    (void)isTx;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::testPacketStart(*, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINT(", *, ");
@@ -49,6 +55,10 @@ int8_t StreamProtocol::testPacketStart(const uint8_t *buffer, uint16_t length, S
 
 int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)parserGenerator;
+    (void)isTx;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::testPacketComplete(*, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINT(", *, ");
@@ -79,6 +89,9 @@ int8_t StreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length
 
 int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t index, va_list argv, StreamParserGenerator *parserGenerator)
 {
+    // suppress unused parameter warnings
+    (void)parserGenerator;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getPacketFromIndexAndArgs(*, ");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN("..., *)");
@@ -217,6 +230,13 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
 
 int8_t StreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)packet;
+    (void)buffer;
+    (void)length;
+    (void)parserGenerator;
+    (void)isTx;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getPacketFromBuffer(*, *, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINT(", *, ");
@@ -229,6 +249,10 @@ int8_t StreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer
 
 int8_t StreamProtocol::getPacketDefinitionFromIndex(uint16_t index, const uint8_t **packetDef)
 {
+    // suppress unused parameter warnings
+    (void)index;
+    (void)packetDef;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getPacketDefinitionFromIndex(");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN(", *)");
@@ -239,6 +263,12 @@ int8_t StreamProtocol::getPacketDefinitionFromIndex(uint16_t index, const uint8_
 
 int8_t StreamProtocol::getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, uint16_t *index, const uint8_t **packetDef)
 {
+    // suppress unused parameter warnings
+    (void)buffer;
+    (void)length;
+    (void)index;
+    (void)packetDef;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getPacketDefinitionFromBuffer(*, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINTLN(", *)");
@@ -249,6 +279,10 @@ int8_t StreamProtocol::getPacketDefinitionFromBuffer(const uint8_t *buffer, uint
 
 uint8_t StreamProtocol::getArgumentCount(uint16_t index, const uint8_t *packetDef)
 {
+    // suppress unused parameter warnings
+    (void)index;
+    (void)packetDef;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getArgumentCount(");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN(", *)");
@@ -259,6 +293,10 @@ uint8_t StreamProtocol::getArgumentCount(uint16_t index, const uint8_t *packetDe
 
 const uint8_t *StreamProtocol::getFirstArgument(uint16_t index, const uint8_t *packetDef)
 {
+    // suppress unused parameter warnings
+    (void)index;
+    (void)packetDef;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getFirstArgument(");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN(", *)");
@@ -269,6 +307,9 @@ const uint8_t *StreamProtocol::getFirstArgument(uint16_t index, const uint8_t *p
 
 const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *argDef)
 {
+    // suppress unused parameter warnings
+    (void)index;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getNextArgument(");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN(", *)");
@@ -279,6 +320,10 @@ const uint8_t *StreamProtocol::getNextArgument(uint16_t index, const uint8_t *ar
 
 uint16_t StreamProtocol::getPayloadOffset(uint16_t index, const uint8_t *packetDef)
 {
+    // suppress unused parameter warnings
+    (void)index;
+    (void)packetDef;
+
     PERILIB_DEBUG_PRINT("StreamProtocol::getPayloadOffset(");
     PERILIB_DEBUG_PRINT(index);
     PERILIB_DEBUG_PRINTLN(", *)");

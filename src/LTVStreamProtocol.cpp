@@ -28,6 +28,10 @@ namespace Perilib
 
 int8_t LTVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)parserGenerator;
+    (void)isTx;
+    
     // simple terminal condition for LTV data, where L/T are single bytes
     // [length] [type] [v0, v1, ..., v<length-1>]
     if (length == (uint16_t)(buffer[0] + 1))
@@ -42,6 +46,10 @@ int8_t LTVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t len
 
 int8_t LTVStreamProtocol::getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
 {
+    // suppress unused parameter warnings
+    (void)parserGenerator;
+    (void)isTx;
+
     // ensure packet is not null
     if (!packet) return Result::NULL_POINTER;
     
