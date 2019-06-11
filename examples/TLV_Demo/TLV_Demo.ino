@@ -2,8 +2,8 @@
 
 uint8_t rxBuffer[32];
 Perilib::TLVStreamProtocol protocol;
-Perilib::StreamPacket rxPacket;
-Perilib::StreamParserGenerator parser(&protocol, &rxPacket, rxBuffer, sizeof(rxBuffer), NULL, NULL, 0);
+Perilib::StreamPacket rxPacket(rxBuffer, sizeof(rxBuffer));
+Perilib::StreamParserGenerator parser(&protocol, &rxPacket, NULL);
 
 const uint8_t tlvPacket1[] = { 0x01, 0x05, 'H', 'e', 'l', 'l', 'o' };
 const uint8_t tlvPacket2[] = { 0x02, 0x05, 0x77, 0x6F, 0x72, 0x6C, 0x64 };
