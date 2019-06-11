@@ -24,6 +24,8 @@
 #ifndef __PERILIB_STREAMPROTOCOL_H__
 #define __PERILIB_STREAMPROTOCOL_H__
 
+#include <stdarg.h>
+
 #include "common.h"
 #include "StreamPacket.h"
 
