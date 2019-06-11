@@ -32,7 +32,9 @@ namespace Perilib
 class StreamPacket
 {
 public:
-    StreamPacket()
+    StreamPacket(uint8_t *buffer, uint16_t bufferSize) :
+            buffer(buffer),
+            bufferSize(bufferSize)
     {
         PERILIB_DEBUG_PRINTLN("StreamPacket::StreamPacket()");
     }
@@ -45,7 +47,8 @@ public:
 
     StreamParserGenerator *parserGenerator;
     uint8_t *buffer;
-    uint16_t bufferLength;
+    uint16_t bufferSize;
+    uint16_t bufferPos;
 
     uint16_t index;
     const uint8_t *definition;

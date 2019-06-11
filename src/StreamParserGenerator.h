@@ -35,27 +35,15 @@ class StreamParserGenerator
 public:
     StreamParserGenerator(
             StreamProtocol *protocol,
-            StreamPacket *lastRxPacket, uint8_t *rxBuffer, uint16_t rxBufferSize,
-            StreamPacket *lastTxPacket, uint8_t *txBuffer, uint16_t txBufferSize) :
+            StreamPacket *lastRxPacket,
+            StreamPacket *lastTxPacket) :
         protocol(protocol),
         lastRxPacket(lastRxPacket),
-        rxBuffer(rxBuffer),
-        rxBufferSize(rxBufferSize),
-        lastTxPacket(lastTxPacket),
-        txBuffer(txBuffer),
-        txBufferSize(txBufferSize)
+        lastTxPacket(lastTxPacket)
         {
-            // preset packet buffer pointers to internal par/gen buffers
-            if (lastRxPacket)
-            {
-                lastRxPacket->parserGenerator = this;
-                lastRxPacket->buffer = rxBuffer;
-            }
-            if (lastTxPacket)
-            {
-                lastTxPacket->parserGenerator = this;
-                lastTxPacket->buffer = txBuffer;
-            }
+            // point packets (if specific) to use this as the par/gen object
+            if (lastRxPacket) lastRxPacket->parserGenerator = this;
+            if (lastTxPacket) lastTxPacket->parserGenerator = this;
         }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
@@ -80,13 +68,6 @@ protected:
     virtual void responsePacketTimedOut();
     
     int8_t parserStatus;
-    
-    uint8_t *rxBuffer;
-    uint16_t rxBufferSize;
-    uint32_t rxBufferPos;
-    
-    uint8_t *txBuffer;
-    uint16_t txBufferSize;
     
     uint32_t incomingPacketT0;
     uint32_t responsePacketT0;

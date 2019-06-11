@@ -55,7 +55,7 @@ void StreamParserGenerator::process(uint8_t mode, bool force)
 
 void StreamParserGenerator::reset()
 {
-    rxBufferPos = 0;
+    lastRxPacket->bufferPos = 0;
     parserStatus = ParseStatus::IDLE;
     incomingPacketT0 = 0;
 }
@@ -69,12 +69,12 @@ int8_t StreamParserGenerator::parse(uint8_t b)
     if (!protocol) return Result::NULL_POINTER;
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
-    rxBuffer[rxBufferPos] = b;
+    lastRxPacket->buffer[lastRxPacket->bufferPos] = b;
     
     if (parserStatus == ParseStatus::IDLE)
     {
         // not already in a packet, so run through start boundary test function
-        parserStatus = protocol->testPacketStart(rxBuffer, rxBufferPos + 1, this);
+        parserStatus = protocol->testPacketStart(lastRxPacket->buffer, lastRxPacket->bufferPos + 1, this);
         
         // if we just started and there's a defined timeout, start the timer
         if (parserStatus != ParseStatus::IDLE && protocol->incomingPacketTimeoutMs != 0)
@@ -105,13 +105,13 @@ int8_t StreamParserGenerator::parse(uint8_t b)
         if (backspace)
         {
             // remove a byte from the buffer, if possible
-            if (rxBufferPos > 0)
+            if (lastRxPacket->bufferPos > 0)
             {
-                rxBufferPos--;
+                lastRxPacket->bufferPos--;
             }
                 
             // check for empty buffer
-            if (rxBufferPos == 0)
+            if (lastRxPacket->bufferPos == 0)
             {
                 parserStatus = ParseStatus::IDLE;
             }
@@ -121,20 +121,20 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             // continue testing start conditions if we haven't fully started yet
             if (parserStatus == ParseStatus::STARTING)
             {
-                parserStatus = protocol->testPacketStart(rxBuffer, rxBufferPos + 1, this);
+                parserStatus = protocol->testPacketStart(lastRxPacket->buffer, lastRxPacket->bufferPos + 1, this);
             }
     
             // test for completion conditions if we've fully started
             if (parserStatus == ParseStatus::IN_PROGRESS)
             {
-                parserStatus = protocol->testPacketComplete(rxBuffer, rxBufferPos + 1, this);
+                parserStatus = protocol->testPacketComplete(lastRxPacket->buffer, lastRxPacket->bufferPos + 1, this);
             }
     
             // increment buffer position to store byte permanently
             // (if the buffer has more space OR this is the end of the packet, since buffer has 1 spare byte)
-            if (parserStatus == ParseStatus::COMPLETE || rxBufferPos < rxBufferSize)
+            if (parserStatus == ParseStatus::COMPLETE || lastRxPacket->bufferPos < lastRxPacket->bufferSize)
             {
-                rxBufferPos++;
+                lastRxPacket->bufferPos++;
             }
         }
         
@@ -145,18 +145,18 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             if (protocol->trimByteCount != 0)
             {
                 // check for a byte match
-                for (i = 0; i < protocol->trimByteCount && rxBufferPos > 0; i++)
+                for (i = 0; i < protocol->trimByteCount && lastRxPacket->bufferPos > 0; i++)
                 {
-                    if (rxBuffer[rxBufferPos - 1] == protocol->trimBytes[i])
+                    if (lastRxPacket->buffer[lastRxPacket->bufferPos - 1] == protocol->trimBytes[i])
                     {
                         // matching trim byte, so remove it
-                        rxBufferPos--;
+                        lastRxPacket->bufferPos--;
                     }
                 }
             }
 
             // convert the buffer to a packet
-            protocol->getPacketFromBuffer(lastRxPacket, rxBuffer, rxBufferPos, this);
+            protocol->getPacketFromBuffer(lastRxPacket, lastRxPacket->buffer, lastRxPacket->bufferPos, this);
             
             // trigger application-level callback, if defined
             if (onRxPacket)
@@ -222,7 +222,7 @@ void StreamParserGenerator::incomingPacketTimedOut()
     // trigger application-level callback, if defined
     if (onIncomingPacketTimeout)
     {
-        onIncomingPacketTimeout(rxBuffer, rxBufferPos, this);
+        onIncomingPacketTimeout(lastRxPacket->buffer, lastRxPacket->bufferPos, this);
     }
     
     // reset the parser
