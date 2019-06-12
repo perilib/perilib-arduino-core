@@ -43,8 +43,6 @@ public:
         trimBytes = textTrimBytes;
     }
 
-    virtual int8_t getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
-
 protected:
     static const uint8_t textBackspaceBytes[2];
     static const uint8_t textTerminalBytes[1];
