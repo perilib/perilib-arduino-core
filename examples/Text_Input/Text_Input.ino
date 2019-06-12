@@ -8,8 +8,13 @@ Perilib::UartStream stream(&Serial, &parser);
 
 int8_t onRxPacket(Perilib::StreamPacket *packet)
 {
-    Serial.print("RXP: [");
-    Serial.println("]");
+  // dump raw packet data
+  Serial.print("RXP: [");
+  Serial.write(packet->buffer, packet->bufferPos);
+  Serial.println("]");
+  
+  // allow further processing (non-zero to prevent)
+  return 0;
 }
 
 void setup() {
