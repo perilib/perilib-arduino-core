@@ -222,7 +222,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
     }
     
     // update packet length to reflect everything added so far
-    packet->bufferPos = payload - packet->buffer;
+    packet->bufferLength = payload - packet->buffer;
 
     // success so far, finalize the packet and return
     return packet->prepareBufferAfterBuilding();

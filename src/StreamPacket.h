@@ -48,7 +48,7 @@ public:
     StreamParserGenerator *parserGenerator;
     uint8_t *buffer;
     uint16_t bufferSize;
-    uint16_t bufferPos;
+    uint16_t bufferLength;
 
     uint16_t index;
     const uint8_t *definition;

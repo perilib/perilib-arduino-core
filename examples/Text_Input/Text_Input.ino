@@ -10,7 +10,7 @@ int8_t onRxPacket(Perilib::StreamPacket *packet)
 {
   // dump raw packet data
   Serial.print("RXP: [");
-  Serial.write(packet->buffer, packet->bufferPos);
+  Serial.write(packet->buffer, packet->bufferLength);
   Serial.println("]");
   
   // allow further processing (non-zero to prevent)

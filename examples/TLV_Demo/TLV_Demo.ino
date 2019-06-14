@@ -15,7 +15,7 @@ int8_t onRxPacket(Perilib::StreamPacket *packet)
   // dump raw packet data in hexadecimal notation
   Serial.print("RXP: [ ");
   uint16_t i;
-  for (i = 0; i < packet->bufferPos; i++)
+  for (i = 0; i < packet->bufferLength; i++)
   {
     if (packet->buffer[i] < 16) Serial.write('0');
     Serial.print(packet->buffer[i], HEX);
