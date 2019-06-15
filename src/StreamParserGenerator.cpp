@@ -62,6 +62,8 @@ void StreamParserGenerator::reset()
     lastRxPacket->bufferLength = 0;
     parserStatus = ParseStatus::IDLE;
     incomingPacketT0 = 0;
+    PERILIB_DEBUG_PRINT("lastRxPacket->bufferLength=");
+    PERILIB_DEBUG_PRINTLN(lastRxPacket->bufferLength);
 }
 
 int8_t StreamParserGenerator::parse(uint8_t b)
@@ -73,6 +75,8 @@ int8_t StreamParserGenerator::parse(uint8_t b)
     if (!protocol) return Result::NULL_POINTER;
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
+    PERILIB_DEBUG_PRINT("Storing byte in buffer index ");
+    PERILIB_DEBUG_PRINTLN(lastRxPacket->bufferLength);
     lastRxPacket->buffer[lastRxPacket->bufferLength] = b;
     
     if (parserStatus == ParseStatus::IDLE)
@@ -139,6 +143,8 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             if (parserStatus == ParseStatus::COMPLETE || lastRxPacket->bufferLength < lastRxPacket->bufferSize)
             {
                 lastRxPacket->bufferLength++;
+                PERILIB_DEBUG_PRINT("lastRxPacket->bufferLength=");
+                PERILIB_DEBUG_PRINTLN(lastRxPacket->bufferLength);
             }
         }
         
@@ -155,6 +161,8 @@ int8_t StreamParserGenerator::parse(uint8_t b)
                     {
                         // matching trim byte, so remove it
                         lastRxPacket->bufferLength--;
+                        PERILIB_DEBUG_PRINT("lastRxPacket->bufferLength=");
+                        PERILIB_DEBUG_PRINTLN(lastRxPacket->bufferLength);
                     }
                 }
             }
