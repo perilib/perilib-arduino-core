@@ -26,6 +26,20 @@
 namespace Perilib
 {
 
+uint16_t Stream::write(const uint8_t *data, uint16_t length)
+{
+    // suppress unused parameter warnings
+    (void)data;
+    (void)length;
+
+    PERILIB_DEBUG_PRINT("Stream::write(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINTLN(")");
+
+    // STUB: any protocol requiring outgoing data should override this implementation
+    return 0;
+}
+
 void Stream::process(uint8_t mode, bool force)
 {
     if (parserGenerator && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))

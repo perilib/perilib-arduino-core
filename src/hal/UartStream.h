@@ -42,6 +42,7 @@ public:
             : Stream(parserGenerator, (StreamDevice *)device),
               arduinoUart(arduinoUart) { };
        
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
               
     ::Stream *arduinoUart;

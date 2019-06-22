@@ -40,6 +40,7 @@ public:
             : parserGenerator(parserGenerator),
               device(device) { };
 
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
     StreamParserGenerator *parserGenerator;

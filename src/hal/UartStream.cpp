@@ -26,6 +26,22 @@
 namespace Perilib
 {
 
+uint16_t UartStream::write(const uint8_t *data, uint16_t length)
+{
+    PERILIB_DEBUG_PRINT("UartStream::write(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINTLN(")");
+
+    // check for defined UART interface
+    if (arduinoUart)
+    {
+        return arduinoUart->write(data, length);
+    }
+    
+    // failed if we get here, 0 bytes sent
+    return 0;
+}
+
 void UartStream::process(uint8_t mode, bool force)
 {
     // check for defined UART interface
