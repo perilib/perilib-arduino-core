@@ -215,21 +215,6 @@ int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
     return protocol->getPacketFromIndexAndArgs(lastTxPacket, index, argv, this);
 }
 
-int8_t StreamParserGenerator::sendPacket(uint16_t index, ...)
-{
-    PERILIB_DEBUG_PRINT("StreamParserGenerator::sendPacket(");
-    PERILIB_DEBUG_PRINT(index);
-    PERILIB_DEBUG_PRINTLN(", ...)");
-
-    va_list argv;
-    va_start(argv, index);
-    generate(index, argv);
-    va_end(argv);
-
-    // TODO: ACTUALLY SEND PACKET
-    return Result::OK;
-}
-
 void StreamParserGenerator::incomingPacketTimedOut()
 {
     PERILIB_DEBUG_PRINTLN("StreamParserGenerator::incomingPacketTimedOut()");

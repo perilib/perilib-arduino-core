@@ -37,6 +37,7 @@ public:
     StreamDevice(Stream *stream=0)
             : stream(stream) { };
             
+    virtual int8_t sendPacket(uint16_t index, ...);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
             
     Stream *stream;

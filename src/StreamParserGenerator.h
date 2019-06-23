@@ -41,7 +41,7 @@ public:
         lastRxPacket(lastRxPacket),
         lastTxPacket(lastTxPacket)
         {
-            // point packets (if specific) to use this as the par/gen object
+            // set packets' related par/get object to self
             if (lastRxPacket) lastRxPacket->parserGenerator = this;
             if (lastTxPacket) lastTxPacket->parserGenerator = this;
         }
@@ -50,7 +50,6 @@ public:
     virtual int8_t parse(uint8_t b);
     virtual int8_t parse(const uint8_t *data, uint16_t length);
     virtual int8_t generate(uint16_t index, va_list ap);
-    virtual int8_t sendPacket(uint16_t index, ...);
     virtual uint32_t getTimestampMs() { return millis(); }
     
     int8_t (*onTxPacket)(StreamPacket *packet);

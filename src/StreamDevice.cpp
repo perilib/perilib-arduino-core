@@ -26,6 +26,37 @@
 namespace Perilib
 {
 
+int8_t StreamDevice::sendPacket(uint16_t index, ...)
+{
+    PERILIB_DEBUG_PRINT("StreamDevice::sendPacket(");
+    PERILIB_DEBUG_PRINT(index);
+    PERILIB_DEBUG_PRINTLN(", ...)");
+
+    int8_t result = Result::OK;
+
+    if (stream && stream->parserGenerator)
+    {
+        // generate packet
+        va_list argv;
+        va_start(argv, index);
+        result = stream->parserGenerator->generate(index, argv);
+        PERILIB_DEBUG_PRINT("generate() result is ");
+        PERILIB_DEBUG_PRINTLN(result);
+        va_end(argv);
+    
+        // send packet if stream exists and generation was successful
+        if (result == Result::OK)
+        {
+            result = stream->write(
+                stream->parserGenerator->lastTxPacket->buffer,
+                stream->parserGenerator->lastTxPacket->bufferLength);
+        }
+    }
+    
+    // finished
+    return result;
+}
+
 void StreamDevice::process(uint8_t mode, bool force)
 {
     if (stream && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
