@@ -34,16 +34,16 @@ class StreamParserGenerator
 {
 public:
     StreamParserGenerator(
-            StreamProtocol *protocol,
-            StreamPacket *lastRxPacket,
-            StreamPacket *lastTxPacket) :
-        protocol(protocol),
-        lastRxPacket(lastRxPacket),
-        lastTxPacket(lastTxPacket)
+            StreamProtocol *protocolPtr,
+            StreamPacket *lastRxPacketPtr,
+            StreamPacket *lastTxPacketPtr) :
+        protocolPtr(protocolPtr),
+        lastRxPacketPtr(lastRxPacketPtr),
+        lastTxPacketPtr(lastTxPacketPtr)
         {
             // set packets' related par/get object to self
-            if (lastRxPacket) lastRxPacket->parserGenerator = this;
-            if (lastTxPacket) lastTxPacket->parserGenerator = this;
+            if (lastRxPacketPtr) lastRxPacketPtr->parserGenerator = this;
+            if (lastTxPacketPtr) lastTxPacketPtr->parserGenerator = this;
         }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
@@ -58,10 +58,10 @@ public:
     int8_t (*onIncomingPacketTimeout)(const uint8_t *data, uint16_t length, StreamParserGenerator *parserGenerator);
     int8_t (*onResponsePacketTimeout)(uint32_t responsePending, StreamParserGenerator *parserGenerator);
     
-    Stream *stream;
-    StreamProtocol *protocol;
-    StreamPacket *lastRxPacket;
-    StreamPacket *lastTxPacket;
+    Stream *streamPtr;
+    StreamProtocol *protocolPtr;
+    StreamPacket *lastRxPacketPtr;
+    StreamPacket *lastTxPacketPtr;
     
 protected:
     virtual void incomingPacketTimedOut();

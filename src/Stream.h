@@ -35,16 +35,16 @@ class Stream
 {
 public:
     Stream(
-        StreamParserGenerator *parserGenerator=0,
-        StreamDevice *device=0)
-            : parserGenerator(parserGenerator),
-              device(device) { };
+        StreamParserGenerator *parserGeneratorPtr=0,
+        StreamDevice *devicePtr=0)
+            : parserGeneratorPtr(parserGeneratorPtr),
+              devicePtr(devicePtr) { };
 
     virtual uint16_t write(const uint8_t *data, uint16_t length);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
-    StreamParserGenerator *parserGenerator;
-    StreamDevice *device;
+    StreamParserGenerator *parserGeneratorPtr;
+    StreamDevice *devicePtr;
 };
 
 } // namespace Perilib

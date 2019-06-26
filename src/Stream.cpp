@@ -42,9 +42,9 @@ uint16_t Stream::write(const uint8_t *data, uint16_t length)
 
 void Stream::process(uint8_t mode, bool force)
 {
-    if (parserGenerator && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
+    if (parserGeneratorPtr && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {
-        parserGenerator->process(ProcessMode::BOTH, force);
+        parserGeneratorPtr->process(ProcessMode::BOTH, force);
     }
 }
 

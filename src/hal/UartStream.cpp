@@ -51,13 +51,13 @@ void UartStream::process(uint8_t mode, bool force)
         int16_t bytesAvailable = arduinoUart->available();
         
         // check for defined parser/generator
-        if (parserGenerator)
+        if (parserGeneratorPtr)
         {
             // send all available data (may be none)
             while (bytesAvailable > 0)
             {
                 // process next byte from stream
-                parserGenerator->parse(arduinoUart->read());
+                parserGeneratorPtr->parse(arduinoUart->read());
                 
                 // decrement remaining count
                 bytesAvailable--;
@@ -66,7 +66,7 @@ void UartStream::process(uint8_t mode, bool force)
             // run processing if needed
             if (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH)
             {
-                parserGenerator->process(ProcessMode::BOTH, force);
+                parserGeneratorPtr->process(ProcessMode::BOTH, force);
             }
         }
     }

@@ -34,13 +34,13 @@ namespace Perilib
 class StreamDevice : public Device
 {
 public:
-    StreamDevice(Stream *stream=0)
-            : stream(stream) { };
+    StreamDevice(Stream *streamPtr=0)
+            : streamPtr(streamPtr) { };
             
     virtual int8_t sendPacket(uint16_t index, ...);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
             
-    Stream *stream;
+    Stream *streamPtr;
 };
 
 } // namespace Perilib

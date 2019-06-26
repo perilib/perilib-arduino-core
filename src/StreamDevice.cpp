@@ -34,12 +34,12 @@ int8_t StreamDevice::sendPacket(uint16_t index, ...)
 
     int8_t result = Result::OK;
 
-    if (stream && stream->parserGenerator)
+    if (streamPtr && streamPtr->parserGeneratorPtr)
     {
         // generate packet
         va_list argv;
         va_start(argv, index);
-        result = stream->parserGenerator->generate(index, argv);
+        result = streamPtr->parserGeneratorPtr->generate(index, argv);
         PERILIB_DEBUG_PRINT("generate() result is ");
         PERILIB_DEBUG_PRINTLN(result);
         va_end(argv);
@@ -47,9 +47,9 @@ int8_t StreamDevice::sendPacket(uint16_t index, ...)
         // send packet if stream exists and generation was successful
         if (result == Result::OK)
         {
-            result = stream->write(
-                stream->parserGenerator->lastTxPacket->buffer,
-                stream->parserGenerator->lastTxPacket->bufferLength);
+            result = streamPtr->write(
+                streamPtr->parserGeneratorPtr->lastTxPacketPtr->buffer,
+                streamPtr->parserGeneratorPtr->lastTxPacketPtr->bufferLength);
         }
     }
     
@@ -59,9 +59,9 @@ int8_t StreamDevice::sendPacket(uint16_t index, ...)
 
 void StreamDevice::process(uint8_t mode, bool force)
 {
-    if (stream && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
+    if (streamPtr && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
     {
-        stream->process(ProcessMode::BOTH, force);
+        streamPtr->process(ProcessMode::BOTH, force);
     }
 }
 
