@@ -261,17 +261,20 @@ int8_t StreamProtocol::getPacketDefinitionFromIndex(uint16_t index, const uint8_
     return Result::NOT_IMPLEMENTED;
 }
 
-int8_t StreamProtocol::getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, uint16_t *index, const uint8_t **packetDef)
+int8_t StreamProtocol::getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, bool isTx, uint16_t *index, const uint8_t **packetDef)
 {
     // suppress unused parameter warnings
     (void)buffer;
     (void)length;
+    (void)isTx;
     (void)index;
     (void)packetDef;
 
     PERILIB_DEBUG_PRINT("StreamProtocol::getPacketDefinitionFromBuffer(*, ");
     PERILIB_DEBUG_PRINT(length);
-    PERILIB_DEBUG_PRINTLN(", *)");
+    PERILIB_DEBUG_PRINT(", ");
+    PERILIB_DEBUG_PRINT(isTx);
+    PERILIB_DEBUG_PRINTLN(", *, *)");
 
     // STUB: most protocols should override this implementation
     return Result::NOT_IMPLEMENTED;
