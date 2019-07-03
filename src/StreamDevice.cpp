@@ -47,9 +47,16 @@ int8_t StreamDevice::sendPacket(uint16_t index, ...)
         // send packet if stream exists and generation was successful
         if (result == Result::OK)
         {
-            result = streamPtr->write(
-                streamPtr->parserGeneratorPtr->lastTxPacketPtr->buffer,
-                streamPtr->parserGeneratorPtr->lastTxPacketPtr->bufferLength);
+            // make sure we can continue with this transmission
+            if (onPreTransmission() == Result::OK)
+            {
+                result = streamPtr->write(
+                    streamPtr->parserGeneratorPtr->lastTxPacketPtr->buffer,
+                    streamPtr->parserGeneratorPtr->lastTxPacketPtr->bufferLength);
+                
+                // wrap up anything needed afterwards
+                onPostTransmission();
+            }
         }
     }
     
@@ -63,6 +70,19 @@ void StreamDevice::process(uint8_t mode, bool force)
     {
         streamPtr->process(ProcessMode::BOTH, force);
     }
+}
+
+int8_t StreamDevice::onPreTransmission()
+{
+    // STUB: no conditions or actions, allow transmission
+    PERILIB_DEBUG_PRINTLN("StreamDevice::onPreTransmission()");
+    return Result::OK;
+}
+
+void StreamDevice::onPostTransmission()
+{
+    // STUB: nothing to do
+    PERILIB_DEBUG_PRINTLN("StreamDevice::onPostTransmission()");
 }
 
 } // namespace Perilib

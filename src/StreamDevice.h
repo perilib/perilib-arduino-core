@@ -39,6 +39,9 @@ public:
             
     virtual int8_t sendPacket(uint16_t index, ...);
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
+    
+    virtual int8_t onPreTransmission();
+    virtual void onPostTransmission();
             
     Stream *streamPtr;
 };
