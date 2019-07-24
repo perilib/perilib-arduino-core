@@ -21,29 +21,24 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_H__
-#define __PERILIB_H__
-
-#include <Arduino.h>
+#ifndef __PERILIB_REGISTERMAP_H__
+#define __PERILIB_REGISTERMAP_H__
 
 #include "common.h"
 
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
+namespace Perilib
+{
+    
+class RegisterMap
+{
+public:
+    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
+    virtual uint32_t getTimestampMs() { return millis(); }
+    
+    RegisterInterface *registerInterfacePtr;
+    
+};
 
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
+} // namespace Perilib
 
-#include "RegisterDevice.h"
-#include "RegisterMap.h"
-
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
-
-#include "hal/UartStream.h"
-
-#endif /* __PERILIB_H__ */
+#endif /* __PERILIB_STREAMPARSERGENERATOR_H__ */

@@ -21,29 +21,32 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_H__
-#define __PERILIB_H__
-
-#include <Arduino.h>
+#ifndef __PERILIB_REGISTERINTERFACE_H__
+#define __PERILIB_REGISTERINTERFACE_H__
 
 #include "common.h"
-
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
-
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
-
 #include "RegisterDevice.h"
 #include "RegisterMap.h"
 
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
+namespace Perilib
+{
 
-#include "hal/UartStream.h"
+class RegisterInterface
+{
+public:
+    RegisterInterface(
+        RegisterMap *registerMapPtr=0,
+        RegisterDevice *devicePtr=0)
+            : registerMapPtr(registerMapPtr),
+              devicePtr(devicePtr) { };
 
-#endif /* __PERILIB_H__ */
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
+    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
+
+    RegisterMap *registerMapPtr;
+    RegisterDevice *devicePtr;
+};
+
+} // namespace Perilib
+
+#endif /* __PERILIB_REGISTERINTERFACE_H__ */

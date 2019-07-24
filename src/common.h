@@ -78,6 +78,10 @@ class StreamPacket;
 class StreamProtocol;
 class StreamParserGenerator;
 
+class RegisterInterface;
+class RegisterDevice;
+class RegisterMap;
+
 } // namespace Perilib
 
 #endif /* __PERILIB_COMMON_H__ */

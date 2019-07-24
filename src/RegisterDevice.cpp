@@ -21,29 +21,22 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_H__
-#define __PERILIB_H__
-
-#include <Arduino.h>
-
-#include "common.h"
-
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
-
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
-
 #include "RegisterDevice.h"
-#include "RegisterMap.h"
 
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
+namespace Perilib
+{
 
-#include "hal/UartStream.h"
+int8_t RegisterDevice::onPreTransmission()
+{
+    // STUB: no conditions or actions, allow transmission
+    PERILIB_DEBUG_PRINTLN("RegisterDevice::onPreTransmission()");
+    return Result::OK;
+}
 
-#endif /* __PERILIB_H__ */
+void RegisterDevice::onPostTransmission()
+{
+    // STUB: nothing to do
+    PERILIB_DEBUG_PRINTLN("RegisterDevice::onPostTransmission()");
+}
+
+} // namespace Perilib

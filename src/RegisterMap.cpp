@@ -21,29 +21,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_H__
-#define __PERILIB_H__
-
-#include <Arduino.h>
-
-#include "common.h"
-
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
-
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
-
-#include "RegisterDevice.h"
+#include <stdarg.h> // va_args implementation
 #include "RegisterMap.h"
 
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
+namespace Perilib
+{
 
-#include "hal/UartStream.h"
-
-#endif /* __PERILIB_H__ */
+} // namespace Perilib
