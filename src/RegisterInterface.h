@@ -40,7 +40,18 @@ public:
             : registerMapPtr(registerMapPtr),
               devicePtr(devicePtr) { };
 
-    virtual uint16_t write(const uint8_t *data, uint16_t length);
+    virtual uint16_t read8(uint8_t regAddr, uint8_t *value) { return readBytes(regAddr, (uint8_t *)&value, 1); }
+    virtual uint16_t read16(uint8_t regAddr, uint16_t *value) { return readBytes(regAddr, (uint8_t *)&value, 2); }
+    virtual uint16_t read24(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)&value, 3); }
+    virtual uint16_t read32(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)&value, 4); }
+    virtual uint16_t write8(uint8_t regAddr, uint8_t value) { return writeBytes(regAddr, (uint8_t *)&value, 1); }
+    virtual uint16_t write16(uint8_t regAddr, uint16_t value) { return writeBytes(regAddr, (uint8_t *)&value, 2); }
+    virtual uint16_t write24(uint8_t regAddr, uint32_t value) { return writeBytes(regAddr, (uint8_t *)&value, 3); }
+    virtual uint16_t write32(uint8_t regAddr, uint32_t value) { return writeBytes(regAddr, (uint8_t *)&value, 4); }
+
+    virtual uint16_t readBytes(uint8_t regAddr, uint8_t *value, uint16_t length);
+    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *value, uint16_t length);
+
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
 
     RegisterMap *registerMapPtr;

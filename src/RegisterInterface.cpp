@@ -26,13 +26,23 @@
 namespace Perilib
 {
 
-uint16_t RegisterInterface::write(const uint8_t *data, uint16_t length)
+void RegisterInterface::process(uint8_t mode, bool force)
 {
     // suppress unused parameter warnings
+    (void)mode;
+    (void)force;
+}
+
+uint16_t RegisterInterface::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
+{
+    // suppress unused parameter warnings
+    (void)regAddr;
     (void)data;
     (void)length;
 
-    PERILIB_DEBUG_PRINT("RegisterInterface::write(*, ");
+    PERILIB_DEBUG_PRINT("RegisterInterface::readBytes(");
+    PERILIB_DEBUG_PRINT(regAddr);
+    PERILIB_DEBUG_PRINT(", *, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINTLN(")");
 
@@ -40,8 +50,21 @@ uint16_t RegisterInterface::write(const uint8_t *data, uint16_t length)
     return 0;
 }
 
-void RegisterInterface::process(uint8_t mode, bool force)
+uint16_t RegisterInterface::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
 {
+    // suppress unused parameter warnings
+    (void)regAddr;
+    (void)data;
+    (void)length;
+
+    PERILIB_DEBUG_PRINT("RegisterInterface::writeBytes(");
+    PERILIB_DEBUG_PRINT(regAddr);
+    PERILIB_DEBUG_PRINT(", *, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINTLN(")");
+
+    // STUB: any protocol requiring outgoing data should override this implementation
+    return 0;
 }
 
 } // namespace Perilib
