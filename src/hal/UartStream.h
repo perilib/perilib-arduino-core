@@ -24,10 +24,10 @@
 #ifndef __PERILIB_HAL_UARTSTREAM_H__
 #define __PERILIB_HAL_UARTSTREAM_H__
 
-#include "common.h"
-#include "Stream.h"
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
+#include "../common.h"
+#include "../Stream.h"
+#include "../StreamDevice.h"
+#include "../StreamParserGenerator.h"
 
 namespace Perilib
 {
