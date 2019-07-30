@@ -13,6 +13,8 @@
   "platforms":
   [
     "atmelavr",
-    "atmelsam"
+    "atmelsam",
+    "espressif8266",
+    "teensy"
   ]
 }
