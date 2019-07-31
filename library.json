@@ -15,6 +15,7 @@
     "atmelavr",
     "atmelsam",
     "espressif8266",
+    "espressif32",
     "teensy"
   ]
 }
