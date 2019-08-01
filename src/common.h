@@ -41,6 +41,19 @@
 #define PERILIB_DEBUG_PRINTLNFMT(x, y)
 #endif
 
+// attempt to create a convenience macro for best available hardware serial port
+#if defined(SERIAL_PORT_HARDWARE_OPEN)
+    // use the first open hardware serial port
+    #define SERIAL_PORT_PERILIB SERIAL_PORT_HARDWARE_OPEN
+#elif defined(SERIAL_PORT_HARDWARE) && SERIAL_PORT_HARDWARE != SERIAL_PORT_MONITOR
+    // use the first defined hardware serial port that isn't the monitor port
+    #define SERIAL_PORT_PERILIB SERIAL_PORT_HARDWARE
+#elif defined(ESP32)
+    #define SERIAL_PORT_PERILIB Serial1
+#else
+    // on your own...try SoftwareSerial maybe
+#endif
+
 namespace Perilib
 {
 
