@@ -21,30 +21,37 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_H__
-#define __PERILIB_H__
+#ifndef __PERILIB_HAL_TWIREGISTERINTERFACE_H__
+#define __PERILIB_HAL_TWIREGISTERINTERFACE_H__
 
-#include <Arduino.h>
+#include <Wire.h>
 
-#include "common.h"
+#include "../common.h"
+#include "../RegisterInterface.h"
+#include "../RegisterDevice.h"
 
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
+namespace Perilib
+{
 
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
+class TwiRegisterInterface : public RegisterInterface
+{
+public:
+    TwiRegisterInterface(
+        uint8_t devAddr=0,
+        ::TwoWire *arduinoTwiPtr=0,
+        RegisterMap *registerMapPtr=0,
+        RegisterDevice *devicePtr=0)
+            : RegisterInterface(registerMapPtr, (RegisterDevice *)devicePtr),
+              devAddr(devAddr),
+              arduinoTwiPtr(arduinoTwiPtr) { };
+       
+    virtual uint16_t readBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
+    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
+    
+    uint8_t devAddr;
+    ::TwoWire *arduinoTwiPtr;
+};
 
-#include "RegisterDevice.h"
-#include "RegisterMap.h"
+} // namespace Perilib
 
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
-
-#include "hal/UartStream.h"
-#include "hal/TwiRegisterInterface.h"
-
-#endif /* __PERILIB_H__ */
+#endif /* __PERILIB_HAL_TWIREGISTERINTERFACE_H__ */
