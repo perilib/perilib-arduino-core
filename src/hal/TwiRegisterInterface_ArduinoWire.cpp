@@ -21,12 +21,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#include "hal/TwiRegisterInterface.h"
+#include "hal/TwiRegisterInterface_ArduinoWire.h"
 
 namespace Perilib
 {
 
-uint16_t TwiRegisterInterface::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
+uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
 {
     PERILIB_DEBUG_PRINT("TwiRegisterInterface::readBytes(");
     PERILIB_DEBUG_PRINT(regAddr);
@@ -35,19 +35,19 @@ uint16_t TwiRegisterInterface::readBytes(uint8_t regAddr, uint8_t *data, uint16_
     PERILIB_DEBUG_PRINTLN(")");
 
     // check for defined TwoWire interface
-    if (arduinoTwiPtr)
+    if (arduinoWirePtr)
     {
         // send register address to device
-        arduinoTwiPtr->beginTransmission(devAddr);
-        arduinoTwiPtr->write(regAddr);
-        arduinoTwiPtr->endTransmission();
+        arduinoWirePtr->beginTransmission(devAddr);
+        arduinoWirePtr->write(regAddr);
+        arduinoWirePtr->endTransmission();
 
         // read requested bytes from device
-        arduinoTwiPtr->beginTransmission(devAddr);
-        arduinoTwiPtr->requestFrom((int)devAddr, (int)length);
+        arduinoWirePtr->beginTransmission(devAddr);
+        arduinoWirePtr->requestFrom((int)devAddr, (int)length);
         uint16_t count;
-        for (count = 0; arduinoTwiPtr->available(); count++) {
-            data[count] = arduinoTwiPtr->read();
+        for (count = 0; arduinoWirePtr->available(); count++) {
+            data[count] = arduinoWirePtr->read();
         }
     }
     
@@ -56,7 +56,7 @@ uint16_t TwiRegisterInterface::readBytes(uint8_t regAddr, uint8_t *data, uint16_
 }
 
 
-uint16_t TwiRegisterInterface::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
+uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
 {
     PERILIB_DEBUG_PRINT("TwiRegisterInterface::writeBytes(");
     PERILIB_DEBUG_PRINT(regAddr);
@@ -65,13 +65,13 @@ uint16_t TwiRegisterInterface::writeBytes(uint8_t regAddr, uint8_t *data, uint16
     PERILIB_DEBUG_PRINTLN(")");
 
     // check for defined TwoWire interface
-    if (arduinoTwiPtr)
+    if (arduinoWirePtr)
     {
         // send data to device
-        arduinoTwiPtr->beginTransmission(devAddr);
-        arduinoTwiPtr->write(regAddr);
-        arduinoTwiPtr->write(data, length);
-    	arduinoTwiPtr->endTransmission();
+        arduinoWirePtr->beginTransmission(devAddr);
+        arduinoWirePtr->write(regAddr);
+        arduinoWirePtr->write(data, length);
+    	arduinoWirePtr->endTransmission();
     }
     
     // failed if we get here, 0 bytes written

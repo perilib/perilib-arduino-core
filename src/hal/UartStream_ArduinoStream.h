@@ -21,37 +21,33 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#ifndef __PERILIB_HAL_TWIREGISTERINTERFACE_H__
-#define __PERILIB_HAL_TWIREGISTERINTERFACE_H__
-
-#include <Wire.h>
+#ifndef __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__
+#define __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__
 
 #include "../common.h"
-#include "../RegisterInterface.h"
-#include "../RegisterDevice.h"
+#include "../Stream.h"
+#include "../StreamDevice.h"
+#include "../StreamParserGenerator.h"
 
 namespace Perilib
 {
 
-class TwiRegisterInterface : public RegisterInterface
+class UartStream_ArduinoStream : public Stream
 {
 public:
-    TwiRegisterInterface(
-        uint8_t devAddr=0,
-        ::TwoWire *arduinoTwiPtr=0,
-        RegisterMap *registerMapPtr=0,
-        RegisterDevice *devicePtr=0)
-            : RegisterInterface(registerMapPtr, (RegisterDevice *)devicePtr),
-              devAddr(devAddr),
-              arduinoTwiPtr(arduinoTwiPtr) { };
+    UartStream_ArduinoStream(
+        ::Stream *arduinoStreamPtr=0,
+        StreamParserGenerator *parserGeneratorPtr=0,
+        StreamDevice *devicePtr=0)
+            : Stream(parserGeneratorPtr, (StreamDevice *)devicePtr),
+              arduinoStreamPtr(arduinoStreamPtr) { };
        
-    virtual uint16_t readBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
-    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
-    
-    uint8_t devAddr;
-    ::TwoWire *arduinoTwiPtr;
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
+    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
+              
+    ::Stream *arduinoStreamPtr;
 };
 
 } // namespace Perilib
 
-#endif /* __PERILIB_HAL_TWIREGISTERINTERFACE_H__ */
+#endif /* __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__ */

@@ -44,7 +44,7 @@
 #include "TLVStreamProtocol.h"
 #include "LTVStreamProtocol.h"
 
-#include "hal/UartStream.h"
-#include "hal/TwiRegisterInterface.h"
+#include "hal/UartStream_ArduinoStream.h"
+#include "hal/TwiRegisterInterface_ArduinoWire.h"
 
 #endif /* __PERILIB_H__ */

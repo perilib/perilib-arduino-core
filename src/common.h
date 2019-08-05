@@ -81,8 +81,6 @@ enum ParseStatus
     COMPLETE = 3
 };
 
-class UartStream;
-
 class Device;
 
 class Stream;
@@ -94,6 +92,9 @@ class StreamParserGenerator;
 class RegisterInterface;
 class RegisterDevice;
 class RegisterMap;
+
+class UartStream_ArduinoStream;
+class TwiRegisterInterface_ArduinoWire;
 
 } // namespace Perilib
 

@@ -21,53 +21,49 @@
  * DEALINGS IN THE SOFTWARE.
  */
  
-#include "hal/UartStream.h"
+#include "hal/UartStream_ArduinoStream.h"
 
 namespace Perilib
 {
 
-uint16_t UartStream::write(const uint8_t *data, uint16_t length)
+uint16_t UartStream_ArduinoStream::write(const uint8_t *data, uint16_t length)
 {
-    PERILIB_DEBUG_PRINT("UartStream::write(*, ");
+    PERILIB_DEBUG_PRINT("UartStream_ArduinoStream::write(*, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINTLN(")");
 
     // check for defined UART interface
-    if (arduinoUart)
+    if (arduinoStreamPtr)
     {
-        return arduinoUart->write(data, length);
+        return arduinoStreamPtr->write(data, length);
     }
     
     // failed if we get here, 0 bytes sent
     return 0;
 }
 
-void UartStream::process(uint8_t mode, bool force)
+void UartStream_ArduinoStream::process(uint8_t mode, bool force)
 {
-    // check for defined UART interface
-    if (arduinoUart)
+    // check for defined UART stream interface and parser/generator
+    if (arduinoStreamPtr && parserGeneratorPtr)
     {
         // check for serial data
-        int16_t bytesAvailable = arduinoUart->available();
+        int16_t bytesAvailable = arduinoStreamPtr->available();
         
-        // check for defined parser/generator
-        if (parserGeneratorPtr)
+        // send all available data (may be none)
+        while (bytesAvailable > 0)
         {
-            // send all available data (may be none)
-            while (bytesAvailable > 0)
-            {
-                // process next byte from stream
-                parserGeneratorPtr->parse(arduinoUart->read());
-                
-                // decrement remaining count
-                bytesAvailable--;
-            }
+            // process next byte from stream
+            parserGeneratorPtr->parse(arduinoStreamPtr->read());
             
-            // run processing if needed
-            if (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH)
-            {
-                parserGeneratorPtr->process(ProcessMode::BOTH, force);
-            }
+            // decrement remaining count
+            bytesAvailable--;
+        }
+        
+        // run processing if needed
+        if (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH)
+        {
+            parserGeneratorPtr->process(ProcessMode::BOTH, force);
         }
     }
 }
