@@ -40,10 +40,10 @@ public:
             : registerMapPtr(registerMapPtr),
               devicePtr(devicePtr) { };
 
-    virtual uint16_t read8(uint8_t regAddr, uint8_t *value) { return readBytes(regAddr, (uint8_t *)&value, 1); }
-    virtual uint16_t read16(uint8_t regAddr, uint16_t *value) { return readBytes(regAddr, (uint8_t *)&value, 2); }
-    virtual uint16_t read24(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)&value, 3); }
-    virtual uint16_t read32(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)&value, 4); }
+    virtual uint16_t read8(uint8_t regAddr, uint8_t *value) { return readBytes(regAddr, (uint8_t *)value, 1); }
+    virtual uint16_t read16(uint8_t regAddr, uint16_t *value) { return readBytes(regAddr, (uint8_t *)value, 2); }
+    virtual uint16_t read24(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)value, 3); }
+    virtual uint16_t read32(uint8_t regAddr, uint32_t *value) { return readBytes(regAddr, (uint8_t *)value, 4); }
     virtual uint16_t write8(uint8_t regAddr, uint8_t value) { return writeBytes(regAddr, (uint8_t *)&value, 1); }
     virtual uint16_t write16(uint8_t regAddr, uint16_t value) { return writeBytes(regAddr, (uint8_t *)&value, 2); }
     virtual uint16_t write24(uint8_t regAddr, uint32_t value) { return writeBytes(regAddr, (uint8_t *)&value, 3); }
