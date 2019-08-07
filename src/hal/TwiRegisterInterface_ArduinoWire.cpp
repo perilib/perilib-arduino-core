@@ -34,6 +34,8 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINTLN(")");
 
+    uint16_t count = 0;
+
     // check for defined TwoWire interface
     if (arduinoWirePtr)
     {
@@ -45,14 +47,13 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
         // read requested bytes from device
         arduinoWirePtr->beginTransmission(devAddr);
         arduinoWirePtr->requestFrom((int)devAddr, (int)length);
-        uint16_t count;
         for (count = 0; arduinoWirePtr->available(); count++) {
             data[count] = arduinoWirePtr->read();
         }
     }
     
-    // failed if we get here, 0 bytes read
-    return 0;
+    // return number of bytes read
+    return count;
 }
 
 
@@ -63,6 +64,8 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
     PERILIB_DEBUG_PRINT(", *, ");
     PERILIB_DEBUG_PRINT(length);
     PERILIB_DEBUG_PRINTLN(")");
+    
+    uint16_t count = 0;
 
     // check for defined TwoWire interface
     if (arduinoWirePtr)
@@ -74,8 +77,8 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
     	arduinoWirePtr->endTransmission();
     }
     
-    // failed if we get here, 0 bytes written
-    return 0;
+    // return number of bytes written
+    return count;
 }
 
 } // namespace Perilib
