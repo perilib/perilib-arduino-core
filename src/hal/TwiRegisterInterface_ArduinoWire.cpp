@@ -50,19 +50,30 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
 
     uint16_t count = 0;
 
-    // check for defined TwoWire interface
-    if (arduinoWirePtr)
+    // ensure TwoWire interface and data pointers are not NULL, and length > 0
+    if (arduinoWirePtr && data && length)
     {
-        // send register address to device
-        arduinoWirePtr->beginTransmission(devAddr);
-        arduinoWirePtr->write(regAddr);
-        arduinoWirePtr->endTransmission();
+        while (length)
+        {
+            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH;
+            
+            // limit chunk size if necessary
+            if (chunkSize > length) chunkSize = length;
 
-        // read requested bytes from device
-        arduinoWirePtr->beginTransmission(devAddr);
-        arduinoWirePtr->requestFrom((int)devAddr, (int)length);
-        for (count = 0; arduinoWirePtr->available(); count++) {
-            data[count] = arduinoWirePtr->read();
+            // send register address to device
+            arduinoWirePtr->beginTransmission(devAddr);
+            arduinoWirePtr->write(regAddr);
+            arduinoWirePtr->endTransmission();
+    
+            // read requested bytes from device
+            arduinoWirePtr->beginTransmission(devAddr);
+            arduinoWirePtr->requestFrom((int)devAddr, (int)chunkSize);
+            for (; arduinoWirePtr->available(); count++) {
+                data[count] = arduinoWirePtr->read();
+            }
+            
+            // decrease remaining bytes by what we requested to read
+            length -= chunkSize;
         }
     }
     
