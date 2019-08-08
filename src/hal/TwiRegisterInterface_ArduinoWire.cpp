@@ -23,17 +23,17 @@
  
 #include "hal/TwiRegisterInterface_ArduinoWire.h"
 
-#if defined(BUFFER_LENGTH)
-    // Arduino AVR core Wire and many others use this
-    #define PERILIB_WIRE_BUFFER_LENGTH BUFFER_LENGTH
-#elif defined(I2C_BUFFER_LENGTH)
+#if defined(I2C_BUFFER_LENGTH)
     // Arduino ESP32 core Wire uses this
     #define PERILIB_WIRE_BUFFER_LENGTH I2C_BUFFER_LENGTH
-#elif defined(ARDUINO_ARCH_SAMD)
-    // Arduino SAMD core Wire uses a 256-byte templated RingBuffer
-    #define PERILIB_WIRE_BUFFER_LENGTH 256
+#elif defined(BUFFER_LENGTH)
+    // Arduino AVR core Wire and many others use this
+    #define PERILIB_WIRE_BUFFER_LENGTH BUFFER_LENGTH
+#elif defined(SERIAL_BUFFER_SIZE)
+    // Arduino SAMD core Wire uses this
+    #define PERILIB_WIRE_BUFFER_LENGTH SERIAL_BUFFER_SIZE
 #else
-    // should be a safe fallback, though slightly inefficient
+    // should be a safe fallback, though possibly inefficient
     #define PERILIB_WIRE_BUFFER_LENGTH 32
 #endif
 
