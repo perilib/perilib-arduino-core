@@ -85,10 +85,28 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
     if (arduinoWirePtr)
     {
         // send data to device
-        arduinoWirePtr->beginTransmission(devAddr);
-        arduinoWirePtr->write(regAddr);
-        arduinoWirePtr->write(data, length);
-    	arduinoWirePtr->endTransmission();
+        uint16_t remaining = length;
+        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for register address
+        while (remaining)
+        {
+            // mid-transmission, so send current block but don't stop (next block will use repeated start)
+            if (remaining != length) arduinoWirePtr->endTransmission(false);
+            
+            // limit chunk size if necessary
+            if (chunkSize > remaining) chunkSize = remaining;
+            
+            // begin new block
+            arduinoWirePtr->beginTransmission(devAddr);
+            arduinoWirePtr->write(regAddr);
+            arduinoWirePtr->write(data + count, chunkSize);
+            
+            // increase cound and decrease remaining bytes by what we actually sent
+            count += chunkSize;
+            remaining -= chunkSize;
+        }
+        
+        // finish transmission with stop signal
+        arduinoWirePtr->endTransmission();
     }
     
     // return number of bytes written
