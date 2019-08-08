@@ -81,34 +81,48 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
     
     uint16_t count = 0;
 
-    // check for defined TwoWire interface
-    if (arduinoWirePtr)
+    // ensure TwoWire interface and data pointers are not NULL, and length > 0
+    if (arduinoWirePtr && data && length)
     {
         // send data to device
-        uint16_t remaining = length;
         uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for register address
-        while (remaining)
+        bool midstream = false;
+        while (length)
         {
-            // mid-transmission, so send current block but don't stop (next block will use repeated start)
-            if (remaining != length) arduinoWirePtr->endTransmission(false);
+            if (midstream)
+            {
+                // mid-transmission, so send current block but don't stop (next block will use repeated start)
+                if (arduinoWirePtr->endTransmission(false) == 0) count += chunkSize;
+            }
             
             // limit chunk size if necessary
-            if (chunkSize > remaining) chunkSize = remaining;
+            if (chunkSize > length) chunkSize = length;
             
             // begin new block
             arduinoWirePtr->beginTransmission(devAddr);
             arduinoWirePtr->write(regAddr);
             arduinoWirePtr->write(data + count, chunkSize);
             
-            // increase cound and decrease remaining bytes by what we actually sent
-            count += chunkSize;
-            remaining -= chunkSize;
+            // decrease remaining bytes by what we tried to send
+            length -= chunkSize;
+            
+            // set midstream flag so if we loop, we'll transmit this chunk first
+            midstream = true;
         }
         
         // finish transmission with stop signal
-        arduinoWirePtr->endTransmission();
+        if (arduinoWirePtr->endTransmission() == 0) count += chunkSize;
     }
     
+    // NOTE: The endTransmission() method only reports a basic status byte, so
+    // this count value only has resolution of chunk size. Each chunk is either
+    // successful (100% counted) or unsuccessful (0% counted), but it is
+    // possible under some circumstances that some bytes were ACK'd before a
+    // NACK is encountered, in which case the reported count here will be lower
+    // than the actual number of bytes transmitted. This is unlikely, however,
+    // and in any case a situation where reported count is less than requested
+    // count should be treated as a failure.
+
     // return number of bytes written
     return count;
 }
