@@ -35,15 +35,15 @@ class StreamParserGenerator
 public:
     StreamParserGenerator(
             StreamProtocol *protocolPtr,
-            StreamPacket *lastRxPacketPtr,
-            StreamPacket *lastTxPacketPtr) :
+            StreamPacket *rxPacketPtr,
+            StreamPacket *txPacketPtr) :
         protocolPtr(protocolPtr),
-        lastRxPacketPtr(lastRxPacketPtr),
-        lastTxPacketPtr(lastTxPacketPtr)
+        rxPacketPtr(rxPacketPtr),
+        txPacketPtr(txPacketPtr)
         {
             // set packets' related par/get object to self
-            if (lastRxPacketPtr) lastRxPacketPtr->parserGenerator = this;
-            if (lastTxPacketPtr) lastTxPacketPtr->parserGenerator = this;
+            if (rxPacketPtr) rxPacketPtr->parserGenerator = this;
+            if (txPacketPtr) txPacketPtr->parserGenerator = this;
         }
     virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
     virtual void reset();
@@ -60,8 +60,8 @@ public:
     
     Stream *streamPtr;
     StreamProtocol *protocolPtr;
-    StreamPacket *lastRxPacketPtr;
-    StreamPacket *lastTxPacketPtr;
+    StreamPacket *rxPacketPtr;
+    StreamPacket *txPacketPtr;
     
 protected:
     virtual void incomingPacketTimedOut();

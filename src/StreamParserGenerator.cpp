@@ -59,11 +59,11 @@ void StreamParserGenerator::process(uint8_t mode, bool force)
 
 void StreamParserGenerator::reset()
 {
-    lastRxPacketPtr->bufferLength = 0;
+    rxPacketPtr->bufferLength = 0;
     parserStatus = ParseStatus::IDLE;
     incomingPacketT0 = 0;
-    PERILIB_DEBUG_PRINT("lastRxPacketPtr->bufferLength=");
-    PERILIB_DEBUG_PRINTLN(lastRxPacketPtr->bufferLength);
+    PERILIB_DEBUG_PRINT("rxPacketPtr->bufferLength=");
+    PERILIB_DEBUG_PRINTLN(rxPacketPtr->bufferLength);
 }
 
 int8_t StreamParserGenerator::parse(uint8_t b)
@@ -76,16 +76,16 @@ int8_t StreamParserGenerator::parse(uint8_t b)
     
     // add byte to buffer (note position is NOT incremented yet, byte may be ignored)
     PERILIB_DEBUG_PRINT("Storing byte in buffer index ");
-    PERILIB_DEBUG_PRINTLN(lastRxPacketPtr->bufferLength);
-    lastRxPacketPtr->buffer[lastRxPacketPtr->bufferLength] = b;
+    PERILIB_DEBUG_PRINTLN(rxPacketPtr->bufferLength);
+    rxPacketPtr->buffer[rxPacketPtr->bufferLength] = b;
     
     // calculate this once here because we use it a bunch of times
-    uint16_t nextBufferLength = lastRxPacketPtr->bufferLength + 1;
+    uint16_t nextBufferLength = rxPacketPtr->bufferLength + 1;
     
     if (parserStatus == ParseStatus::IDLE)
     {
         // not already in a packet, so run through start boundary test function
-        parserStatus = protocolPtr->testPacketStart(lastRxPacketPtr->buffer, nextBufferLength, this);
+        parserStatus = protocolPtr->testPacketStart(rxPacketPtr->buffer, nextBufferLength, this);
         
         // if we just started and there's a defined timeout, start the timer
         if (parserStatus != ParseStatus::IDLE && protocolPtr->incomingPacketTimeoutMs != 0)
@@ -116,13 +116,13 @@ int8_t StreamParserGenerator::parse(uint8_t b)
         if (backspace)
         {
             // remove a byte from the buffer, if possible
-            if (lastRxPacketPtr->bufferLength > 0)
+            if (rxPacketPtr->bufferLength > 0)
             {
-                lastRxPacketPtr->bufferLength--;
+                rxPacketPtr->bufferLength--;
             }
                 
             // check for empty buffer
-            if (lastRxPacketPtr->bufferLength == 0)
+            if (rxPacketPtr->bufferLength == 0)
             {
                 parserStatus = ParseStatus::IDLE;
             }
@@ -132,22 +132,22 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             // continue testing start conditions if we haven't fully started yet
             if (parserStatus == ParseStatus::STARTING)
             {
-                parserStatus = protocolPtr->testPacketStart(lastRxPacketPtr->buffer, nextBufferLength, this);
+                parserStatus = protocolPtr->testPacketStart(rxPacketPtr->buffer, nextBufferLength, this);
             }
     
             // test for completion conditions if we've fully started
             if (parserStatus == ParseStatus::IN_PROGRESS)
             {
-                parserStatus = protocolPtr->testPacketComplete(lastRxPacketPtr->buffer, nextBufferLength, this);
+                parserStatus = protocolPtr->testPacketComplete(rxPacketPtr->buffer, nextBufferLength, this);
             }
     
             // increment buffer position to store byte permanently
             // (if the buffer has more space OR this is the end of the packet, since buffer has 1 spare byte)
-            if (parserStatus == ParseStatus::COMPLETE || nextBufferLength < lastRxPacketPtr->bufferSize)
+            if (parserStatus == ParseStatus::COMPLETE || nextBufferLength < rxPacketPtr->bufferSize)
             {
-                lastRxPacketPtr->bufferLength = nextBufferLength;
-                PERILIB_DEBUG_PRINT("lastRxPacketPtr->bufferLength=");
-                PERILIB_DEBUG_PRINTLN(lastRxPacketPtr->bufferLength);
+                rxPacketPtr->bufferLength = nextBufferLength;
+                PERILIB_DEBUG_PRINT("rxPacketPtr->bufferLength=");
+                PERILIB_DEBUG_PRINTLN(rxPacketPtr->bufferLength);
             }
         }
         
@@ -158,25 +158,25 @@ int8_t StreamParserGenerator::parse(uint8_t b)
             if (protocolPtr->trimByteCount != 0)
             {
                 // check for a byte match
-                for (i = 0; i < protocolPtr->trimByteCount && lastRxPacketPtr->bufferLength > 0; i++)
+                for (i = 0; i < protocolPtr->trimByteCount && rxPacketPtr->bufferLength > 0; i++)
                 {
-                    if (lastRxPacketPtr->buffer[lastRxPacketPtr->bufferLength - 1] == protocolPtr->trimBytes[i])
+                    if (rxPacketPtr->buffer[rxPacketPtr->bufferLength - 1] == protocolPtr->trimBytes[i])
                     {
                         // matching trim byte, so remove it
-                        lastRxPacketPtr->bufferLength--;
-                        PERILIB_DEBUG_PRINT("lastRxPacketPtr->bufferLength=");
-                        PERILIB_DEBUG_PRINTLN(lastRxPacketPtr->bufferLength);
+                        rxPacketPtr->bufferLength--;
+                        PERILIB_DEBUG_PRINT("rxPacketPtr->bufferLength=");
+                        PERILIB_DEBUG_PRINTLN(rxPacketPtr->bufferLength);
                     }
                 }
             }
 
             // convert the buffer to a packet
-            protocolPtr->getPacketFromBuffer(lastRxPacketPtr, lastRxPacketPtr->buffer, lastRxPacketPtr->bufferLength, this);
+            protocolPtr->getPacketFromBuffer(rxPacketPtr, rxPacketPtr->buffer, rxPacketPtr->bufferLength, this);
             
             // trigger application-level callback, if defined
             if (onRxPacket)
             {
-                onRxPacket(lastRxPacketPtr);
+                onRxPacket(rxPacketPtr);
             }
 
             // reset the parser
@@ -212,7 +212,7 @@ int8_t StreamParserGenerator::generate(uint16_t index, va_list argv)
     if (!protocolPtr) return Result::NULL_POINTER;
     
     // create packet
-    return protocolPtr->getPacketFromIndexAndArgs(lastTxPacketPtr, index, argv, this);
+    return protocolPtr->getPacketFromIndexAndArgs(txPacketPtr, index, argv, this);
 }
 
 void StreamParserGenerator::incomingPacketTimedOut()
@@ -222,7 +222,7 @@ void StreamParserGenerator::incomingPacketTimedOut()
     // trigger application-level callback, if defined
     if (onIncomingPacketTimeout)
     {
-        onIncomingPacketTimeout(lastRxPacketPtr->buffer, lastRxPacketPtr->bufferLength, this);
+        onIncomingPacketTimeout(rxPacketPtr->buffer, rxPacketPtr->bufferLength, this);
     }
     
     // reset the parser

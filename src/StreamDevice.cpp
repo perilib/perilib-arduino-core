@@ -51,8 +51,8 @@ int8_t StreamDevice::sendPacket(uint16_t index, ...)
             if (onPreTransmission() == Result::OK)
             {
                 result = streamPtr->write(
-                    streamPtr->parserGeneratorPtr->lastTxPacketPtr->buffer,
-                    streamPtr->parserGeneratorPtr->lastTxPacketPtr->bufferLength);
+                    streamPtr->parserGeneratorPtr->txPacketPtr->buffer,
+                    streamPtr->parserGeneratorPtr->txPacketPtr->bufferLength);
                 
                 // wrap up anything needed afterwards
                 onPostTransmission();
