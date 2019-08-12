@@ -63,12 +63,13 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
             // send register address to device
             arduinoWirePtr->beginTransmission(devAddr);
             arduinoWirePtr->write(regAddr);
-            arduinoWirePtr->endTransmission();
+            if (arduinoWirePtr->endTransmission() != 0) break;
     
             // read requested bytes from device
             arduinoWirePtr->beginTransmission(devAddr);
             arduinoWirePtr->requestFrom((int)devAddr, (int)chunkSize);
-            for (; arduinoWirePtr->available(); count++) {
+            for (; arduinoWirePtr->available(); count++)
+            {
                 data[count] = arduinoWirePtr->read();
             }
             
@@ -82,7 +83,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
 }
 
 
-uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
+uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk)
 {
     PERILIB_DEBUG_PRINT("TwiRegisterInterface::writeBytes(");
     PERILIB_DEBUG_PRINT(regAddr);
@@ -102,8 +103,10 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
         {
             if (midstream)
             {
-                // mid-transmission, so send current block but don't stop (next block will use repeated start)
-                if (arduinoWirePtr->endTransmission(false) == 0) count += chunkSize;
+                // mid-transmission, so send current block
+                // (optionally skip STOP, default disable and depends on device implementation)
+                if (arduinoWirePtr->endTransmission(!repeatedStartChunk) == 0) count += chunkSize;
+                else break;
             }
             
             // limit chunk size if necessary
@@ -121,8 +124,8 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
             midstream = true;
         }
         
-        // finish transmission with stop signal
-        if (arduinoWirePtr->endTransmission() == 0) count += chunkSize;
+        // finish transmission with stop signal (only if we didn't break early)
+        if (!length && arduinoWirePtr->endTransmission(true) == 0) count += chunkSize;
     }
     
     // NOTE: The endTransmission() method only reports a basic status byte, so

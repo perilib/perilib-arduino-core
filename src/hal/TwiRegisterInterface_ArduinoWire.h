@@ -46,7 +46,7 @@ public:
               arduinoWirePtr(arduinoWirePtr) { };
        
     virtual uint16_t readBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
-    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length);
+    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk=false);
     
     uint8_t devAddr;
     
