@@ -55,7 +55,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
     {
         while (length)
         {
-            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH;
+            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1;
             
             // limit chunk size if necessary
             if (chunkSize > length) chunkSize = length;
