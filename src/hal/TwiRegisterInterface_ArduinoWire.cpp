@@ -63,7 +63,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
             // send register address to device
             arduinoWirePtr->beginTransmission(devAddr);
             arduinoWirePtr->write(regAddr);
-            if (arduinoWirePtr->endTransmission(!repeatedStartChunk) != 0) break;
+            if (arduinoWirePtr->endTransmission(true) != 0) break;
     
             // read requested bytes from device
             arduinoWirePtr->beginTransmission(devAddr);
