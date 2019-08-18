@@ -33,6 +33,7 @@ install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/.
 script:
+  - buildExampleSketch I2C_Demo
   - buildExampleSketch LTV_Demo
   - buildExampleSketch Text_Demo
   - buildExampleSketch Text_Input
