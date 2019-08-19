@@ -33,8 +33,8 @@ install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/.
 script:
-  - buildExampleSketch I2C_Demo
-  - buildExampleSketch LTV_Demo
-  - buildExampleSketch Text_Demo
-  - buildExampleSketch Text_Input
-  - buildExampleSketch TLV_Demo
+  - buildExampleSketch Register_TWI_read_write
+  - buildExampleSketch Stream_LTV_parse
+  - buildExampleSketch Stream_text_parse
+  - buildExampleSketch Stream_test_serial_io
+  - buildExampleSketch Stream_TLV_parse
