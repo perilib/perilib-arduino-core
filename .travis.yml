@@ -36,5 +36,5 @@ script:
   - buildExampleSketch Register_TWI_read_write
   - buildExampleSketch Stream_LTV_parse
   - buildExampleSketch Stream_text_parse
-  - buildExampleSketch Stream_test_serial_io
+  - buildExampleSketch Stream_text_serial_io
   - buildExampleSketch Stream_TLV_parse
