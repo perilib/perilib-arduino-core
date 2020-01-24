@@ -55,7 +55,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
     {
         while (length)
         {
-            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1;
+            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for device address
             
             // limit chunk size if necessary
             if (chunkSize > length) chunkSize = length;
@@ -97,7 +97,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *
     if (arduinoWirePtr && data && length)
     {
         // send data to device
-        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for register address
+        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 2; // 1 byte for device address, 1 byte for register address
         bool midstream = false;
         while (length)
         {
