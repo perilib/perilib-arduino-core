@@ -42,7 +42,7 @@ namespace Perilib
 
 uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk)
 {
-    PERILIB_DEBUG_PRINT("TwiRegisterInterface::readBytes(");
+    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::readBytes(");
     PERILIB_DEBUG_PRINT(regAddr);
     PERILIB_DEBUG_PRINT(", *, ");
     PERILIB_DEBUG_PRINT(length);
@@ -85,7 +85,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
 
 uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk)
 {
-    PERILIB_DEBUG_PRINT("TwiRegisterInterface::writeBytes(");
+    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::writeBytes(");
     PERILIB_DEBUG_PRINT(regAddr);
     PERILIB_DEBUG_PRINT(", *, ");
     PERILIB_DEBUG_PRINT(length);
