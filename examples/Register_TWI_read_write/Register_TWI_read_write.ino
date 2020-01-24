@@ -26,9 +26,9 @@ void loop() {
   // read 512 bytes from register 0x6F
   int rxResult = twi.readBytes(0x6F, rxBuffer, 512);
   Serial.print("RX result: ");
-  Serial.print(rxResult); Serial.print(", ");
+  Serial.print(rxResult);
   Serial.println(" bytes read out of 512 requested");
 
   // wait between iterations
-  delay(5000);
+  delay(2000);
 }
