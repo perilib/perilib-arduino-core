@@ -26,45 +26,28 @@
 namespace Perilib
 {
 
-void RegisterInterface::process(uint8_t mode, bool force)
+int16_t RegisterInterface::prepareRegAddr(uint32_t regAddr, int8_t regAddrSize, uint8_t *regAddrOnWire)
 {
-    // suppress unused parameter warnings
-    (void)mode;
-    (void)force;
-}
-
-uint16_t RegisterInterface::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
-{
-    // suppress unused parameter warnings
-    (void)regAddr;
-    (void)data;
-    (void)length;
-
-    PERILIB_DEBUG_PRINT("RegisterInterface::readBytes(");
-    PERILIB_DEBUG_PRINT(regAddr);
-    PERILIB_DEBUG_PRINT(", *, ");
-    PERILIB_DEBUG_PRINT(length);
-    PERILIB_DEBUG_PRINTLN(")");
-
-    // STUB: any protocol requiring outgoing data should override this implementation
-    return 0;
-}
-
-uint16_t RegisterInterface::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length)
-{
-    // suppress unused parameter warnings
-    (void)regAddr;
-    (void)data;
-    (void)length;
-
-    PERILIB_DEBUG_PRINT("RegisterInterface::writeBytes(");
-    PERILIB_DEBUG_PRINT(regAddr);
-    PERILIB_DEBUG_PRINT(", *, ");
-    PERILIB_DEBUG_PRINT(length);
-    PERILIB_DEBUG_PRINTLN(")");
-
-    // STUB: any protocol requiring outgoing data should override this implementation
-    return 0;
+    // don't do anything if we have no register address to work with
+    if (!regAddrSize) return 0;
+    
+    bool isRegAddrBigEndian = (regAddrSize < 0); // check for big-endian
+    if (isRegAddrBigEndian) regAddrSize = -regAddrSize; // use absolute value
+    if (regAddrSize > 4) regAddrSize = 4; // limit to 32 bits
+    if (isRegAddrBigEndian)
+    {
+        // copy bytes backwards into buffer
+        uint8_t *src = (uint8_t *)&regAddr + regAddrSize - 1;
+        uint8_t i;
+        for (i = 0; i < regAddrSize; i++) *regAddrOnWire++ = *src--;
+    }
+    else
+    {
+        // copy bytes directly
+        memcpy(regAddrOnWire, (uint8_t *)&regAddr, regAddrSize);
+    }
+    
+    return regAddrSize;
 }
 
 } // namespace Perilib

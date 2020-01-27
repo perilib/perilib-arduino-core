@@ -37,18 +37,51 @@ class TwiRegisterInterface_ArduinoWire : public RegisterInterface
 {
 public:
     TwiRegisterInterface_ArduinoWire(
-        uint8_t devAddr=0,
+        uint16_t slaveAddr=0,
         ::TwoWire *arduinoWirePtr=0,
         RegisterMap *registerMapPtr=0,
         RegisterDevice *devicePtr=0)
             : RegisterInterface(registerMapPtr, (RegisterDevice *)devicePtr),
-              devAddr(devAddr),
+              slaveAddr(slaveAddr),
+              repeatRegAddr(true),
+              stopAfterComplete(true),
+              stopAfterChunk(true),
+              stopAfterAddress(false),
               arduinoWirePtr(arduinoWirePtr) { };
-       
-    virtual uint16_t readBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk=false);
-    virtual uint16_t writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk=false);
     
-    uint8_t devAddr;
+    // implementation of pure virtual functions in RegisterInterface   
+    virtual uint16_t read(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength);
+    virtual uint16_t write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength);
+    
+    // ArduinoWire-specific overloads to configure per-transaction behavior
+    virtual uint16_t read(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength,
+        bool repeatRegAddr,
+        bool stopAfterComplete,
+        bool stopAfterChunk,
+        bool stopAfterAddress) {
+            this->repeatRegAddr = repeatRegAddr;
+            this->stopAfterComplete = stopAfterComplete;
+            this->stopAfterChunk = stopAfterChunk;
+            this->stopAfterAddress = stopAfterAddress;
+            return read(regAddr, regAddrSize, data, dataLength);
+        }
+        
+    virtual uint16_t write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength,
+        bool repeatRegAddr,
+        bool stopAfterComplete,
+        bool stopAfterChunk) {
+            this->repeatRegAddr = repeatRegAddr;
+            this->stopAfterComplete = stopAfterComplete;
+            this->stopAfterChunk = stopAfterChunk;
+            return write(regAddr, regAddrSize, data, dataLength);
+        }
+    
+    uint16_t slaveAddr;
+    
+    bool repeatRegAddr;
+    bool stopAfterComplete;
+    bool stopAfterChunk;
+    bool stopAfterAddress;
     
     ::TwoWire *arduinoWirePtr;
 };

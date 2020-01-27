@@ -40,41 +40,69 @@
 namespace Perilib
 {
 
-uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk)
+uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
 {
-    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::readBytes(");
+    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::read(");
     PERILIB_DEBUG_PRINT(regAddr);
+    PERILIB_DEBUG_PRINT(", ");
+    PERILIB_DEBUG_PRINT(regAddrSize);
     PERILIB_DEBUG_PRINT(", *, ");
-    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINT(dataLength);
     PERILIB_DEBUG_PRINTLN(")");
 
     uint16_t count = 0;
+    bool isDataReversed = dataLength < 0;
+    if (isDataReversed) dataLength = -dataLength;
+    uint16_t completeLength = dataLength;
 
     // ensure TwoWire interface and data pointers are not NULL, and length > 0
-    if (arduinoWirePtr && data && length)
+    if (arduinoWirePtr && data && dataLength)
     {
-        while (length)
-        {
-            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for device address
-            
-            // limit chunk size if necessary
-            if (chunkSize > length) chunkSize = length;
+        // prepare register address byte order (99% of the time this is one byte anyway)
+        uint8_t regAddrOnWire[4];
+        if (regAddrSize) regAddrSize = prepareRegAddr(regAddr, regAddrSize, regAddrOnWire);
 
-            // send register address to device
-            arduinoWirePtr->beginTransmission(devAddr);
-            arduinoWirePtr->write(regAddr);
-            if (arduinoWirePtr->endTransmission(true) != 0) break;
-    
+        bool midstream = false;
+        while (dataLength)
+        {
+            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
+            
+            if (regAddrSize != 0 && (!midstream || repeatRegAddr))
+            {
+                // send register address to device
+                arduinoWirePtr->beginTransmission(slaveAddr);
+                arduinoWirePtr->write(regAddrOnWire, regAddrSize);
+                if (arduinoWirePtr->endTransmission(stopAfterAddress) != 0) break;
+            }
+
+            // limit chunk size if necessary
+            if (chunkSize > dataLength) chunkSize = dataLength;
+
+            // if this will be the last read, use the correct stop setting
+            if (chunkSize == dataLength) stopAfterChunk = stopAfterComplete;
+
             // read requested bytes from device
-            arduinoWirePtr->beginTransmission(devAddr);
-            arduinoWirePtr->requestFrom((int)devAddr, (int)chunkSize, !repeatedStartChunk);
+            arduinoWirePtr->requestFrom((int)slaveAddr, (int)chunkSize, stopAfterChunk);
             for (; arduinoWirePtr->available(); count++)
             {
-                data[count] = arduinoWirePtr->read();
+                // read data from Wire HAL into destination buffer
+                if (isDataReversed)
+                {
+                    // store from end of buffer to beginning
+                    data[completeLength - count - 1] = arduinoWirePtr->read();
+                }
+                else
+                {
+                    // store from beginning of buffer to end (normal)
+                    data[count] = arduinoWirePtr->read();
+                }
             }
             
             // decrease remaining bytes by what we requested to read
-            length -= chunkSize;
+            dataLength -= chunkSize;
+
+            // set midstream flag so if we loop, we know to test chunk restart flag
+            midstream = true;
         }
     }
     
@@ -83,49 +111,83 @@ uint16_t TwiRegisterInterface_ArduinoWire::readBytes(uint8_t regAddr, uint8_t *d
 }
 
 
-uint16_t TwiRegisterInterface_ArduinoWire::writeBytes(uint8_t regAddr, uint8_t *data, uint16_t length, bool repeatedStartChunk)
+uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
 {
-    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::writeBytes(");
+    PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::write(");
     PERILIB_DEBUG_PRINT(regAddr);
+    PERILIB_DEBUG_PRINT(", ");
+    PERILIB_DEBUG_PRINT(regAddrSize);
     PERILIB_DEBUG_PRINT(", *, ");
-    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINT(dataLength);
     PERILIB_DEBUG_PRINTLN(")");
     
-    uint16_t count = 0;
+    uint16_t count;
+    bool isDataReversed = dataLength < 0;
+    if (isDataReversed) dataLength = -dataLength;
+    uint16_t completeLength = dataLength;
 
     // ensure TwoWire interface and data pointers are not NULL, and length > 0
-    if (arduinoWirePtr && data && length)
+    if (arduinoWirePtr && data && dataLength)
     {
+        // prepare register address byte order (99% of the time this is one byte anyway)
+        uint8_t regAddrOnWire[4];
+        if (regAddrSize) regAddrSize = prepareRegAddr(regAddr, regAddrSize, regAddrOnWire);
+        
         // send data to device
-        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 2; // 1 byte for device address, 1 byte for register address
+        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
         bool midstream = false;
-        while (length)
+        count = 0;
+        while (dataLength)
         {
             if (midstream)
             {
                 // mid-transmission, so send current block
                 // (optionally skip STOP, default disable and depends on device implementation)
-                if (arduinoWirePtr->endTransmission(!repeatedStartChunk) == 0) count += chunkSize;
+                if (arduinoWirePtr->endTransmission(stopAfterChunk) == 0) count += chunkSize;
                 else break;
             }
             
-            // limit chunk size if necessary
-            if (chunkSize > length) chunkSize = length;
+            // begin new chunk transmission
+            arduinoWirePtr->beginTransmission(slaveAddr);
             
-            // begin new block
-            arduinoWirePtr->beginTransmission(devAddr);
-            arduinoWirePtr->write(regAddr);
-            arduinoWirePtr->write(data + count, chunkSize);
+            // reset chunk size to maximum
+            chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
+            
+            // send address if this is the first time, or we're supposed to do it every time
+            if (regAddrSize != 0 && (!midstream || repeatRegAddr))
+            {
+                arduinoWirePtr->write(regAddrOnWire, regAddrSize);
+                chunkSize -= regAddrSize;
+            }
+
+            // limit chunk size if necessary
+            if (chunkSize > dataLength) chunkSize = dataLength;
+            
+            // write data from source buffer into Wire HAL
+            if (isDataReversed)
+            {
+                // send data chunk from end to beginning
+                uint16_t i;
+                for (i = 0; i < chunkSize; i++)
+                {
+                    arduinoWirePtr->write(data[completeLength - count - i - 1]);
+                }
+            }
+            else
+            {
+                // send data chunk as-is
+                arduinoWirePtr->write(data + count, chunkSize);
+            }
             
             // decrease remaining bytes by what we tried to send
-            length -= chunkSize;
+            dataLength -= chunkSize;
             
             // set midstream flag so if we loop, we'll transmit this chunk first
             midstream = true;
         }
         
         // finish transmission with stop signal (only if we didn't break early)
-        if (!length && arduinoWirePtr->endTransmission(true) == 0) count += chunkSize;
+        if (!dataLength && arduinoWirePtr->endTransmission(stopAfterComplete) == 0) count += chunkSize;
     }
     
     // NOTE: The endTransmission() method only reports a basic status byte, so
