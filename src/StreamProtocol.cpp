@@ -133,10 +133,12 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             case StreamProtocol::INT32:
                 /* 4 bytes, start with 2 and fall through two ++ */
                 size = 2;
+                // FALL THROUGH
             case StreamProtocol::UINT16:
             case StreamProtocol::INT16:
                 /* 2 bytes, start with 1 and fall through one ++ */
                 size++;
+                // FALL THROUGH
             case StreamProtocol::UINT8:
             case StreamProtocol::INT8:
                 /* 1 byte */
@@ -155,6 +157,7 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             case StreamProtocol::INT16:
                 /* 2 bytes, start with 1 and fall through one ++ */
                 size = 1;
+                // FALL THROUGH
             case StreamProtocol::UINT8:
             case StreamProtocol::INT8:
                 /* 1 byte */
@@ -166,9 +169,11 @@ int8_t StreamProtocol::getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t 
             case StreamProtocol::MACADDR:
                 /* 6 bytes exactly, start with 4 and fall through two ++ */
                 size = 4;
+                // FALL THROUGH
             case StreamProtocol::LONGUINT8A:
                 /* 2 bytes minimum, start with 1 and fall through one ++ */
                 size++;
+                // FALL THROUGH
             case StreamProtocol::UINT8A:
                 /* 1 byte minimum */
                 size++;
