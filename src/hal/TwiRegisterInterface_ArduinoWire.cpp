@@ -53,7 +53,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
     uint16_t count = 0;
     bool isDataReversed = dataLength < 0;
     if (isDataReversed) dataLength = -dataLength;
-    uint16_t completeLength = dataLength;
+    int16_t completeLength = dataLength;
 
     // ensure TwoWire interface and data pointers are not NULL, and length > 0
     if (arduinoWirePtr && data && dataLength)
@@ -65,7 +65,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
         bool midstream = false;
         while (dataLength)
         {
-            uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
+            int16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
             
             if (regAddrSize != 0 && (!midstream || repeatRegAddr))
             {
@@ -124,7 +124,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
     uint16_t count;
     bool isDataReversed = dataLength < 0;
     if (isDataReversed) dataLength = -dataLength;
-    uint16_t completeLength = dataLength;
+    int16_t completeLength = dataLength;
 
     // ensure TwoWire interface and data pointers are not NULL, and length > 0
     if (arduinoWirePtr && data && dataLength)
@@ -134,7 +134,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
         if (regAddrSize) regAddrSize = prepareRegAddr(regAddr, regAddrSize, regAddrOnWire);
         
         // send data to device
-        uint16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
+        int16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
         bool midstream = false;
         count = 0;
         while (dataLength)
