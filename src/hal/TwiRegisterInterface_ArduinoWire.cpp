@@ -167,7 +167,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
             if (isDataReversed)
             {
                 // send data chunk from end to beginning
-                uint16_t i;
+                int16_t i;
                 for (i = 0; i < chunkSize; i++)
                 {
                     arduinoWirePtr->write(data[completeLength - count - i - 1]);
