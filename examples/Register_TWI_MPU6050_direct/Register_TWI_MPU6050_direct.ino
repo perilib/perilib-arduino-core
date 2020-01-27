@@ -34,7 +34,7 @@ imu_data_t imuData;
 
 void setup() {
   // initialize host serial interface for monitoring
-  Serial.begin(9600);
+  //Serial.begin(9600);
   
   // wait for enumeration for USB-based serial interface (optional)
   while (!Serial);
