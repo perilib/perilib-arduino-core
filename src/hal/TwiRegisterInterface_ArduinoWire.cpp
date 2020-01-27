@@ -70,7 +70,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
             if (regAddrSize != 0 && (!midstream || repeatRegAddr))
             {
                 // send register address to device
-                arduinoWirePtr->beginTransmission(slaveAddr);
+                arduinoWirePtr->beginTransmission((int)slaveAddr);
                 arduinoWirePtr->write(regAddrOnWire, regAddrSize);
                 if (arduinoWirePtr->endTransmission(stopAfterAddress) != 0) break;
             }
@@ -148,7 +148,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
             }
             
             // begin new chunk transmission
-            arduinoWirePtr->beginTransmission(slaveAddr);
+            arduinoWirePtr->beginTransmission((int)slaveAddr);
             
             // reset chunk size to maximum
             chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
