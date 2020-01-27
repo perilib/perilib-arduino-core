@@ -46,7 +46,7 @@ void setup() {
   mpu6050.read8_reg8(MPU6060_REGADDR_WHO_AM_I, imuData.buf);
   if (imuData.buf[0] != 0x68) {
     Serial.println("Did not receive expected 0x68 response from MPU-6050. Verify connections:");
-    Serial.println("- VCC/VDD is 3.3v");
+    Serial.println("- VCC is 3.3v");
     Serial.println("- GND is common between MCU and IMU");
     Serial.println("- SDA/SCL are not swapped");
     Serial.println("- SDA/SCL have independent ~4.7k pull-ups to VCC");
@@ -59,7 +59,7 @@ void setup() {
 }
 
 void loop() {
-  // read raw IMU data (using "-14" to denote reverse incoming storage order)
+  // read raw IMU data (datalength is "-14" to store 14 incoming bytes in reverse order)
   int rxResult = mpu6050.readBuf_reg8(MPU6050_REGADDR_ACCEL_XOUT_H, imuData.buf, -14);
   if (rxResult != 14) {
     Serial.println("Error reading data from IMU");
