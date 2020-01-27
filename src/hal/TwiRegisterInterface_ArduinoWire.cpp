@@ -121,7 +121,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
     PERILIB_DEBUG_PRINT(dataLength);
     PERILIB_DEBUG_PRINTLN(")");
     
-    uint16_t count;
+    uint16_t count = 0;
     bool isDataReversed = dataLength < 0;
     if (isDataReversed) dataLength = -dataLength;
     int16_t completeLength = dataLength;
