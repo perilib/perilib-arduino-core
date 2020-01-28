@@ -34,6 +34,7 @@ install:
   - ln -s $PWD $HOME/Arduino/libraries/.
 script:
   - buildExampleSketch Register_TWI_read_write
+  - buildExampleSketch Register_TWI_MPU6050_direct
   - buildExampleSketch Stream_LTV_parse
   - buildExampleSketch Stream_text_parse
   - buildExampleSketch Stream_text_serial_io
