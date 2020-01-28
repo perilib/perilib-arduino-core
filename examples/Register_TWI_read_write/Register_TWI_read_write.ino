@@ -31,7 +31,7 @@ void setup() {
   // initialize host serial interface for monitoring
   Serial.begin(9600);
   
-  // wait for enumeration for USB-based serial interface (optional)
+  // wait for enumeration with USB-based serial interface (optional)
   //while (!Serial);
   
   // initialize Wire interface

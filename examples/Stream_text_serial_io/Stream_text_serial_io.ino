@@ -44,8 +44,8 @@ void setup() {
   // assign callbacks
   parser.onRxPacket = onRxPacket;
   
-  // wait until host opens serial port
-  while (!Serial);
+  // wait for enumeration with USB-based serial interface (optional)
+  //while (!Serial);
   
   // initialize host serial interface for monitoring
   Serial.begin(9600);
