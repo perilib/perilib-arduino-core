@@ -43,18 +43,56 @@ void setup() {
 }
 
 void loop() {
-  // write 512 bytes to register 0x01
-  int txResult = twiSlave.writeBuf_reg8(0x01, txBuffer, 512);
+  int bytesProcessed;
+  
+  uint8_t u8;
+  uint16_t u16;
+  uint32_t u32;
+
+  // write 512 bytes to 8-bit register 0x01
+  bytesProcessed = twiSlave.writeBuf_reg8(0x01, txBuffer, 512);
   Serial.print("TX result: ");
-  Serial.print(txResult);
+  Serial.print(bytesProcessed);
   Serial.println(" bytes written out of 512 attempted");
 
-  // read 512 bytes from register 0x02
-  int rxResult = twiSlave.readBuf_reg8(0x02, rxBuffer, 512);
+  // read 512 bytes from 8-bit register 0x02
+  bytesProcessed = twiSlave.readBuf_reg8(0x02, rxBuffer, 512);
   Serial.print("RX result: ");
-  Serial.print(rxResult);
+  Serial.print(bytesProcessed);
   Serial.println(" bytes read out of 512 requested");
   
+  // read 8-bit value (byte) from 8-bit register address 0x03
+  twiSlave.read8_reg8(0x03, &u8);
+  Serial.print("RX byte: 0x");
+  Serial.println(u8, HEX);
+  
+  // read little-endian 16-bit value (uint16) from 8-bit register address 0x04
+  twiSlave.read16le_reg8(0x04, &u16);
+  Serial.print("RX 16-bit little-endian value: 0x");
+  Serial.println(u16, HEX);
+  
+  // read big-endian 16-bit value (uint16) from same 8-bit register address 0x04
+  twiSlave.read16be_reg8(0x04, &u16);
+  Serial.print("RX 16-bit big-endian value: 0x");
+  Serial.println(u16, HEX);
+
+  // read little-endian 32-bit value (uint32) from 8-bit register address 0x05
+  twiSlave.read32le_reg8(0x05, &u32);
+  Serial.print("RX 16-bit little-endian value: 0x");
+  Serial.println(u32, HEX);
+  
+  // read big-endian 32-bit value (uint32) from same 8-bit register address 0x05
+  twiSlave.read32be_reg8(0x05, &u32);
+  Serial.print("RX 16-bit big-endian value: 0x");
+  Serial.println(u32, HEX);
+  
+  // NOTE: Most I2C peripherals that I have encountered in the wild use 8-bit
+  // register addresses. However, 16-bit register addresses do exist, and you
+  // can easily use those with Perilib as well. Multi-byte register addresses
+  // must be identified (like data values) as little-endian or big-endian. For
+  // example:
+  //twiSlave.read32le_reg16le(0x1234, &u32);
+
   // wait between iterations
-  delay(2000);
+  delay(5000);
 }
