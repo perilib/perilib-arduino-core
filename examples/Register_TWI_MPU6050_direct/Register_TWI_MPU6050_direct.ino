@@ -65,7 +65,7 @@ void setup() {
   // initialize Wire interface
   Wire.begin();
   
-  // confirm presense of MPU-6050
+  // confirm presence of MPU-6050
   mpu6050.read8_reg8(MPU6060_REGADDR_WHO_AM_I, imuData.buf);
   if (imuData.buf[0] != 0x68) {
     Serial.println("Did not receive expected 0x68 response from MPU-6050. Verify connections:");
