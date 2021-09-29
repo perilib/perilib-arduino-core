@@ -1,4 +1,4 @@
-name: Arduino_CI
+name: "Arduino CI"
 
 on: [push, pull_request]
 
@@ -12,5 +12,5 @@ jobs:
         env:
           USE_SUBDIR: .
           EXPECT_EXAMPLES: true
-          EXPECT_UNITTESTS: false
+          # EXPECT_UNITTESTS: false
           # CUSTOM_INIT_SCRIPT: install_dependencies.sh
