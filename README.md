@@ -1,4 +1,4 @@
-# perilib-arduino-hal
-Arduino hardware abstraction layer for protocol communications
+# perilib-arduino-core
+Arduino core implementation for for protocol communications
 
-[![Build Status](https://travis-ci.org/perilib/perilib-arduino-core.svg?branch=master)](https://travis-ci.org/perilib/perilib-arduino-core)
+[![Arduino CI](https://github.com/perilib/perilib-arduino-core/workflows/Arduino_CI/badge.svg)](https://github.com/marketplace/actions/arduino_ci)
