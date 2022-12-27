@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,23 +20,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_REGISTERINTERFACE_H__
 #define __PERILIB_REGISTERINTERFACE_H__
 
-#include "common.h"
-#include "RegisterDevice.h"
-#include "RegisterMap.h"
+#include "PerilibCommon.h"
+#include "PerilibRegisterDevice.h"
+#include "PerilibRegisterMap.h"
 
-namespace Perilib
-{
-
-class RegisterInterface
+class PerilibRegisterInterface
 {
 public:
-    RegisterInterface(
-        RegisterMap *registerMapPtr=0,
-        RegisterDevice *devicePtr=0)
+    PerilibRegisterInterface(
+        PerilibRegisterMap *registerMapPtr=0,
+        PerilibRegisterDevice *devicePtr=0)
             : registerMapPtr(registerMapPtr),
               devicePtr(devicePtr) { };
 
@@ -60,7 +57,7 @@ public:
     uint16_t read32be_reg16le(uint16_t regAddr, uint32_t *value) { return read(regAddr,  2, (uint8_t *)value, -4); }    /// Read    big-endian 32-bit value using little-endian 16-bit register address
     uint16_t read32le_reg16be(uint16_t regAddr, uint32_t *value) { return read(regAddr, -2, (uint8_t *)value,  4); }    /// Read little-endian 32-bit value using little-endian 16-bit register address
     uint16_t read32be_reg16be(uint16_t regAddr, uint32_t *value) { return read(regAddr, -2, (uint8_t *)value, -4); }    /// Read    big-endian 32-bit value using little-endian 16-bit register address
-    
+
     uint16_t readBuf          (                  uint8_t *data, int16_t dataLength) { return read(0,        0, data, dataLength); } /// Read arbitrary buffer directly without register address
     uint16_t readBuf_reg8     (uint8_t  regAddr, uint8_t *data, int16_t dataLength) { return read(regAddr,  1, data, dataLength); } /// Read arbitrary buffer using 8-bit register address
     uint16_t readBuf_reg16le  (uint16_t regAddr, uint8_t *data, int16_t dataLength) { return read(regAddr,  2, data, dataLength); } /// Read arbitrary buffer using little-endian 16-bit register address
@@ -97,15 +94,13 @@ public:
     virtual uint16_t write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength) = 0;
 
     // as a host/master-driven interface, continuous processing may not be required
-    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false) { (void)mode; (void)force; }
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false) { (void)mode; (void)force; }
 
-    RegisterMap *registerMapPtr;
-    RegisterDevice *devicePtr;
+    PerilibRegisterMap *registerMapPtr;
+    PerilibRegisterDevice *devicePtr;
 
 protected:
     int16_t prepareRegAddr(uint32_t regAddr, int8_t regAddrSize, uint8_t *regAddrOnWire);
 };
-
-} // namespace Perilib
 
 #endif /* __PERILIB_REGISTERINTERFACE_H__ */

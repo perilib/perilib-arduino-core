@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,28 +20,30 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#include "TLVStreamProtocol.h"
 
-namespace Perilib
+#ifndef __PERILIB_TEXTSTREAMPROTOCOL_H__
+#define __PERILIB_TEXTSTREAMPROTOCOL_H__
+
+#include "PerilibCommon.h"
+#include "PerilibStreamProtocol.h"
+
+class PerilibTextStreamProtocol : public PerilibStreamProtocol
 {
-
-int8_t TLVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
-{
-    // suppress unused parameter warnings
-    (void)parserGenerator;
-    (void)isTx;
-
-    // simple terminal condition for TLV data, where T/L are single bytes
-    // [type] [length] [v0, v1, ..., v<length>]
-    if (length > 1 && length == (uint16_t)(buffer[1] + 2))
+public:
+    PerilibTextStreamProtocol()
     {
-        // existing buffer is expected length
-        return ParseStatus::COMPLETE;
+        backspaceByteCount = sizeof(textBackspaceBytes);
+        backspaceBytes = textBackspaceBytes;
+        terminalByteCount = sizeof(textTerminalBytes);
+        terminalBytes = textTerminalBytes;
+        trimByteCount = sizeof(textTrimBytes);
+        trimBytes = textTrimBytes;
     }
 
-    // not finished if we made it here
-    return ParseStatus::IN_PROGRESS;
-}
+protected:
+    static const uint8_t textBackspaceBytes[2];
+    static const uint8_t textTerminalBytes[1];
+    static const uint8_t textTrimBytes[2];
+};
 
-} // namespace Perilib
+#endif /* __PERILIB_TEXTSTREAMPROTOCOL_H__ */

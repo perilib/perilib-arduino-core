@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,8 +20,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#include "hal/TwiRegisterInterface_ArduinoWire.h"
+
+#include "PerilibTwiRegisterInterface_ArduinoWire.h"
 
 #if defined(I2C_BUFFER_LENGTH)
     // Arduino ESP32 core Wire uses this
@@ -37,10 +37,7 @@
     #define PERILIB_WIRE_BUFFER_LENGTH 32
 #endif
 
-namespace Perilib
-{
-
-uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
+uint16_t PerilibTwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
 {
     PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::read(");
     PERILIB_DEBUG_PRINT(regAddr);
@@ -66,7 +63,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
         while (dataLength)
         {
             int16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
-            
+
             if (regAddrSize != 0 && (!midstream || repeatRegAddr))
             {
                 // send register address to device
@@ -97,7 +94,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
                     data[count] = arduinoWirePtr->read();
                 }
             }
-            
+
             // decrease remaining bytes by what we requested to read
             dataLength -= chunkSize;
 
@@ -105,13 +102,13 @@ uint16_t TwiRegisterInterface_ArduinoWire::read(uint32_t regAddr, int8_t regAddr
             midstream = true;
         }
     }
-    
+
     // return number of bytes read
     return count;
 }
 
 
-uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
+uint16_t PerilibTwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAddrSize, uint8_t *data, int16_t dataLength)
 {
     PERILIB_DEBUG_PRINT("TwiRegisterInterface_ArduinoWire::write(");
     PERILIB_DEBUG_PRINT(regAddr);
@@ -120,7 +117,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
     PERILIB_DEBUG_PRINT(", *, ");
     PERILIB_DEBUG_PRINT(dataLength);
     PERILIB_DEBUG_PRINTLN(")");
-    
+
     uint16_t count = 0;
     bool isDataReversed = dataLength < 0;
     if (isDataReversed) dataLength = -dataLength;
@@ -132,7 +129,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
         // prepare register address byte order (99% of the time this is one byte anyway)
         uint8_t regAddrOnWire[4];
         if (regAddrSize) regAddrSize = prepareRegAddr(regAddr, regAddrSize, regAddrOnWire);
-        
+
         // send data to device
         int16_t chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
         bool midstream = false;
@@ -146,13 +143,13 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
                 if (arduinoWirePtr->endTransmission(stopAfterChunk) == 0) count += chunkSize;
                 else break;
             }
-            
+
             // begin new chunk transmission
             arduinoWirePtr->beginTransmission((int)slaveAddr);
-            
+
             // reset chunk size to maximum
             chunkSize = PERILIB_WIRE_BUFFER_LENGTH - 1; // 1 byte for slave address
-            
+
             // send address if this is the first time, or we're supposed to do it every time
             if (regAddrSize != 0 && (!midstream || repeatRegAddr))
             {
@@ -162,7 +159,7 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
 
             // limit chunk size if necessary
             if (chunkSize > dataLength) chunkSize = dataLength;
-            
+
             // write data from source buffer into Wire HAL
             if (isDataReversed)
             {
@@ -178,18 +175,18 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
                 // send data chunk as-is
                 arduinoWirePtr->write(data + count, chunkSize);
             }
-            
+
             // decrease remaining bytes by what we tried to send
             dataLength -= chunkSize;
-            
+
             // set midstream flag so if we loop, we'll transmit this chunk first
             midstream = true;
         }
-        
+
         // finish transmission with stop signal (only if we didn't break early)
         if (!dataLength && arduinoWirePtr->endTransmission(stopAfterComplete) == 0) count += chunkSize;
     }
-    
+
     // NOTE: The endTransmission() method only reports a basic status byte, so
     // this count value only has resolution of chunk size. Each chunk is either
     // successful (100% counted) or unsuccessful (0% counted), but it is
@@ -202,5 +199,3 @@ uint16_t TwiRegisterInterface_ArduinoWire::write(uint32_t regAddr, int8_t regAdd
     // return number of bytes written
     return count;
 }
-
-} // namespace Perilib

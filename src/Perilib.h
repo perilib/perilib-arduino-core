@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,31 +20,31 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_H__
 #define __PERILIB_H__
 
 #include <Arduino.h>
 
-#include "common.h"
+#include "PerilibCommon.h"
 
-#include "Device.h"
-#include "Stream.h"
-#include "RegisterInterface.h"
+#include "PerilibDevice.h"
+#include "PerilibStream.h"
+#include "PerilibRegisterInterface.h"
 
-#include "StreamDevice.h"
-#include "StreamParserGenerator.h"
-#include "StreamProtocol.h"
-#include "StreamPacket.h"
+#include "PerilibStreamDevice.h"
+#include "PerilibStreamParserGenerator.h"
+#include "PerilibStreamProtocol.h"
+#include "PerilibStreamPacket.h"
 
-#include "RegisterDevice.h"
-#include "RegisterMap.h"
+#include "PerilibRegisterDevice.h"
+#include "PerilibRegisterMap.h"
 
-#include "TextStreamProtocol.h"
-#include "TLVStreamProtocol.h"
-#include "LTVStreamProtocol.h"
+#include "PerilibTextStreamProtocol.h"
+#include "PerilibTLVStreamProtocol.h"
+#include "PerilibLTVStreamProtocol.h"
 
-#include "hal/UartStream_ArduinoStream.h"
-#include "hal/TwiRegisterInterface_ArduinoWire.h"
+#include "hal/PerilibUartStream_ArduinoStream.h"
+#include "hal/PerilibTwiRegisterInterface_ArduinoWire.h"
 
 #endif /* __PERILIB_H__ */

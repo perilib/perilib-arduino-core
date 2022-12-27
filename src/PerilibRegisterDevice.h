@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,22 +20,24 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_TLVSTREAMPROTOCOL_H__
-#define __PERILIB_TLVSTREAMPROTOCOL_H__
 
-#include "common.h"
-#include "StreamProtocol.h"
+#ifndef __PERILIB_REGISTERDEVICE_H__
+#define __PERILIB_REGISTERDEVICE_H__
 
-namespace Perilib
-{
-    
-class TLVStreamProtocol : public StreamProtocol
+#include "PerilibCommon.h"
+#include "PerilibDevice.h"
+#include "PerilibRegisterInterface.h"
+
+class PerilibRegisterDevice : public PerilibDevice
 {
 public:
-    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
+    PerilibRegisterDevice(PerilibRegisterInterface *registerInterfacePtr=0)
+            : registerInterfacePtr(registerInterfacePtr) { };
+
+    virtual int8_t onPreTransmission();
+    virtual void onPostTransmission();
+
+    PerilibRegisterInterface *registerInterfacePtr;
 };
 
-} // namespace Perilib
-
-#endif /* __PERILIB_TLVSTREAMPROTOCOL_H__ */
+#endif /* __PERILIB_REGISTERDEVICE_H__ */

@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,14 +20,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#include "TextStreamProtocol.h"
 
-namespace Perilib
+#ifndef __PERILIB_DEVICE_H__
+#define __PERILIB_DEVICE_H__
+
+#include "PerilibCommon.h"
+
+class PerilibDevice
 {
+public:
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false) = 0;
+};
 
-const uint8_t TextStreamProtocol::textBackspaceBytes[2] = {0x08, 0x7F};
-const uint8_t TextStreamProtocol::textTerminalBytes[1] = {0x0A};
-const uint8_t TextStreamProtocol::textTrimBytes[2] = {0x0A, 0x0D};
-
-} // namespace Perilib
+#endif /* __PERILIB_DEVICE_H__ */

@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,19 +20,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_STREAMPROTOCOL_H__
 #define __PERILIB_STREAMPROTOCOL_H__
 
 #include <stdarg.h>
 
-#include "common.h"
-#include "StreamPacket.h"
+#include "PerilibCommon.h"
+#include "PerilibStreamPacket.h"
 
-namespace Perilib
-{
-    
-class StreamProtocol
+class PerilibStreamProtocol
 {
 public:
     typedef enum
@@ -48,7 +45,7 @@ public:
         MACADDR         /**< 6 bytes */
     } argtype_t;
 
-    StreamProtocol() :
+    PerilibStreamProtocol() :
             backspaceByteCount(0),
             backspaceBytes(0),
             terminalByteCount(0),
@@ -57,11 +54,11 @@ public:
             trimBytes(0),
             incomingPacketTimeoutMs(0),
             responsePacketTimeoutMs(0) { }
-    
-    virtual int8_t testPacketStart(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
-    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
-    virtual int8_t getPacketFromIndexAndArgs(StreamPacket *packet, uint16_t index, va_list argv, StreamParserGenerator *parserGenerator=0);
-    virtual int8_t getPacketFromBuffer(StreamPacket *packet, uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator=0, bool isTx=false);
+
+    virtual int8_t testPacketStart(const uint8_t *buffer, uint16_t length, PerilibStreamParserGenerator *parserGenerator=0, bool isTx=false);
+    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, PerilibStreamParserGenerator *parserGenerator=0, bool isTx=false);
+    virtual int8_t getPacketFromIndexAndArgs(PerilibStreamPacket *packet, uint16_t index, va_list argv, PerilibStreamParserGenerator *parserGenerator=0);
+    virtual int8_t getPacketFromBuffer(PerilibStreamPacket *packet, uint8_t *buffer, uint16_t length, PerilibStreamParserGenerator *parserGenerator=0, bool isTx=false);
     virtual int8_t getPacketDefinitionFromIndex(uint16_t index, const uint8_t **packetDef);
     virtual int8_t getPacketDefinitionFromBuffer(const uint8_t *buffer, uint16_t length, bool isTx, uint16_t *index, const uint8_t **packetDef);
     virtual uint8_t getArgumentCount(uint16_t index, const uint8_t *packetDef);
@@ -71,17 +68,15 @@ public:
 
     uint8_t backspaceByteCount;
     const uint8_t *backspaceBytes;
-    
+
     uint8_t terminalByteCount;
     const uint8_t *terminalBytes;
-    
+
     uint8_t trimByteCount;
     const uint8_t *trimBytes;
-    
+
     uint32_t incomingPacketTimeoutMs;
     uint32_t responsePacketTimeoutMs;
 };
-
-} // namespace Perilib
 
 #endif /* __PERILIB_STREAMPROTOCOL_H__ */

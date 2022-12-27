@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,32 +20,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#include "Stream.h"
 
-namespace Perilib
+#ifndef __PERILIB_LTVSTREAMPROTOCOL_H__
+#define __PERILIB_LTVSTREAMPROTOCOL_H__
+
+#include "PerilibCommon.h"
+#include "PerilibStreamProtocol.h"
+
+class PerilibLTVStreamProtocol : public PerilibStreamProtocol
 {
+public:
+    virtual int8_t testPacketComplete(const uint8_t *buffer, uint16_t length, PerilibStreamParserGenerator *parserGenerator=0, bool isTx=false);
+};
 
-uint16_t Stream::write(const uint8_t *data, uint16_t length)
-{
-    // suppress unused parameter warnings
-    (void)data;
-    (void)length;
-
-    PERILIB_DEBUG_PRINT("Stream::write(*, ");
-    PERILIB_DEBUG_PRINT(length);
-    PERILIB_DEBUG_PRINTLN(")");
-
-    // STUB: any protocol requiring outgoing data should override this implementation
-    return 0;
-}
-
-void Stream::process(uint8_t mode, bool force)
-{
-    if (parserGeneratorPtr && (mode == ProcessMode::SUBS || mode == ProcessMode::BOTH))
-    {
-        parserGeneratorPtr->process(ProcessMode::BOTH, force);
-    }
-}
-
-} // namespace Perilib
+#endif /* __PERILIB_LTVSTREAMPROTOCOL_H__ */

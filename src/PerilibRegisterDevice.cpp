@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,40 +20,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_STREAMPACKET_H__
-#define __PERILIB_STREAMPACKET_H__
 
-#include "common.h"
+#include "PerilibRegisterDevice.h"
 
-namespace Perilib
+int8_t PerilibRegisterDevice::onPreTransmission()
 {
+    // STUB: no conditions or actions, allow transmission
+    PERILIB_DEBUG_PRINTLN("RegisterDevice::onPreTransmission()");
+    return PerilibResult::OK;
+}
 
-class StreamPacket
+void PerilibRegisterDevice::onPostTransmission()
 {
-public:
-    StreamPacket(uint8_t *buffer, uint16_t bufferSize) :
-            buffer(buffer),
-            bufferSize(bufferSize)
-    {
-        PERILIB_DEBUG_PRINTLN("StreamPacket::StreamPacket()");
-    }
-    
-    virtual int8_t prepareBufferAfterBuilding()
-    {
-        PERILIB_DEBUG_PRINTLN("StreamPacket::prepareBufferAfterBuilding()");
-        return Result::OK;
-    }
-
-    StreamParserGenerator *parserGenerator;
-    uint8_t *buffer;
-    uint16_t bufferSize;
-    uint16_t bufferLength;
-
-    uint16_t index;
-    const uint8_t *definition;
-};
-
-} // namespace Perilib
-
-#endif /* __PERILIB_STREAMPACKET_H__ */
+    // STUB: nothing to do
+    PERILIB_DEBUG_PRINTLN("RegisterDevice::onPostTransmission()");
+}

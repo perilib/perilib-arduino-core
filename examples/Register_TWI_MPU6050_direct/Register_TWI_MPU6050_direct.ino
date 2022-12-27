@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,7 +20,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #include <Perilib.h>
 
 #define MPU6050_DEVADDR_DEFAULT         0x68
@@ -29,7 +29,7 @@
 #define MPU6060_REGADDR_WHO_AM_I        0x75
 
 // create dedicated interface object for MPU-6050 peripheral using Wire object
-Perilib::TwiRegisterInterface_ArduinoWire mpu6050(MPU6050_DEVADDR_DEFAULT, &Wire);
+PerilibTwiRegisterInterface_ArduinoWire mpu6050(MPU6050_DEVADDR_DEFAULT, &Wire);
 
 // handy union/struct for working with 7-register I2C read blobs from MPU-6050
 // ----------------------------------------------------------------------------
@@ -57,14 +57,14 @@ imu_data_t imuData;
 
 void setup() {
   // initialize host serial interface for monitoring
-  //Serial.begin(9600);
-  
+  Serial.begin(9600);
+
   // wait for enumeration with USB-based serial interface (optional)
   //while (!Serial);
-  
+
   // initialize Wire interface
   Wire.begin();
-  
+
   // confirm presence of MPU-6050
   mpu6050.read8_reg8(MPU6060_REGADDR_WHO_AM_I, imuData.buf);
   if (imuData.buf[0] != 0x68) {
@@ -76,7 +76,7 @@ void setup() {
     Serial.println("- AD0 slave address pin is tied or pulled to GND for default 0x68 slave address");
     while (1);
   }
-  
+
   // disable sleep on MPU
   mpu6050.write8_reg8(MPU6050_REGADDR_PWR_MGMT_1, 0x00);
 }
@@ -95,7 +95,7 @@ void loop() {
     Serial.print(imuData.gy); Serial.write(", ");
     Serial.println(imuData.gz);
   }
-  
+
   // wait 10ms between iterations for ~100Hz output
   delay(10);
 }

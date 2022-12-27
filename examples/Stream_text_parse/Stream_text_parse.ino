@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,25 +20,25 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #include <Perilib.h>
 
 uint8_t rxBuffer[32];
-Perilib::TextStreamProtocol protocol;
-Perilib::StreamPacket rxPacket(rxBuffer, sizeof(rxBuffer));
-Perilib::StreamParserGenerator parser(&protocol, &rxPacket, NULL);
+PerilibTextStreamProtocol protocol;
+PerilibStreamPacket rxPacket(rxBuffer, sizeof(rxBuffer));
+PerilibStreamParserGenerator parser(&protocol, &rxPacket, NULL);
 
 const uint8_t textPacket1[] = "TEST COMMAND 1\r\n";
 const uint8_t textPacket2[] = "TEST ERR" "\x08\x08\x08" "COMMAND 2\r\n";
 const uint8_t textPacket3[] = "TEST 3\n";
 
-int8_t onRxPacket(Perilib::StreamPacket *packet)
+int8_t onRxPacket(PerilibStreamPacket *packet)
 {
   // dump raw packet data
   Serial.print("RXP: [");
   Serial.write(packet->buffer, packet->bufferLength);
   Serial.println("]");
-  
+
   // allow further processing (non-zero to prevent)
   return 0;
 }
@@ -46,10 +46,10 @@ int8_t onRxPacket(Perilib::StreamPacket *packet)
 void setup() {
   // assign callbacks
   parser.onRxPacket = onRxPacket;
-  
+
   // wait for enumeration with USB-based serial interface (optional)
   //while (!Serial);
-  
+
   // initialize host serial interface for monitoring
   Serial.begin(9600);
 }

@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,29 +20,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_REGISTERDEVICE_H__
-#define __PERILIB_REGISTERDEVICE_H__
 
-#include "common.h"
-#include "Device.h"
-#include "RegisterInterface.h"
+#include "PerilibRegisterInterface.h"
 
-namespace Perilib
+int16_t PerilibRegisterInterface::prepareRegAddr(uint32_t regAddr, int8_t regAddrSize, uint8_t *regAddrOnWire)
 {
+    // don't do anything if we have no register address to work with
+    if (!regAddrSize) return 0;
 
-class RegisterDevice : public Device
-{
-public:
-    RegisterDevice(RegisterInterface *registerInterfacePtr=0)
-            : registerInterfacePtr(registerInterfacePtr) { };
-            
-    virtual int8_t onPreTransmission();
-    virtual void onPostTransmission();
-            
-    RegisterInterface *registerInterfacePtr;
-};
+    bool isRegAddrBigEndian = (regAddrSize < 0); // check for big-endian
+    if (isRegAddrBigEndian) regAddrSize = -regAddrSize; // use absolute value
+    if (regAddrSize > 4) regAddrSize = 4; // limit to 32 bits
+    if (isRegAddrBigEndian)
+    {
+        // copy bytes backwards into buffer
+        uint8_t *src = (uint8_t *)&regAddr + regAddrSize - 1;
+        uint8_t i;
+        for (i = 0; i < regAddrSize; i++) *regAddrOnWire++ = *src--;
+    }
+    else
+    {
+        // copy bytes directly
+        memcpy(regAddrOnWire, (uint8_t *)&regAddr, regAddrSize);
+    }
 
-} // namespace Perilib
-
-#endif /* __PERILIB_REGISTERDEVICE_H__ */
+    return regAddrSize;
+}

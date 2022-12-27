@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,7 +20,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_COMMON_H__
 #define __PERILIB_COMMON_H__
 
@@ -54,10 +54,7 @@
     // on your own...try SoftwareSerial maybe
 #endif
 
-namespace Perilib
-{
-
-enum Result
+enum PerilibResult
 {
     OK              =  0,
     NOT_IMPLEMENTED = -1,
@@ -66,14 +63,14 @@ enum Result
     UNKNOWN_PACKET  = -4,
 };
 
-enum ProcessMode
+enum PerilibProcessMode
 {
     SELF = 1,
     SUBS = 2,
     BOTH = 3
 };
 
-enum ParseStatus
+enum PerilibParseStatus
 {
     IDLE = 0,
     STARTING = 1,
@@ -81,21 +78,19 @@ enum ParseStatus
     COMPLETE = 3
 };
 
-class Device;
+class PerilibDevice;
 
-class Stream;
-class StreamDevice;
-class StreamPacket;
-class StreamProtocol;
-class StreamParserGenerator;
+class PerilibStream;
+class PerilibStreamDevice;
+class PerilibStreamPacket;
+class PerilibStreamProtocol;
+class PerilibStreamParserGenerator;
 
-class RegisterInterface;
-class RegisterDevice;
-class RegisterMap;
+class PerilibRegisterInterface;
+class PerilibRegisterDevice;
+class PerilibRegisterMap;
 
-class UartStream_ArduinoStream;
-class TwiRegisterInterface_ArduinoWire;
-
-} // namespace Perilib
+class PerilibUartStream_ArduinoStream;
+class PerilibTwiRegisterInterface_ArduinoWire;
 
 #endif /* __PERILIB_COMMON_H__ */

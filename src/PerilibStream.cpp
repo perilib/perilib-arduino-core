@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,35 +20,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_TEXTSTREAMPROTOCOL_H__
-#define __PERILIB_TEXTSTREAMPROTOCOL_H__
 
-#include "common.h"
-#include "StreamProtocol.h"
+#include "PerilibStream.h"
 
-namespace Perilib
+uint16_t PerilibStream::write(const uint8_t *data, uint16_t length)
 {
-    
-class TextStreamProtocol : public StreamProtocol
+    // suppress unused parameter warnings
+    (void)data;
+    (void)length;
+
+    PERILIB_DEBUG_PRINT("Stream::write(*, ");
+    PERILIB_DEBUG_PRINT(length);
+    PERILIB_DEBUG_PRINTLN(")");
+
+    // STUB: any protocol requiring outgoing data should override this implementation
+    return 0;
+}
+
+void PerilibStream::process(uint8_t mode, bool force)
 {
-public:
-    TextStreamProtocol()
+    if (parserGeneratorPtr && (mode == PerilibProcessMode::SUBS || mode == PerilibProcessMode::BOTH))
     {
-        backspaceByteCount = sizeof(textBackspaceBytes);
-        backspaceBytes = textBackspaceBytes;
-        terminalByteCount = sizeof(textTerminalBytes);
-        terminalBytes = textTerminalBytes;
-        trimByteCount = sizeof(textTrimBytes);
-        trimBytes = textTrimBytes;
+        parserGeneratorPtr->process(PerilibProcessMode::BOTH, force);
     }
-
-protected:
-    static const uint8_t textBackspaceBytes[2];
-    static const uint8_t textTerminalBytes[1];
-    static const uint8_t textTrimBytes[2];
-};
-
-} // namespace Perilib
-
-#endif /* __PERILIB_TEXTSTREAMPROTOCOL_H__ */
+}

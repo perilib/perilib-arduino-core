@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,28 +20,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#include "LTVStreamProtocol.h"
 
-namespace Perilib
+#ifndef __PERILIB_STREAMDEVICE_H__
+#define __PERILIB_STREAMDEVICE_H__
+
+#include "PerilibCommon.h"
+#include "PerilibDevice.h"
+#include "PerilibStream.h"
+
+class PerilibStreamDevice : public PerilibDevice
 {
+public:
+    PerilibStreamDevice(PerilibStream *streamPtr=0)
+            : streamPtr(streamPtr) { };
 
-int8_t LTVStreamProtocol::testPacketComplete(const uint8_t *buffer, uint16_t length, StreamParserGenerator *parserGenerator, bool isTx)
-{
-    // suppress unused parameter warnings
-    (void)parserGenerator;
-    (void)isTx;
-    
-    // simple terminal condition for LTV data, where L/T are single bytes
-    // [length] [type] [v0, v1, ..., v<length-1>]
-    if (length == (uint16_t)(buffer[0] + 1))
-    {
-        // existing buffer is expected length
-        return ParseStatus::COMPLETE;
-    }
+    virtual int8_t sendPacket(uint16_t index, ...);
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false);
 
-    // not finished if we made it here
-    return ParseStatus::IN_PROGRESS;
-}
+    virtual int8_t onPreTransmission();
+    virtual void onPostTransmission();
 
-} // namespace Perilib
+    PerilibStream *streamPtr;
+};
+
+#endif /* __PERILIB_STREAMDEVICE_H__ */

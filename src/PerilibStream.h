@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,25 +20,28 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_REGISTERMAP_H__
-#define __PERILIB_REGISTERMAP_H__
 
-#include "common.h"
+#ifndef __PERILIB_STREAM_H__
+#define __PERILIB_STREAM_H__
 
-namespace Perilib
-{
-    
-class RegisterMap
+#include "PerilibCommon.h"
+#include "PerilibStreamDevice.h"
+#include "PerilibStreamParserGenerator.h"
+
+class PerilibStream
 {
 public:
-    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
-    virtual uint32_t getTimestampMs() { return millis(); }
-    
-    RegisterInterface *registerInterfacePtr;
-    
+    PerilibStream(
+        PerilibStreamParserGenerator *parserGeneratorPtr=0,
+        PerilibStreamDevice *devicePtr=0)
+            : parserGeneratorPtr(parserGeneratorPtr),
+              devicePtr(devicePtr) { };
+
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false);
+
+    PerilibStreamParserGenerator *parserGeneratorPtr;
+    PerilibStreamDevice *devicePtr;
 };
 
-} // namespace Perilib
-
-#endif /* __PERILIB_STREAMPARSERGENERATOR_H__ */
+#endif /* __PERILIB_STREAM_H__ */

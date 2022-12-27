@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,34 +20,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__
 #define __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__
 
-#include "../common.h"
-#include "../Stream.h"
-#include "../StreamDevice.h"
-#include "../StreamParserGenerator.h"
+#include "../PerilibCommon.h"
+#include "../PerilibStream.h"
+#include "../PerilibStreamDevice.h"
+#include "../PerilibStreamParserGenerator.h"
 
-namespace Perilib
-{
-
-class UartStream_ArduinoStream : public Stream
+class PerilibUartStream_ArduinoStream : public PerilibStream
 {
 public:
-    UartStream_ArduinoStream(
-        ::Stream *arduinoStreamPtr=0,
-        StreamParserGenerator *parserGeneratorPtr=0,
-        StreamDevice *devicePtr=0)
-            : Stream(parserGeneratorPtr, (StreamDevice *)devicePtr),
+    PerilibUartStream_ArduinoStream(
+        Stream *arduinoStreamPtr=0,
+        PerilibStreamParserGenerator *parserGeneratorPtr=0,
+        PerilibStreamDevice *devicePtr=0)
+            : PerilibStream(parserGeneratorPtr, (PerilibStreamDevice *)devicePtr),
               arduinoStreamPtr(arduinoStreamPtr) { };
-       
-    virtual uint16_t write(const uint8_t *data, uint16_t length);
-    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
-              
-    ::Stream *arduinoStreamPtr;
-};
 
-} // namespace Perilib
+    virtual uint16_t write(const uint8_t *data, uint16_t length);
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false);
+
+    Stream *arduinoStreamPtr;
+};
 
 #endif /* __PERILIB_HAL_UARTSTREAM_ARDUINOSTREAM_H__ */

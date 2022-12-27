@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,23 +20,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #ifndef __PERILIB_STREAMPARSERGENERATOR_H__
 #define __PERILIB_STREAMPARSERGENERATOR_H__
 
-#include "common.h"
-#include "StreamProtocol.h"
+#include "PerilibCommon.h"
+#include "PerilibStreamProtocol.h"
 
-namespace Perilib
-{
-    
-class StreamParserGenerator
+class PerilibStreamParserGenerator
 {
 public:
-    StreamParserGenerator(
-            StreamProtocol *protocolPtr,
-            StreamPacket *rxPacketPtr,
-            StreamPacket *txPacketPtr) :
+    PerilibStreamParserGenerator(
+            PerilibStreamProtocol *protocolPtr,
+            PerilibStreamPacket *rxPacketPtr,
+            PerilibStreamPacket *txPacketPtr) :
         protocolPtr(protocolPtr),
         rxPacketPtr(rxPacketPtr),
         txPacketPtr(txPacketPtr)
@@ -45,35 +42,33 @@ public:
             if (rxPacketPtr) rxPacketPtr->parserGenerator = this;
             if (txPacketPtr) txPacketPtr->parserGenerator = this;
         }
-    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
+    virtual void process(uint8_t mode=PerilibProcessMode::BOTH, bool force=false);
     virtual void reset();
     virtual int8_t parse(uint8_t b);
     virtual int8_t parse(const uint8_t *data, uint16_t length);
     virtual int8_t generate(uint16_t index, va_list ap);
     virtual uint32_t getTimestampMs() { return millis(); }
-    
-    int8_t (*onTxPacket)(StreamPacket *packet);
-    int8_t (*onRxPacket)(StreamPacket *packet);
-    int8_t (*onRxError)(int8_t error, const uint8_t *data, uint16_t length, StreamParserGenerator *parserGenerator);
-    int8_t (*onIncomingPacketTimeout)(const uint8_t *data, uint16_t length, StreamParserGenerator *parserGenerator);
-    int8_t (*onResponsePacketTimeout)(uint32_t responsePending, StreamParserGenerator *parserGenerator);
-    
-    Stream *streamPtr;
-    StreamProtocol *protocolPtr;
-    StreamPacket *rxPacketPtr;
-    StreamPacket *txPacketPtr;
-    
+
+    int8_t (*onTxPacket)(PerilibStreamPacket *packet);
+    int8_t (*onRxPacket)(PerilibStreamPacket *packet);
+    int8_t (*onRxError)(int8_t error, const uint8_t *data, uint16_t length, PerilibStreamParserGenerator *parserGenerator);
+    int8_t (*onIncomingPacketTimeout)(const uint8_t *data, uint16_t length, PerilibStreamParserGenerator *parserGenerator);
+    int8_t (*onResponsePacketTimeout)(uint32_t responsePending, PerilibStreamParserGenerator *parserGenerator);
+
+    PerilibStream *streamPtr;
+    PerilibStreamProtocol *protocolPtr;
+    PerilibStreamPacket *rxPacketPtr;
+    PerilibStreamPacket *txPacketPtr;
+
 protected:
     virtual void incomingPacketTimedOut();
     virtual void responsePacketTimedOut();
-    
+
     int8_t parserStatus;
-    
+
     uint32_t incomingPacketT0;
     uint32_t responsePacketT0;
     uint32_t responsePending;
 };
-
-} // namespace Perilib
 
 #endif /* __PERILIB_STREAMPARSERGENERATOR_H__ */

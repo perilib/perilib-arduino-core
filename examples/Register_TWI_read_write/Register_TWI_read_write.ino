@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,20 +20,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
+
 #include <Perilib.h>
 
 uint8_t rxBuffer[512];
 uint8_t txBuffer[512];
-Perilib::TwiRegisterInterface_ArduinoWire twiSlave(0x04, &Wire);
+PerilibTwiRegisterInterface_ArduinoWire twiSlave(0x04, &Wire);
 
 void setup() {
   // initialize host serial interface for monitoring
   Serial.begin(9600);
-  
+
   // wait for enumeration with USB-based serial interface (optional)
   //while (!Serial);
-  
+
   // initialize Wire interface
   Wire.begin();
 
@@ -44,7 +44,7 @@ void setup() {
 
 void loop() {
   int bytesProcessed;
-  
+
   uint8_t u8;
   uint16_t u16;
   uint32_t u32;
@@ -60,17 +60,17 @@ void loop() {
   Serial.print("RX result: ");
   Serial.print(bytesProcessed);
   Serial.println(" bytes read out of 512 requested");
-  
+
   // read 8-bit value (byte) from 8-bit register address 0x03
   twiSlave.read8_reg8(0x03, &u8);
   Serial.print("RX byte: 0x");
   Serial.println(u8, HEX);
-  
+
   // read little-endian 16-bit value (uint16) from 8-bit register address 0x04
   twiSlave.read16le_reg8(0x04, &u16);
   Serial.print("RX 16-bit little-endian value: 0x");
   Serial.println(u16, HEX);
-  
+
   // read big-endian 16-bit value (uint16) from same 8-bit register address 0x04
   twiSlave.read16be_reg8(0x04, &u16);
   Serial.print("RX 16-bit big-endian value: 0x");
@@ -80,12 +80,12 @@ void loop() {
   twiSlave.read32le_reg8(0x05, &u32);
   Serial.print("RX 16-bit little-endian value: 0x");
   Serial.println(u32, HEX);
-  
+
   // read big-endian 32-bit value (uint32) from same 8-bit register address 0x05
   twiSlave.read32be_reg8(0x05, &u32);
   Serial.print("RX 16-bit big-endian value: 0x");
   Serial.println(u32, HEX);
-  
+
   // NOTE: Most I2C peripherals that I have encountered in the wild use 8-bit
   // register addresses. However, 16-bit register addresses do exist, and you
   // can easily use those with Perilib as well. Multi-byte register addresses

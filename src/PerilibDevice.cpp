@@ -5,7 +5,7 @@
  * MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software 
+ * software and associated documentation files (the "Software"), to deal in the Software
  * without restriction, including without limitation the rights to use, copy, modify, merge,
  * publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
  * to whom the Software is furnished to do so, subject to the following conditions:
@@ -20,32 +20,5 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
- 
-#ifndef __PERILIB_STREAMDEVICE_H__
-#define __PERILIB_STREAMDEVICE_H__
 
-#include "common.h"
-#include "Device.h"
-#include "Stream.h"
-
-namespace Perilib
-{
-
-class StreamDevice : public Device
-{
-public:
-    StreamDevice(Stream *streamPtr=0)
-            : streamPtr(streamPtr) { };
-            
-    virtual int8_t sendPacket(uint16_t index, ...);
-    virtual void process(uint8_t mode=ProcessMode::BOTH, bool force=false);
-    
-    virtual int8_t onPreTransmission();
-    virtual void onPostTransmission();
-            
-    Stream *streamPtr;
-};
-
-} // namespace Perilib
-
-#endif /* __PERILIB_STREAMDEVICE_H__ */
+#include "PerilibDevice.h"
